@@ -18,7 +18,6 @@
             overflow: hidden; text-align: center;
         }
 
-        /* Cartão centralizado */
         .card {
             background: rgba(255, 255, 255, 0.90);
             padding: 30px;
@@ -29,8 +28,8 @@
             width: 500px;
             transition: transform 0.3s;
             z-index: 10;
-            max-height: 90vh; /* Para garantir que cabe em telemóveis pequenos */
-            overflow-y: auto; /* Scroll se necessário */
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         h1 {
@@ -41,7 +40,6 @@
             line-height: 1.2;
         }
 
-        /* ESTILO DO CONTADOR DE TEMPO */
         #timer-container {
             background: #fff0f3;
             border-radius: 15px;
@@ -106,7 +104,6 @@
             gap: 30px;
         }
 
-        /* ESTILOS DOS BOTÕES EMOJI */
         .emoji-btn {
             background: none;
             border: none;
@@ -208,33 +205,56 @@
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
-        /* DATA CONFIGURADA PARA: 20 de Abril de 2024
-           (Ano 2024, Mês 3 [Abril], Dia 20)
-        */
+        /* DATA CONFIGURADA PARA: 20 de Abril de 2024 */
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
 
         function updateTimer() {
             const now = new Date();
-            const diff = now - startDate;
 
-            // Cálculos matemáticos para o tempo
-            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30.44));
-            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            // Cálculo preciso de Calendário (Anos, Meses, Dias)
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            // Ajuste se os dias forem negativos (pedir emprestado ao mês anterior)
+            if (days < 0) {
+                months--;
+                // Pega no último dia do mês anterior para saber quantos dias tem
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+
+            // Ajuste se os meses forem negativos (pedir emprestado ao ano anterior)
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Horas, Minutos e Segundos (cálculo normal)
+            const hours = now.getHours() - startDate.getHours();
+            let h = hours;
+            if (h < 0) h += 24; // Ajuste simples de hora
+
+            const minutes = now.getMinutes() - startDate.getMinutes();
+            let m = minutes;
+            if (m < 0) m += 60;
+            
+            const seconds = now.getSeconds() - startDate.getSeconds();
+            let s = seconds;
+            if (s < 0) s += 60;
 
             // Atualiza o HTML
             document.getElementById("years").innerText = years;
             document.getElementById("months").innerText = months;
             document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours;
-            document.getElementById("minutes").innerText = minutes;
-            document.getElementById("seconds").innerText = seconds;
+            
+            // Usamos o resto da divisão para garantir que horas/min/seg ficam certos
+            const diff = now - startDate;
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
         }
 
-        // Atualiza a cada segundo
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
