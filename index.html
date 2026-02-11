@@ -20,127 +20,123 @@
             padding-top: 20px;
         }
 
-        /* --- 1. ECRÃ INICIAL (ENVELOPE) --- */
-        /* Este ecrã tapa tudo até ser clicado */
+        /* --- 1. ECRÃ DO ENVELOPE (PREMIUM) --- */
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            z-index: 9999; /* Fica por cima de TUDO */
+            z-index: 9999; 
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: transform 0.8s ease-in-out, opacity 0.8s;
+            transition: opacity 1s ease;
         }
 
-        /* O Envelope */
-        .envelope-container {
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .envelope-wrapper:hover { transform: scale(1.02); }
+
+        .envelope {
             position: relative;
             width: 300px;
             height: 200px;
             background: #ff3838;
             border-radius: 0 0 10px 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             display: flex;
             justify-content: center;
-            align-items: center;
+            z-index: 10;
         }
 
-        /* Aba triangular (Parte de cima) */
+        /* Carta dentro do envelope */
+        .letter {
+            position: absolute;
+            bottom: 0;
+            width: 260px;
+            height: 160px;
+            background: white;
+            border-radius: 5px;
+            z-index: 5;
+            transition: transform 0.6s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Pacifico', cursive;
+            color: #d63384;
+            font-size: 1.4rem;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Aba triangular (Topo) */
         .flap {
             position: absolute;
             top: 0; left: 0;
             width: 0; height: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-top: 110px solid #ff5e57; /* Cor da aba */
+            border-top: 110px solid #ff5e57;
             transform-origin: top;
-            transition: transform 0.6s ease;
-            z-index: 10;
+            transition: transform 0.6s ease-in-out, z-index 0.6s;
+            z-index: 20;
         }
 
-        /* Frente do envelope */
+        /* Bolso da Frente */
         .pocket {
             position: absolute;
             bottom: 0; left: 0;
             width: 0; height: 0;
             border-left: 150px solid transparent;
             border-right: 150px solid transparent;
-            border-bottom: 190px solid #ff4d4d;
-            z-index: 5;
+            border-bottom: 200px solid #ff4d4d;
+            z-index: 15;
         }
 
         /* Selo */
         .seal {
             position: absolute;
-            top: 70px;
-            z-index: 15;
+            top: 75px;
+            z-index: 25;
             font-size: 40px;
-            animation: pulse 1s infinite;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
+            animation: pulse 1.5s infinite;
+            transition: opacity 0.4s;
         }
 
         .click-text {
-            margin-top: 50px;
+            margin-top: 60px;
             font-family: 'Pacifico', cursive;
             color: white;
-            font-size: 1.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-size: 1.4rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
             animation: bounce 2s infinite;
         }
 
-        /* Animação ao abrir */
-        .open .flap {
-            transform: rotateX(180deg);
-            z-index: 1;
-        }
-        .open .seal { opacity: 0; }
+        /* Animações do Envelope */
+        .open-flap { transform: rotateX(180deg); z-index: 1 !important; }
+        .slide-letter { transform: translateY(-100px); z-index: 30 !important; }
+        .fade-out { opacity: 0; pointer-events: none; }
 
-        /* --- 2. FUNDO (CORAÇÕES) --- */
-        .bg-hearts {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
-        }
+        /* --- 2. FUNDO E ELEMENTOS --- */
+        .bg-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
+        .heart-bubble { position: absolute; bottom: -10%; color: #d63384; opacity: 0.4; animation: floatUp linear infinite; }
 
-        .heart-bubble {
-            position: absolute;
-            bottom: -10%;
-            color: #d63384; 
-            opacity: 0.4; 
-            animation: floatUp linear infinite;
-        }
-
-        /* --- 3. CONTEÚDO PRINCIPAL (Começa escondido) --- */
+        /* --- 3. CONTEÚDO PRINCIPAL --- */
         #main-content {
-            opacity: 0; /* Invisível */
-            transform: scale(0.8);
+            opacity: 0;
+            transform: scale(0.9);
             transition: all 1s ease;
             width: 100%; height: 100%;
             z-index: 10;
             position: relative;
         }
+        .visible { opacity: 1 !important; transform: scale(1) !important; }
 
-        /* Classe para mostrar o conteúdo */
-        .visible {
-            opacity: 1 !important;
-            transform: scale(1) !important;
-        }
-
-        /* Elementos do Site Principal */
-        h1 {
-            color: #d63384;
-            font-family: 'Pacifico', cursive;
-            font-size: 2rem;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 4px rgba(255,255,255,0.5);
-            z-index: 10;
-            margin-top: 10px;
-        }
-
+        h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 10px; }
+        
         /* Contador */
         #timer-container { margin-bottom: 15px; }
         #timer-title { font-size: 0.9rem; color: #d63384; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
@@ -148,46 +144,49 @@
         .time-box { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px); padding: 8px 10px; border-radius: 12px; min-width: 55px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); }
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
-
+        
         img { border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
-
+        
         /* Botões */
         button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s; }
-
         #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(1); z-index: 50; }
         #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 40; }
 
-        /* Animações */
         @keyframes heartbeat { 0% { transform: translate(-50%, -50%) scale(1); } 15% { transform: translate(-50%, -50%) scale(1.05); } 30% { transform: translate(-50%, -50%) scale(1); } 45% { transform: translate(-50%, -50%) scale(1.05); } 60% { transform: translate(-50%, -50%) scale(1); } }
         .pulsing { animation: heartbeat 1.5s infinite; }
-        
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-
-        /* Mensagem Final */
+        
         #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 40px; text-align: center; padding: 0 20px; }
         .gallery { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .gallery img { width: 160px; height: 160px; object-fit: cover; border: 6px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); margin: 0; transform: none; }
         .gallery img:nth-child(1) { transform: rotate(-6deg); }
         .gallery img:nth-child(2) { transform: rotate(6deg); }
-
         .hidden { display: none !important; }
+        
+        /* Ocultar Player do YouTube */
+        #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
     </style>
 </head>
 <body>
 
+    <div id="player"></div>
+
     <div class="bg-hearts" id="heartsContainer"></div>
 
     <div id="intro-screen" onclick="openEnvelope()">
-        <div class="envelope-container" id="envelope">
-            <div class="flap"></div>
-            <div class="pocket"></div>
-            <div class="seal">❤️</div>
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">Para Ti... ❤️</div> 
+                <div class="pocket"></div>
+                <div class="flap" id="flap"></div>
+                <div class="seal" id="seal">❤️</div>
+            </div>
         </div>
-        <div class="click-text">Uma carta para ti... (Clica)</div>
+        <div class="click-text">Clica para abrir</div>
     </div>
 
     <div id="main-content">
@@ -219,34 +218,65 @@
         </div>
     </div>
 
-    <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
-
     <script>
-        // --- FUNÇÃO PARA ABRIR O ENVELOPE ---
-        function openEnvelope() {
-            // 1. Tocar Música
-            var audio = document.getElementById('musica');
-            audio.volume = 0.5;
-            audio.play().catch(e => console.log("Erro áudio: ", e));
-
-            // 2. Animar Envelope
-            document.getElementById('envelope').classList.add('open');
-
-            // 3. Esconder Envelope e Mostrar Site (após 0.8s)
-            setTimeout(() => {
-                document.getElementById('intro-screen').style.opacity = '0';
-                
-                // Remove o ecrã da frente para poder clicar nos botões
-                setTimeout(() => {
-                    document.getElementById('intro-screen').style.display = 'none';
-                }, 800);
-
-                // Mostra o conteúdo
-                document.getElementById('main-content').classList.add('visible');
-            }, 800);
+        // --- 1. CONFIGURAÇÃO DO YOUTUBE API ---
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '0',
+                width: '0',
+                videoId: 'TKB7pZO3okM', // ID DA MÚSICA (Die With A Smile)
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'TKB7pZO3okM' // Necessário para loop funcionar
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
         }
 
-        // --- CORAÇÕES ---
+        function onPlayerReady(event) {
+            event.target.setVolume(50); // Volume a 50%
+        }
+
+        // Carregar a API do YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+
+        // --- 2. ABRIR ENVELOPE E TOCAR MÚSICA ---
+        function openEnvelope() {
+            const flap = document.getElementById('flap');
+            const seal = document.getElementById('seal');
+            const letter = document.querySelector('.letter');
+            const screen = document.getElementById('intro-screen');
+
+            // Tocar o YouTube
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+            }
+
+            // Animação
+            flap.classList.add('open-flap');
+            seal.style.opacity = '0';
+
+            setTimeout(() => {
+                letter.classList.add('slide-letter');
+            }, 400);
+
+            setTimeout(() => {
+                screen.classList.add('fade-out');
+                setTimeout(() => screen.style.display = 'none', 1000);
+                document.getElementById('main-content').classList.add('visible');
+            }, 1200);
+        }
+
+        // --- 3. ELEMENTOS VISUAIS ---
         function createHearts() {
             const container = document.getElementById('heartsContainer');
             for (let i = 0; i < 20; i++) {
@@ -262,7 +292,7 @@
         }
         createHearts();
 
-        // --- CONTADOR ---
+        // --- 4. CONTADOR ---
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
         function updateTimer() {
             const now = new Date();
@@ -285,7 +315,7 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        // --- BOTÕES ---
+        // --- 5. LÓGICA BOTÕES ---
         const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
         let count = 0;
         let scale = 1;
