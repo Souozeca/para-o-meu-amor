@@ -23,6 +23,33 @@
             padding-top: 20px;
         }
 
+        /* --- NOVO: EFEITO DE FUNDO (Corações Flutuantes) --- */
+        .bg-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0; /* Fica atrás de tudo */
+            pointer-events: none; /* Não interfere com os cliques */
+        }
+
+        .heart-bubble {
+            position: absolute;
+            bottom: -10%;
+            color: rgba(255, 255, 255, 0.6); /* Branco/transparente */
+            font-size: 20px;
+            animation: floatUp 10s linear infinite;
+            text-shadow: 0 0 5px rgba(255, 192, 203, 0.5);
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
@@ -32,12 +59,14 @@
             z-index: 10;
             padding: 0 10px;
             margin-top: 10px;
+            position: relative;
         }
 
-        /* --- CONTADOR (ESTILO VIDRO) --- */
+        /* --- CONTADOR --- */
         #timer-container {
             margin-bottom: 15px;
             z-index: 10;
+            position: relative;
         }
 
         #timer-title {
@@ -92,15 +121,14 @@
             max-width: 180px;
             height: auto;
             z-index: 10;
+            position: relative;
         }
 
-        /* --- CONFIGURAÇÃO DOS BOTÕES --- */
-        
-        /* Estilo Base dos Botões */
+        /* --- BOTÕES --- */
         button {
             padding: 15px 40px;
             font-size: 20px;
-            font-weight: 800; /* NEGRITO */
+            font-weight: 800;
             cursor: pointer;
             border: none;
             border-radius: 50px;
@@ -109,41 +137,33 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             white-space: nowrap;
-            /* Transição suave apenas para cor e sombra, NÃO para posição */
             transition: background-color 0.3s, box-shadow 0.3s; 
         }
 
-        /* BOTÃO SIM - O CENTRO DO UNIVERSO */
+        /* BOTÃO SIM - CENTRO */
         #yesBtn {
             background-color: #ff4757;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5);
-            
-            /* POSICIONAMENTO ABSOLUTO NO MEIO */
             position: absolute;
             top: 55%; 
             left: 50%;
-            /* Isto centra o botão perfeitamente */
             transform: translate(-50%, -50%) scale(1); 
-            
-            z-index: 50; /* Fica por cima de tudo */
+            z-index: 50; 
         }
         
-        /* BOTÃO NÃO - FIXO EM BAIXO */
+        /* BOTÃO NÃO - BAIXO */
         #noBtn {
             background-color: white;
             color: #ff4757;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            
             position: absolute;
-            top: 75%; /* Fixo a 75% da altura do ecrã */
+            top: 75%; 
             left: 50%;
             transform: translate(-50%, -50%);
-            
             z-index: 40;
         }
 
-        /* Animação suave para o botão SIM pulsar */
         @keyframes heartbeat {
             0% { transform: translate(-50%, -50%) scale(1); }
             15% { transform: translate(-50%, -50%) scale(1.05); }
@@ -152,7 +172,6 @@
             60% { transform: translate(-50%, -50%) scale(1); }
         }
         
-        /* Classe para ativar a animação apenas quando não estamos a clicar no Não */
         .pulsing {
             animation: heartbeat 1.5s infinite;
         }
@@ -209,6 +228,8 @@
 </head>
 <body>
 
+    <div class="bg-hearts" id="heartsContainer"></div>
+
     <div id="main-content">
         <div id="timer-container">
             <div id="timer-title">AMO-TE HÁ:</div>
@@ -241,6 +262,35 @@
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
+        /* SCRIPT PARA GERAR CORAÇÕES NO FUNDO */
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            // Vamos criar 15 corações
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-bubble');
+                heart.innerHTML = '❤';
+                
+                // Posição aleatória na largura (0 a 100%)
+                heart.style.left = Math.random() * 100 + '%';
+                
+                // Tamanho aleatório
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                
+                // Velocidade de animação aleatória
+                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                
+                // Atraso aleatório para não subirem todos ao mesmo tempo
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+
+                container.appendChild(heart);
+            }
+        }
+        // Inicia os corações assim que a página carrega
+        window.onload = function() {
+            createHearts();
+        };
+
         /* DATA DE NAMORO: 20 de Abril de 2024 */
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
 
@@ -270,26 +320,19 @@
 
         const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
         let count = 0;
-        let scale = 1; // Controla o tamanho do SIM
+        let scale = 1;
 
         function reject() {
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
             
-            // 1. Muda Texto
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Remove animação de pulsar para não conflituar com o crescimento
             yes.classList.remove('pulsing');
-
-            // 3. Aumenta o tamanho (Scale)
-            scale += 0.5; // Aumenta 50% de cada vez
+            scale += 0.5;
             
-            // 4. Aplica a transformação: Mantém o centro E aplica a escala
             yes.style.transform = `translate(-50%, -50%) scale(${scale})`;
-            
-            // Adiciona uma transição CSS suave
             yes.style.transition = "transform 0.2s ease";
         }
 
