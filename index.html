@@ -11,36 +11,41 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
+            /* FIXO: Impede qualquer scroll ou fuga para baixo */
+            position: fixed; 
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh;
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* CRUCIAL: Impede scroll */
+            overflow: hidden; 
             text-align: center;
-            position: relative;
-            touch-action: none; /* Impede zoom e scroll no telemóvel */
+            touch-action: none;
         }
 
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
             padding: 0 10px;
         }
 
-        /* --- CONTADOR EM NEGRITO --- */
+        /* --- CONTADOR --- */
         #timer-container {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             z-index: 10;
         }
 
         #timer-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #d63384;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -50,16 +55,16 @@
         #timer {
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             flex-wrap: wrap;
         }
 
         .time-box {
             background: rgba(255, 255, 255, 0.5); 
             backdrop-filter: blur(5px);
-            padding: 8px 10px;
-            border-radius: 12px;
-            min-width: 55px;
+            padding: 6px 8px;
+            border-radius: 10px;
+            min-width: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -69,16 +74,16 @@
 
         .time-box span {
             font-weight: 900;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: #ff4757;
             line-height: 1;
         }
 
         .time-box .label {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: #d63384;
             text-transform: uppercase;
-            margin-top: 4px;
+            margin-top: 2px;
             font-weight: 800;
         }
 
@@ -86,7 +91,7 @@
             border-radius: 20px;
             margin-bottom: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            max-width: 180px;
+            max-width: 160px; /* Mais pequeno para dar espaço aos botões */
             height: auto;
             z-index: 10;
         }
@@ -95,7 +100,7 @@
         .buttons-area {
             position: relative;
             width: 100%;
-            height: 120px; 
+            height: 150px; /* Área dedicada */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -103,8 +108,8 @@
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 18px;
+            padding: 12px 30px;
+            font-size: 16px;
             font-weight: 800;
             cursor: pointer;
             border: none;
@@ -117,7 +122,7 @@
             white-space: nowrap;
         }
 
-        /* Botão SIM */
+        /* Botão SIM (Centro Fixo) */
         #yesBtn {
             background-color: #ff4757;
             color: white;
@@ -130,7 +135,7 @@
             z-index: 50; 
         }
         
-        /* Botão NÃO */
+        /* Botão NÃO (Satélite) */
         #noBtn {
             background-color: white;
             color: #ff4757;
@@ -138,9 +143,10 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) translate(100px, 0px); 
+            /* Começa deslocado */
+            transform: translate(-50%, -50%) translate(90px, 0px); 
             z-index: 100;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Movimento suave mas controlado */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         @keyframes heartbeat {
@@ -282,46 +288,42 @@
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Cresce SIM (com limite máximo para não partir o ecrã)
+            // 2. Cresce SIM (COM LIMITE ESTRITO)
+            // Se o botão ficar demasiado grande, pára de crescer
             const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
-            const currentPadV = parseFloat(window.getComputedStyle(yes).paddingTop);
-            const currentPadH = parseFloat(window.getComputedStyle(yes).paddingLeft);
-            
-            if (currentSize < 80) { // Trava o crescimento se ficar muito grande
+            if (currentSize < 60) { 
+                const currentPadV = parseFloat(window.getComputedStyle(yes).paddingTop);
+                const currentPadH = parseFloat(window.getComputedStyle(yes).paddingLeft);
                 yes.style.fontSize = (currentSize * 1.1) + 'px';
-                yes.style.padding = (currentPadV * 1.1) + 'px ' + (currentPadH * 1.1) + 'px';
+                yes.style.padding = (currentPadV * 1.05) + 'px ' + (currentPadH * 1.05) + 'px';
             }
 
-            // 3. MOVIMENTO BLINDADO CONTRA SAÍDA DO ECRÃ
+            // 3. MOVIMENTO "JAULA" (Correção Definitiva)
             
-            // a) Descobrir o tamanho do ecrã disponível
-            const screenW = window.innerWidth;
-            const screenH = window.innerHeight;
-            
-            // b) Definir limites seguros (metade do ecrã - margem de segurança)
-            // 60px de margem garante que o botão não fica cortado na borda
-            const safeX = (screenW / 2) - 60;
-            const safeY = (screenH / 2) - 60;
+            // Definimos limites FIXOS baseados no tamanho do ecrã
+            // window.innerWidth / 2 é o centro
+            // Subtraímos 80px para garantir que não bate na borda
+            const limitX = (window.innerWidth / 2) - 80;
+            const limitY = (window.innerHeight / 2) - 100; // Margem maior em baixo/cima
 
-            // c) Definir um raio aleatório entre "perto do centro" e "limite seguro"
-            const minRadius = 80;
-            // O raio máximo é o menor valor entre o limite horizontal e vertical
-            const maxSafeRadius = Math.min(safeX, safeY);
+            // Geramos uma coordenada aleatória dentro destes limites
+            // Math.random() * (max - min) + min
+            // Aqui queremos entre -limitX e +limitX
             
-            // Se o ecrã for muito pequeno, garantimos que o raio não buga
-            const finalMaxRadius = Math.max(minRadius + 10, maxSafeRadius);
-            
-            const randomRadius = Math.floor(Math.random() * (finalMaxRadius - minRadius) + minRadius);
+            const randomX = (Math.random() * (limitX * 2)) - limitX;
+            const randomY = (Math.random() * (limitY * 2)) - limitY;
 
-            // d) Ângulo aleatório
-            const angle = Math.random() * 2 * Math.PI;
-            
-            // e) Calcular Posição
-            const x = Math.cos(angle) * randomRadius;
-            const y = Math.sin(angle) * randomRadius;
+            // Mas para garantir que não fica em cima do botão SIM, fazemos uma verificação simples:
+            // Se o movimento for muito pequeno (perto do centro 0,0), forçamos para longe.
+            let finalX = randomX;
+            let finalY = randomY;
+
+            // Se estiver a menos de 60px do centro, empurra para fora
+            if (Math.abs(finalX) < 60) finalX = 60 * (Math.random() < 0.5 ? -1 : 1);
+            if (Math.abs(finalY) < 60) finalY = 60 * (Math.random() < 0.5 ? -1 : 1);
 
             // Aplica a transformação
-            btn.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+            btn.style.transform = `translate(-50%, -50%) translate(${finalX}px, ${finalY}px)`;
         }
 
         function accepted() {
