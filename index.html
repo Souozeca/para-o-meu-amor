@@ -65,6 +65,7 @@
             transition: all 0.3s ease;
             outline: none;
             font-family: 'Poppins', sans-serif;
+            z-index: 100; /* Garante que fica acima de tudo */
         }
 
         #yesBtn {
@@ -77,7 +78,7 @@
         #noBtn {
             background-color: #f1f2f6;
             color: #2f3542;
-            position: absolute; /* Para poder mover livremente */
+            position: absolute; 
         }
 
         /* Estilo da mensagem final */
@@ -142,31 +143,37 @@
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
 
-            // 1. Mudar o texto primeiro (para o botão assumir o novo tamanho real)
+            // 1. Mudar o texto PRIMEIRO para ele assumir o tamanho final
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Definir uma margem de segurança (em pixels)
-            const margin = 30; 
+            // 2. Definir margem de segurança
+            const margin = 20; 
 
-            // 3. Calcular a área disponível real
-            // Largura da janela - Largura do botão - Margem
-            const maxWidth = window.innerWidth - btn.offsetWidth - margin;
-            const maxHeight = window.innerHeight - btn.offsetHeight - margin;
+            // 3. Obter dimensões da janela e do botão ATUALIZADO
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const btnWidth = btn.offsetWidth;
+            const btnHeight = btn.offsetHeight;
 
-            // 4. Gerar posições aleatórias (mas garantindo que são positivas)
-            // Math.max(0, ...) garante que o número nunca é negativo
-            const newX = Math.max(margin, Math.random() * maxWidth);
-            const newY = Math.max(margin, Math.random() * maxHeight);
+            // 4. Calcular o limite máximo onde o botão pode estar (Largura Ecrã - Largura Botão - Margem)
+            // Math.max(0, ...) impede números negativos se o ecrã for muito pequeno
+            const maxX = Math.max(0, windowWidth - btnWidth - margin);
+            const maxY = Math.max(0, windowHeight - btnHeight - margin);
 
-            // 5. Aplicar a nova posição
-            btn.style.position = 'fixed'; // "fixed" é melhor que "absolute" para não criar scroll
+            // 5. Gerar posição aleatória DENTRO dos limites
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+
+            // 6. Aplicar a nova posição
+            // Importante: 'fixed' garante que as coordenadas são relativas ao ecrã inteiro
+            btn.style.position = 'fixed'; 
             btn.style.left = newX + 'px';
             btn.style.top = newY + 'px';
 
             // Faz o botão "Sim" crescer
             const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
-            if (currentSize < 100) { // Limite para não ficar gigante demais
+            if (currentSize < 100) { 
                 yes.style.fontSize = (currentSize + 5) + 'px';
                 yes.style.padding = (parseFloat(window.getComputedStyle(yes).paddingTop) + 5) + 'px ' + (parseFloat(window.getComputedStyle(yes).paddingRight) + 10) + 'px';
             }
@@ -191,7 +198,6 @@
         }
 
         function launchConfetti() {
-            // Duração de 3 segundos
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
@@ -204,7 +210,6 @@
                 }
 
                 var particleCount = 50 * (timeLeft / duration);
-                // Confetis vindos de lugares aleatórios
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
             }, 250);
         }
