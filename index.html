@@ -18,42 +18,46 @@
             overflow: hidden; text-align: center;
         }
 
-        /* O Cartão Branco */
+        /* O Cartão Branco - MARGENS AUMENTADAS */
         .card {
             background: rgba(255, 255, 255, 0.90);
-            padding: 30px;
-            border-radius: 20px;
+            padding: 40px; /* Mais espaço interno */
+            border-radius: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             backdrop-filter: blur(5px);
-            max-width: 95%;
-            width: 500px;
+            max-width: 90%; /* Ocupa até 90% da largura em telemóveis */
+            width: 600px; /* Mais largo em PC */
             transition: transform 0.3s;
             z-index: 10;
-            max-height: 90vh;
-            overflow-y: auto; /* Permite scroll se o ecrã for muito pequeno */
+            max-height: 95vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
             line-height: 1.2;
         }
 
-        /* ESTILO DO CONTADOR (Caixinhas brancas) */
+        /* ESTILO DO CONTADOR */
         #timer-container {
             background: #fff0f3;
             border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
             box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+            width: 100%;
         }
 
         #timer-title {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #d63384;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -62,37 +66,37 @@
         #timer {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
         .time-box {
             background: white;
-            padding: 5px 10px;
-            border-radius: 8px;
-            min-width: 55px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            min-width: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .time-box span {
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #ff4757;
         }
 
         .time-box .label {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             color: #777;
             text-transform: uppercase;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
         img {
             border-radius: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             max-width: 100%;
             height: auto;
@@ -100,16 +104,18 @@
 
         /* BOTÕES */
         .buttons {
-            margin-top: 20px;
+            margin-top: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 20px;
             flex-wrap: wrap;
+            width: 100%;
+            position: relative; /* Garante estabilidade */
         }
 
         button {
-            padding: 12px 30px;
+            padding: 15px 35px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
@@ -120,9 +126,10 @@
             font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
             letter-spacing: 1px;
+            white-space: nowrap; /* Impede texto de quebrar linha */
         }
 
-        /* Botão SIM (Vermelho/Rosa) */
+        /* Botão SIM */
         #yesBtn {
             background-color: #ff4757;
             color: white;
@@ -132,11 +139,12 @@
         }
         #yesBtn:hover { transform: scale(1.05); background-color: #ff6b81; }
 
-        /* Botão NÃO (Cinzento Claro) */
+        /* Botão NÃO */
         #noBtn {
             background-color: #f1f2f6;
             color: #2f3542;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            /* Removido position absolute ou transforms estranhos */
         }
         #noBtn:hover { background-color: #e1e2e6; }
 
@@ -154,22 +162,24 @@
             flex-direction: column;
             align-items: center;
             animation: fadeIn 1s;
+            margin-top: 20px;
         }
 
         .gallery {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 15px;
+            margin-top: 20px;
             justify-content: center;
             flex-wrap: wrap;
         }
         
         .gallery img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
-            border: 3px solid white;
+            border: 4px solid white;
             transform: rotate(-5deg);
+            margin: 0; /* Reset da margem das imagens gerais */
         }
         .gallery img:nth-child(2) { transform: rotate(5deg); }
 
@@ -200,7 +210,7 @@
         <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW54amZndm96eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" width="250">
 
         <div id="success-message">
-            <p style="font-size: 1.1rem; color: #555; margin-bottom: 15px;">Sabia que ias aceitar! És o amor da minha vida. Prepara-te para o melhor dia de sempre! 🌹</p>
+            <p style="font-size: 1.2rem; color: #555; margin-bottom: 20px; line-height: 1.5;">Sabia que ias aceitar! És o amor da minha vida. Prepara-te para o melhor dia de sempre! 🌹</p>
             <div class="gallery">
                <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif"> 
                <img src="https://media.giphy.com/media/l0HlPtbGpcnqa0fja/giphy.gif">
@@ -216,39 +226,30 @@
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
-        /* DATA DE NAMORO: 20 de Abril de 2024 
-           (Ano 2024, Mês 3=Abril, Dia 20)
-        */
+        /* DATA DE NAMORO: 20 de Abril de 2024 */
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
 
         function updateTimer() {
             const now = new Date();
-
-            // Lógica exata de calendário
             let years = now.getFullYear() - startDate.getFullYear();
             let months = now.getMonth() - startDate.getMonth();
             let days = now.getDate() - startDate.getDate();
 
-            // Ajuste dias negativos
             if (days < 0) {
                 months--;
                 const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
                 days += lastMonth.getDate();
             }
-
-            // Ajuste meses negativos
             if (months < 0) {
                 years--;
                 months += 12;
             }
 
-            // Cálculo de Horas/Min/Seg
             const diff = now - startDate;
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            // Atualiza HTML
             document.getElementById("years").innerText = years;
             document.getElementById("months").innerText = months;
             document.getElementById("days").innerText = days;
@@ -260,7 +261,6 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        // Lógica dos Botões (Texto muda, botão NÃO não foge, botão SIM cresce)
         const phrases = ["Tens a certeza?", "Pensa bem...", "Olha o erro!", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Partiste-me o coração 💔", "Vou chorar..."];
         let count = 0;
 
@@ -274,10 +274,11 @@
 
             // Faz o botão SIM crescer
             const currentFontSize = parseFloat(window.getComputedStyle(yes).fontSize);
-            const currentPadding = parseFloat(window.getComputedStyle(yes).paddingTop);
+            const currentPaddingH = parseFloat(window.getComputedStyle(yes).paddingLeft);
+            const currentPaddingV = parseFloat(window.getComputedStyle(yes).paddingTop);
             
             yes.style.fontSize = (currentFontSize * 1.3) + 'px';
-            yes.style.padding = (currentPadding * 1.2) + 'px ' + (currentPadding * 1.5) + 'px';
+            yes.style.padding = (currentPaddingV * 1.2) + 'px ' + (currentPaddingH * 1.3) + 'px';
         }
 
         function accepted() {
