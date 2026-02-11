@@ -28,6 +28,7 @@
             max-width: 90%;
             width: 400px;
             transition: transform 0.3s;
+            z-index: 10;
         }
 
         h1 {
@@ -50,9 +51,9 @@
             margin-top: 10px;
             display: flex;
             justify-content: center;
+            align-items: center; /* Alinha os botões no centro verticalmente */
             gap: 20px;
-            position: relative;
-            min-height: 60px; /* Espaço reservado */
+            flex-wrap: wrap; /* Permite que mudem de linha se necessário */
         }
 
         button {
@@ -65,20 +66,21 @@
             transition: all 0.3s ease;
             outline: none;
             font-family: 'Poppins', sans-serif;
-            z-index: 100; /* Garante que fica acima de tudo */
         }
 
         #yesBtn {
             background-color: #ff4757;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            z-index: 20; /* Garante que fica por cima do botão Não quando crescer */
         }
+        
         #yesBtn:hover { transform: scale(1.05); background-color: #ff6b81; }
 
         #noBtn {
             background-color: #f1f2f6;
             color: #2f3542;
-            position: absolute; 
+            /* Removi a posição absoluta para ele não fugir */
         }
 
         /* Estilo da mensagem final */
@@ -129,7 +131,7 @@
 
         <div class="buttons" id="btn-container">
             <button id="yesBtn" onclick="accepted()">SIM</button>
-            <button id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">NÃO</button>
+            <button id="noBtn" onclick="reject()">NÃO</button>
         </div>
     </div>
 
@@ -139,44 +141,22 @@
         const phrases = ["Tens a certeza?", "Pensa bem...", "Olha o erro!", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Partiste-me o coração 💔", "Vou chorar..."];
         let count = 0;
 
-        function moveButton() {
+        // Nova função: Apenas muda o texto e aumenta o botão SIM
+        function reject() {
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
 
-            // 1. Mudar o texto PRIMEIRO para ele assumir o tamanho final
+            // 1. Muda o texto do botão Não
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Definir margem de segurança
-            const margin = 20; 
-
-            // 3. Obter dimensões da janela e do botão ATUALIZADO
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const btnWidth = btn.offsetWidth;
-            const btnHeight = btn.offsetHeight;
-
-            // 4. Calcular o limite máximo onde o botão pode estar (Largura Ecrã - Largura Botão - Margem)
-            // Math.max(0, ...) impede números negativos se o ecrã for muito pequeno
-            const maxX = Math.max(0, windowWidth - btnWidth - margin);
-            const maxY = Math.max(0, windowHeight - btnHeight - margin);
-
-            // 5. Gerar posição aleatória DENTRO dos limites
-            const newX = Math.random() * maxX;
-            const newY = Math.random() * maxY;
-
-            // 6. Aplicar a nova posição
-            // Importante: 'fixed' garante que as coordenadas são relativas ao ecrã inteiro
-            btn.style.position = 'fixed'; 
-            btn.style.left = newX + 'px';
-            btn.style.top = newY + 'px';
-
-            // Faz o botão "Sim" crescer
-            const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
-            if (currentSize < 100) { 
-                yes.style.fontSize = (currentSize + 5) + 'px';
-                yes.style.padding = (parseFloat(window.getComputedStyle(yes).paddingTop) + 5) + 'px ' + (parseFloat(window.getComputedStyle(yes).paddingRight) + 10) + 'px';
-            }
+            // 2. Faz o botão "Sim" crescer CADA VEZ MAIS
+            const currentFontSize = parseFloat(window.getComputedStyle(yes).fontSize);
+            const currentPadding = parseFloat(window.getComputedStyle(yes).paddingTop);
+            
+            // Aumenta o tamanho da fonte e o padding
+            yes.style.fontSize = (currentFontSize * 1.5) + 'px';
+            yes.style.padding = (currentPadding * 1.2) + 'px ' + (currentPadding * 1.5) + 'px';
         }
 
         function accepted() {
