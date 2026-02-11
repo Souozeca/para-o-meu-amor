@@ -13,12 +13,12 @@
         body {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh;
-            /* Fundo Rosa Total */
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; 
+            overflow: hidden; /* CRUCIAL: Impede scroll */
             text-align: center;
             position: relative;
+            touch-action: none; /* Impede zoom e scroll no telemóvel */
         }
 
         h1 {
@@ -41,7 +41,7 @@
             font-size: 1rem;
             color: #d63384;
             margin-bottom: 10px;
-            font-weight: 900; /* Extra Negrito */
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
@@ -68,7 +68,7 @@
         }
 
         .time-box span {
-            font-weight: 900; /* NÚMEROS EXTRA NEGRITOS */
+            font-weight: 900;
             font-size: 1.3rem;
             color: #ff4757;
             line-height: 1;
@@ -79,7 +79,7 @@
             color: #d63384;
             text-transform: uppercase;
             margin-top: 4px;
-            font-weight: 800; /* TEXTO LABEL NEGRITO */
+            font-weight: 800;
         }
 
         img {
@@ -95,7 +95,7 @@
         .buttons-area {
             position: relative;
             width: 100%;
-            height: 100px; /* Altura reduzida para manter tudo compacto */
+            height: 120px; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -105,7 +105,7 @@
         button {
             padding: 15px 30px;
             font-size: 18px;
-            font-weight: 800; /* Botões Negrito */
+            font-weight: 800;
             cursor: pointer;
             border: none;
             border-radius: 50px;
@@ -117,7 +117,7 @@
             white-space: nowrap;
         }
 
-        /* Botão SIM (Centro Fixo) */
+        /* Botão SIM */
         #yesBtn {
             background-color: #ff4757;
             color: white;
@@ -130,7 +130,7 @@
             z-index: 50; 
         }
         
-        /* Botão NÃO (Mosca Teimosa) */
+        /* Botão NÃO */
         #noBtn {
             background-color: white;
             color: #ff4757;
@@ -138,10 +138,9 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            /* Começa ligeiramente deslocado */
-            transform: translate(-50%, -50%) translate(90px, 0px); 
-            z-index: 100; /* Fica POR CIMA do Sim para se ver sempre */
-            transition: all 0.2s ease-out; /* Movimento muito rápido */
+            transform: translate(-50%, -50%) translate(100px, 0px); 
+            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Movimento suave mas controlado */
         }
 
         @keyframes heartbeat {
@@ -279,34 +278,45 @@
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
             
-            // 1. Mudar Texto
+            // 1. Muda Texto
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Crescer botão SIM (Limitado)
+            // 2. Cresce SIM (com limite máximo para não partir o ecrã)
             const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
             const currentPadV = parseFloat(window.getComputedStyle(yes).paddingTop);
             const currentPadH = parseFloat(window.getComputedStyle(yes).paddingLeft);
             
-            if (currentSize < 80) { // Cresce menos
+            if (currentSize < 80) { // Trava o crescimento se ficar muito grande
                 yes.style.fontSize = (currentSize * 1.1) + 'px';
                 yes.style.padding = (currentPadV * 1.1) + 'px ' + (currentPadH * 1.1) + 'px';
             }
 
-            // 3. MOVIMENTO RESTRITO (AQUI ESTÁ A CORREÇÃO)
-            // Eu defino um raio FIXO e curto. Ele não depende mais do tamanho do coração.
-            // O botão vai saltar sempre dentro de um raio de 90px a 140px.
+            // 3. MOVIMENTO BLINDADO CONTRA SAÍDA DO ECRÃ
             
-            const minRadius = 90;
-            const maxRadius = 140; // Máximo de distância permitida (mantém no centro)
+            // a) Descobrir o tamanho do ecrã disponível
+            const screenW = window.innerWidth;
+            const screenH = window.innerHeight;
             
-            // Gera um raio aleatório entre 90 e 140
-            const randomRadius = Math.floor(Math.random() * (maxRadius - minRadius + 1) + minRadius);
+            // b) Definir limites seguros (metade do ecrã - margem de segurança)
+            // 60px de margem garante que o botão não fica cortado na borda
+            const safeX = (screenW / 2) - 60;
+            const safeY = (screenH / 2) - 60;
 
-            // Ângulo aleatório
+            // c) Definir um raio aleatório entre "perto do centro" e "limite seguro"
+            const minRadius = 80;
+            // O raio máximo é o menor valor entre o limite horizontal e vertical
+            const maxSafeRadius = Math.min(safeX, safeY);
+            
+            // Se o ecrã for muito pequeno, garantimos que o raio não buga
+            const finalMaxRadius = Math.max(minRadius + 10, maxSafeRadius);
+            
+            const randomRadius = Math.floor(Math.random() * (finalMaxRadius - minRadius) + minRadius);
+
+            // d) Ângulo aleatório
             const angle = Math.random() * 2 * Math.PI;
             
-            // Posição Final
+            // e) Calcular Posição
             const x = Math.cos(angle) * randomRadius;
             const y = Math.sin(angle) * randomRadius;
 
