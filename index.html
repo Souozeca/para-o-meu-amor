@@ -48,39 +48,53 @@
         }
 
         .buttons {
-            margin-top: 10px;
+            margin-top: 20px;
             display: flex;
             justify-content: center;
-            align-items: center; /* Alinha os botões no centro verticalmente */
-            gap: 20px;
-            flex-wrap: wrap; /* Permite que mudem de linha se necessário */
+            align-items: center;
+            gap: 30px; /* Mais espaço entre os emojis */
         }
 
-        button {
-            padding: 12px 30px;
-            font-size: 18px;
-            font-weight: bold;
+        /* NOVOS ESTILOS PARA BOTÕES EM FORMA DE EMOJI */
+        .emoji-btn {
+            background: none; /* Remove o fundo de botão normal */
+            border: none; /* Remove borda */
+            font-size: 80px; /* Tamanho inicial gigante */
             cursor: pointer;
-            border: none;
-            border-radius: 50px;
-            transition: all 0.3s ease;
+            padding: 0;
             outline: none;
-            font-family: 'Poppins', sans-serif;
+            /* Sombra que segue a forma do emoji */
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); 
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
         }
 
         #yesBtn {
-            background-color: #ff4757;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
-            z-index: 20; /* Garante que fica por cima do botão Não quando crescer */
+            z-index: 20;
+            color: #ff4757; /* Cor caso o emoji falhe */
+            /* Animação de pulsar */
+            animation: heartbeat 1.5s infinite;
         }
         
-        #yesBtn:hover { transform: scale(1.05); background-color: #ff6b81; }
+        #yesBtn:hover { 
+            transform: scale(1.2); /* Cresce mais ao passar o rato */
+        }
 
         #noBtn {
-            background-color: #f1f2f6;
-            color: #2f3542;
-            /* Removi a posição absoluta para ele não fugir */
+            font-size: 60px; /* O "Não" começa um pouco mais pequeno */
+            filter: grayscale(0.5) drop-shadow(0 5px 10px rgba(0,0,0,0.2)); /* Um pouco cinzento */
+            transition: all 0.3s ease;
+        }
+        #noBtn:hover {
+             transform: scale(0.9) rotate(-10deg); /* Encolhe e roda se tentarem clicar */
+        }
+
+        /* Animação de batimento cardíaco */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
         }
 
         /* Estilo da mensagem final */
@@ -130,33 +144,32 @@
         </div>
 
         <div class="buttons" id="btn-container">
-            <button id="yesBtn" onclick="accepted()">SIM</button>
-            <button id="noBtn" onclick="reject()">NÃO</button>
+            <button id="yesBtn" class="emoji-btn" onclick="accepted()">💖</button>
+            <button id="noBtn" class="emoji-btn" onclick="reject()">😢</button>
         </div>
     </div>
 
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
-        const phrases = ["Tens a certeza?", "Pensa bem...", "Olha o erro!", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Partiste-me o coração 💔", "Vou chorar..."];
+        // Emojis tristes para quando ela clica no Não
+        const sadEmojis = ["😢", "😭", "💔", "🥺", "😿", "😓"];
         let count = 0;
 
-        // Nova função: Apenas muda o texto e aumenta o botão SIM
+        // Nova função: Muda o emoji triste e aumenta o coração
         function reject() {
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
 
-            // 1. Muda o texto do botão Não
-            btn.innerHTML = phrases[count % phrases.length];
+            // 1. Muda o emoji do botão Não
             count++;
-
-            // 2. Faz o botão "Sim" crescer CADA VEZ MAIS
-            const currentFontSize = parseFloat(window.getComputedStyle(yes).fontSize);
-            const currentPadding = parseFloat(window.getComputedStyle(yes).paddingTop);
+            btn.innerHTML = sadEmojis[count % sadEmojis.length];
             
-            // Aumenta o tamanho da fonte e o padding
-            yes.style.fontSize = (currentFontSize * 1.5) + 'px';
-            yes.style.padding = (currentPadding * 1.2) + 'px ' + (currentPadding * 1.5) + 'px';
+            // 2. Faz o botão "Sim" (Coração) crescer CADA VEZ MAIS
+            const currentFontSize = parseFloat(window.getComputedStyle(yes).fontSize);
+            
+            // Aumenta o tamanho da fonte (o emoji)
+            yes.style.fontSize = (currentFontSize * 1.4) + 'px';
         }
 
         function accepted() {
