@@ -11,95 +11,96 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* FIXO: Garante que nada sai do ecrã */
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
             text-align: center;
-            padding-top: 10px;
+            padding-top: 20px;
         }
 
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 5px;
             text-shadow: 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
             padding: 0 10px;
+            margin-top: 10px;
         }
 
-        /* --- CONTADOR --- */
+        /* --- CONTADOR (ESTILO VIDRO) --- */
         #timer-container {
             margin-bottom: 15px;
             z-index: 10;
         }
 
         #timer-title {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: #d63384;
             margin-bottom: 5px;
             font-weight: 900; 
             text-transform: uppercase;
             letter-spacing: 2px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
         #timer {
             display: flex;
             justify-content: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .time-box {
-            background: rgba(255, 255, 255, 0.55); 
-            backdrop-filter: blur(5px);
-            padding: 5px 8px;
-            border-radius: 10px;
-            min-width: 50px;
+            background: rgba(255, 255, 255, 0.6); 
+            backdrop-filter: blur(8px);
+            padding: 8px 10px;
+            border-radius: 12px;
+            min-width: 55px;
             display: flex;
             flex-direction: column;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 2px solid rgba(255,255,255,0.9);
+            border: 1px solid rgba(255,255,255,0.8);
         }
 
         .time-box span {
-            font-weight: 900;
-            font-size: 1.1rem;
+            font-weight: 900; /* EXTRA NEGRITO */
+            font-size: 1.3rem;
             color: #ff4757;
             line-height: 1;
         }
 
         .time-box .label {
-            font-size: 0.5rem;
+            font-size: 0.6rem;
             color: #d63384;
             text-transform: uppercase;
             margin-top: 2px;
             font-weight: 800;
         }
 
+        /* Imagem/GIF */
         img {
             border-radius: 20px;
             margin-bottom: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            max-width: 160px;
+            max-width: 180px;
             height: auto;
             z-index: 10;
         }
 
-        /* --- ÁREA DOS BOTÕES --- */
-        .buttons-area {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; 
-            z-index: 20;
-        }
-
+        /* --- CONFIGURAÇÃO DOS BOTÕES --- */
+        
+        /* Estilo Base dos Botões */
         button {
             padding: 15px 40px;
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 800; /* NEGRITO */
             cursor: pointer;
             border: none;
             border-radius: 50px;
@@ -108,38 +109,52 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             white-space: nowrap;
-            pointer-events: auto;
+            /* Transição suave apenas para cor e sombra, NÃO para posição */
+            transition: background-color 0.3s, box-shadow 0.3s; 
         }
 
-        /* Botão SIM - CENTRADO PERFEITO */
+        /* BOTÃO SIM - O CENTRO DO UNIVERSO */
         #yesBtn {
             background-color: #ff4757;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5);
-            /* A animação está no JS agora para não conflituar com o scale */
             
+            /* POSICIONAMENTO ABSOLUTO NO MEIO */
             position: absolute;
-            top: 60%; /* Posição vertical */
-            left: 50%; /* Posição horizontal */
-            /* Transforma o ponto de origem para o MEIO do botão */
-            transform: translate(-50%, -50%); 
-            transform-origin: center center;
+            top: 55%; 
+            left: 50%;
+            /* Isto centra o botão perfeitamente */
+            transform: translate(-50%, -50%) scale(1); 
             
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 30;
+            z-index: 50; /* Fica por cima de tudo */
         }
         
-        /* Botão NÃO - FIXO EM BAIXO */
+        /* BOTÃO NÃO - FIXO EM BAIXO */
         #noBtn {
             background-color: white;
             color: #ff4757;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             
             position: absolute;
-            bottom: 10%; /* Fixo a 10% do fundo do ecrã */
+            top: 75%; /* Fixo a 75% da altura do ecrã */
             left: 50%;
-            transform: translate(-50%, 0);
-            z-index: 20;
+            transform: translate(-50%, -50%);
+            
+            z-index: 40;
+        }
+
+        /* Animação suave para o botão SIM pulsar */
+        @keyframes heartbeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            15% { transform: translate(-50%, -50%) scale(1.05); }
+            30% { transform: translate(-50%, -50%) scale(1); }
+            45% { transform: translate(-50%, -50%) scale(1.05); }
+            60% { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        /* Classe para ativar a animação apenas quando não estamos a clicar no Não */
+        .pulsing {
+            animation: heartbeat 1.5s infinite;
         }
 
         /* MENSAGEM FINAL */
@@ -172,8 +187,8 @@
         }
         
         .gallery img {
-            width: 150px;
-            height: 150px;
+            width: 160px;
+            height: 160px;
             object-fit: cover;
             border: 6px solid white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
@@ -211,10 +226,8 @@
         
         <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW54amZndm96eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
 
-        <div class="buttons-area">
-            <button id="yesBtn" onclick="accepted()">SIM</button>
-            <button id="noBtn" onclick="reject()">NÃO</button>
-        </div>
+        <button id="yesBtn" class="pulsing" onclick="accepted()">SIM</button>
+        <button id="noBtn" onclick="reject()">NÃO</button>
     </div>
 
     <div id="success-message">
@@ -257,7 +270,7 @@
 
         const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
         let count = 0;
-        let scale = 1; // Variável para controlar o tamanho do botão SIM
+        let scale = 1; // Controla o tamanho do SIM
 
         function reject() {
             const btn = document.getElementById('noBtn');
@@ -267,12 +280,17 @@
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. AUMENTA O TAMANHO USANDO SCALE
-            // Isto garante que o botão cresce a partir do centro exato
-            scale += 0.4; // Aumenta 40% de cada vez
+            // 2. Remove animação de pulsar para não conflituar com o crescimento
+            yes.classList.remove('pulsing');
+
+            // 3. Aumenta o tamanho (Scale)
+            scale += 0.5; // Aumenta 50% de cada vez
             
-            // Mantém o translate(-50%, -50%) para centrar e adiciona o scale
+            // 4. Aplica a transformação: Mantém o centro E aplica a escala
             yes.style.transform = `translate(-50%, -50%) scale(${scale})`;
+            
+            // Adiciona uma transição CSS suave
+            yes.style.transition = "transform 0.2s ease";
         }
 
         function accepted() {
