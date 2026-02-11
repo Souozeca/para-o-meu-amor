@@ -18,6 +18,7 @@
             overflow: hidden; text-align: center;
         }
 
+        /* Cartão centralizado */
         .card {
             background: rgba(255, 255, 255, 0.90);
             padding: 30px;
@@ -40,6 +41,7 @@
             line-height: 1.2;
         }
 
+        /* ESTILO DO CONTADOR DE TEMPO */
         #timer-container {
             background: #fff0f3;
             border-radius: 15px;
@@ -101,40 +103,48 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .emoji-btn {
-            background: none;
-            border: none;
-            font-size: 70px;
+        /* ESTILOS DOS BOTÕES (TEXTO) */
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-            padding: 0;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
             outline: none;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); 
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Poppins', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         #yesBtn {
+            background-color: #ff4757;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
             z-index: 20;
+            /* Animação de pulsar suave */
             animation: heartbeat 1.5s infinite;
         }
         
-        #yesBtn:hover { transform: scale(1.2); }
+        #yesBtn:hover { transform: scale(1.05); background-color: #ff6b81; }
 
         #noBtn {
-            font-size: 50px;
-            filter: grayscale(0.5) drop-shadow(0 5px 10px rgba(0,0,0,0.2));
-            transition: all 0.3s ease;
+            background-color: #f1f2f6;
+            color: #2f3542;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        #noBtn:hover { transform: scale(0.9) rotate(-10deg); }
+        #noBtn:hover { background-color: #e1e2e6; }
 
         @keyframes heartbeat {
             0% { transform: scale(1); }
-            15% { transform: scale(1.15); }
+            15% { transform: scale(1.05); }
             30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
+            45% { transform: scale(1.05); }
             60% { transform: scale(1); }
         }
 
@@ -197,8 +207,8 @@
         </div>
 
         <div class="buttons" id="btn-container">
-            <button id="yesBtn" class="emoji-btn" onclick="accepted()">💖</button>
-            <button id="noBtn" class="emoji-btn" onclick="reject()">😢</button>
+            <button id="yesBtn" onclick="accepted()">SIM</button>
+            <button id="noBtn" onclick="reject()">NÃO</button>
         </div>
     </div>
 
@@ -211,64 +221,60 @@
         function updateTimer() {
             const now = new Date();
 
-            // Cálculo preciso de Calendário (Anos, Meses, Dias)
+            // LÓGICA DO CONTADOR CORRIGIDA
             let years = now.getFullYear() - startDate.getFullYear();
             let months = now.getMonth() - startDate.getMonth();
             let days = now.getDate() - startDate.getDate();
 
-            // Ajuste se os dias forem negativos (pedir emprestado ao mês anterior)
+            // Ajuste dias negativos
             if (days < 0) {
                 months--;
-                // Pega no último dia do mês anterior para saber quantos dias tem
                 const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
                 days += lastMonth.getDate();
             }
 
-            // Ajuste se os meses forem negativos (pedir emprestado ao ano anterior)
+            // Ajuste meses negativos
             if (months < 0) {
                 years--;
                 months += 12;
             }
 
-            // Horas, Minutos e Segundos (cálculo normal)
-            const hours = now.getHours() - startDate.getHours();
-            let h = hours;
-            if (h < 0) h += 24; // Ajuste simples de hora
+            // Cálculo de Horas/Min/Seg
+            const diff = now - startDate;
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-            const minutes = now.getMinutes() - startDate.getMinutes();
-            let m = minutes;
-            if (m < 0) m += 60;
-            
-            const seconds = now.getSeconds() - startDate.getSeconds();
-            let s = seconds;
-            if (s < 0) s += 60;
-
-            // Atualiza o HTML
+            // Atualiza HTML
             document.getElementById("years").innerText = years;
             document.getElementById("months").innerText = months;
             document.getElementById("days").innerText = days;
-            
-            // Usamos o resto da divisão para garantir que horas/min/seg ficam certos
-            const diff = now - startDate;
-            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("minutes").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("seconds").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
         }
 
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        // Lógica dos Botões
-        const sadEmojis = ["😢", "😭", "💔", "🥺", "😿", "😓"];
+        // Lógica dos Botões (Texto em vez de emojis)
+        const phrases = ["Tens a certeza?", "Pensa bem...", "Olha o erro!", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Partiste-me o coração 💔", "Vou chorar..."];
         let count = 0;
 
         function reject() {
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
+            
+            // Muda o texto
+            btn.innerHTML = phrases[count % phrases.length];
             count++;
-            btn.innerHTML = sadEmojis[count % sadEmojis.length];
+
+            // Faz o botão SIM crescer
             const currentFontSize = parseFloat(window.getComputedStyle(yes).fontSize);
-            yes.style.fontSize = (currentFontSize * 1.4) + 'px';
+            const currentPadding = parseFloat(window.getComputedStyle(yes).paddingTop);
+            
+            yes.style.fontSize = (currentFontSize * 1.3) + 'px';
+            yes.style.padding = (currentPadding * 1.2) + 'px ' + (currentPadding * 1.5) + 'px';
         }
 
         function accepted() {
