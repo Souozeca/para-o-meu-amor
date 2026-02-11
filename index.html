@@ -11,10 +11,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            /* FIXO: Garante que nada sai do ecrã */
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%;
-            
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
@@ -23,30 +20,27 @@
             padding-top: 20px;
         }
 
-        /* --- NOVO: EFEITO DE FUNDO (Corações Flutuantes) --- */
+        /* --- CORAÇÕES DE FUNDO (AGORA VISÍVEIS) --- */
         .bg-hearts {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden;
-            z-index: 0; /* Fica atrás de tudo */
-            pointer-events: none; /* Não interfere com os cliques */
+            z-index: 1; /* Fica atrás do conteúdo */
+            pointer-events: none;
         }
 
         .heart-bubble {
             position: absolute;
             bottom: -10%;
-            color: rgba(255, 255, 255, 0.6); /* Branco/transparente */
-            font-size: 20px;
-            animation: floatUp 10s linear infinite;
-            text-shadow: 0 0 5px rgba(255, 192, 203, 0.5);
+            /* COR VISÍVEL: Rosa escuro com transparência */
+            color: #d63384; 
+            opacity: 0.3; 
+            animation: floatUp linear infinite;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
+            10% { opacity: 0.3; } /* Aparece */
             100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
         }
 
@@ -62,11 +56,20 @@
             position: relative;
         }
 
+        /* --- CONTEÚDO PRINCIPAL (Fica à frente dos corações) --- */
+        #main-content {
+            position: relative;
+            z-index: 10; /* Garante que está à frente do fundo */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         /* --- CONTADOR --- */
         #timer-container {
             margin-bottom: 15px;
-            z-index: 10;
-            position: relative;
         }
 
         #timer-title {
@@ -76,7 +79,6 @@
             font-weight: 900; 
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
         #timer {
@@ -87,7 +89,7 @@
 
         .time-box {
             background: rgba(255, 255, 255, 0.6); 
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
             padding: 8px 10px;
             border-radius: 12px;
             min-width: 55px;
@@ -99,7 +101,7 @@
         }
 
         .time-box span {
-            font-weight: 900; /* EXTRA NEGRITO */
+            font-weight: 900;
             font-size: 1.3rem;
             color: #ff4757;
             line-height: 1;
@@ -113,15 +115,12 @@
             font-weight: 800;
         }
 
-        /* Imagem/GIF */
         img {
             border-radius: 20px;
             margin-bottom: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
             max-width: 180px;
             height: auto;
-            z-index: 10;
-            position: relative;
         }
 
         /* --- BOTÕES --- */
@@ -137,10 +136,9 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             white-space: nowrap;
-            transition: background-color 0.3s, box-shadow 0.3s; 
+            transition: background-color 0.3s; 
         }
 
-        /* BOTÃO SIM - CENTRO */
         #yesBtn {
             background-color: #ff4757;
             color: white;
@@ -152,7 +150,6 @@
             z-index: 50; 
         }
         
-        /* BOTÃO NÃO - BAIXO */
         #noBtn {
             background-color: white;
             color: #ff4757;
@@ -172,9 +169,7 @@
             60% { transform: translate(-50%, -50%) scale(1); }
         }
         
-        .pulsing {
-            animation: heartbeat 1.5s infinite;
-        }
+        .pulsing { animation: heartbeat 1.5s infinite; }
 
         /* MENSAGEM FINAL */
         #success-message {
@@ -223,7 +218,6 @@
         }
 
         .hidden { display: none !important; }
-
     </style>
 </head>
 <body>
@@ -262,52 +256,37 @@
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
-        /* SCRIPT PARA GERAR CORAÇÕES NO FUNDO */
+        /* CRIAÇÃO DOS CORAÇÕES FLUTUANTES */
         function createHearts() {
             const container = document.getElementById('heartsContainer');
-            // Vamos criar 15 corações
-            for (let i = 0; i < 15; i++) {
+            // Criar 20 corações
+            for (let i = 0; i < 20; i++) {
                 const heart = document.createElement('div');
                 heart.classList.add('heart-bubble');
                 heart.innerHTML = '❤';
-                
-                // Posição aleatória na largura (0 a 100%)
                 heart.style.left = Math.random() * 100 + '%';
-                
-                // Tamanho aleatório
-                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                
-                // Velocidade de animação aleatória
-                heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                
-                // Atraso aleatório para não subirem todos ao mesmo tempo
+                heart.style.fontSize = (Math.random() * 25 + 15) + 'px'; // Entre 15px e 40px
+                heart.style.animationDuration = (Math.random() * 5 + 6) + 's'; // Entre 6s e 11s
                 heart.style.animationDelay = (Math.random() * 5) + 's';
-
                 container.appendChild(heart);
             }
         }
-        // Inicia os corações assim que a página carrega
-        window.onload = function() {
-            createHearts();
-        };
+        // Executa imediatamente
+        createHearts();
 
-        /* DATA DE NAMORO: 20 de Abril de 2024 */
+        /* CONTADOR */
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
-
         function updateTimer() {
             const now = new Date();
             let years = now.getFullYear() - startDate.getFullYear();
             let months = now.getMonth() - startDate.getMonth();
             let days = now.getDate() - startDate.getDate();
-
             if (days < 0) { months--; const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0); days += lastMonth.getDate(); }
             if (months < 0) { years--; months += 12; }
-
             const diff = now - startDate;
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
             document.getElementById("years").innerText = years;
             document.getElementById("months").innerText = months;
             document.getElementById("days").innerText = days;
@@ -318,6 +297,7 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
+        /* LÓGICA DOS BOTÕES */
         const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
         let count = 0;
         let scale = 1;
@@ -325,13 +305,10 @@
         function reject() {
             const btn = document.getElementById('noBtn');
             const yes = document.getElementById('yesBtn');
-            
             btn.innerHTML = phrases[count % phrases.length];
             count++;
-
             yes.classList.remove('pulsing');
             scale += 0.5;
-            
             yes.style.transform = `translate(-50%, -50%) scale(${scale})`;
             yes.style.transition = "transform 0.2s ease";
         }
