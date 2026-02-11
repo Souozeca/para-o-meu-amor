@@ -2,9 +2,9 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para o meu amor ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -13,10 +13,9 @@
         body {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh;
-            /* Fundo rosa total */
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Impede scroll */
+            overflow: hidden; 
             text-align: center;
             position: relative;
         }
@@ -24,14 +23,14 @@
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
-            font-size: 2.2rem;
+            font-size: 2rem;
             margin-bottom: 15px;
             text-shadow: 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
             padding: 0 10px;
         }
 
-        /* CONTADOR */
+        /* --- CONTADOR (AGORA EM NEGRITO) --- */
         #timer-container {
             margin-bottom: 20px;
             z-index: 10;
@@ -41,9 +40,10 @@
             font-size: 1rem;
             color: #d63384;
             margin-bottom: 10px;
-            font-weight: bold;
+            font-weight: 900; /* Extra Negrito */
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
         #timer {
@@ -54,46 +54,47 @@
         }
 
         .time-box {
-            background: rgba(255, 255, 255, 0.4); 
+            background: rgba(255, 255, 255, 0.5); 
             backdrop-filter: blur(5px);
-            padding: 8px 12px;
+            padding: 8px 10px;
             border-radius: 12px;
             min-width: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid rgba(255,255,255,0.8);
         }
 
         .time-box span {
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-weight: 900; /* NÚMEROS MUITO NEGRITOS */
+            font-size: 1.4rem;
             color: #ff4757;
+            line-height: 1;
         }
 
         .time-box .label {
-            font-size: 0.6rem;
-            color: #555;
+            font-size: 0.65rem;
+            color: #d63384; /* Rosa mais escuro para contraste */
             text-transform: uppercase;
-            margin-top: 2px;
-            font-weight: 600;
+            margin-top: 4px;
+            font-weight: 800; /* TEXTO NEGRITO */
         }
 
         img {
             border-radius: 20px;
             margin-bottom: 20px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            max-width: 200px; /* Reduzi um pouco para dar espaço aos botões em ecrãs pequenos */
+            max-width: 200px;
             height: auto;
             z-index: 10;
         }
 
-        /* ÁREA DOS BOTÕES */
+        /* --- ÁREA DOS BOTÕES --- */
         .buttons-area {
             position: relative;
             width: 100%;
-            height: 150px; 
+            height: 200px; /* Altura fixa para controlar a área */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -103,11 +104,11 @@
         button {
             padding: 15px 35px;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 800; /* Botões em Negrito */
             cursor: pointer;
             border: none;
             border-radius: 50px;
-            transition: background-color 0.3s ease, transform 0.3s ease; /* Transições suaves */
+            transition: background-color 0.3s ease, transform 0.3s ease;
             outline: none;
             font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
@@ -115,7 +116,7 @@
             white-space: nowrap;
         }
 
-        /* Botão SIM (Centro) */
+        /* Botão SIM (Centro Absoluto) */
         #yesBtn {
             background-color: #ff4757;
             color: white;
@@ -125,10 +126,10 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            z-index: 50; /* Fica atrás do Não se colidirem */
+            z-index: 50; 
         }
         
-        /* Botão NÃO (Satélite) */
+        /* Botão NÃO */
         #noBtn {
             background-color: white;
             color: #ff4757;
@@ -136,9 +137,10 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) translate(0px, 80px); /* Começa por baixo */
-            z-index: 100; /* Fica sempre por cima para não desaparecer */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Começa deslocado 80px para baixo */
+            transform: translate(-50%, -50%) translate(0px, 80px); 
+            z-index: 100; 
+            transition: all 0.3s ease-out; /* Movimento rápido e suave */
         }
 
         @keyframes heartbeat {
@@ -157,17 +159,18 @@
             justify-content: center;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,230,230,0.95);
+            background: rgba(255,230,230,0.98);
             z-index: 200;
             animation: popIn 0.5s;
         }
 
         #success-message p {
-            font-size: 1.5rem;
-            color: #d63384;
-            font-weight: bold;
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: #ff4757;
+            font-weight: 900;
+            margin-bottom: 30px;
             text-align: center;
+            padding: 0 20px;
         }
 
         .gallery {
@@ -181,8 +184,8 @@
             width: 140px;
             height: 140px;
             object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 6px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             margin: 0;
             transform: none;
         }
@@ -279,51 +282,43 @@
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Crescer botão SIM
+            // 2. Crescer botão SIM (Limitado a 2.5x para não ocupar tudo)
             const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
             const currentPadV = parseFloat(window.getComputedStyle(yes).paddingTop);
             const currentPadH = parseFloat(window.getComputedStyle(yes).paddingLeft);
             
-            // Limitar o crescimento máximo para não ocupar o ecrã todo instantaneamente
-            if (currentSize < 150) { 
-                yes.style.fontSize = (currentSize * 1.2) + 'px';
+            if (currentSize < 60) { // Limite de tamanho
+                yes.style.fontSize = (currentSize * 1.15) + 'px';
                 yes.style.padding = (currentPadV * 1.1) + 'px ' + (currentPadH * 1.1) + 'px';
             }
 
-            // 3. MOVIMENTO ORBITAL SEGURO (O SEGREDO ESTÁ AQUI)
-            
-            // Dimensões do ecrã e botões
+            // 3. MOVIMENTO ORBITAL SEGURO (Barreira Invisível)
             const windowW = window.innerWidth;
             const windowH = window.innerHeight;
-            const btnW = btn.offsetWidth;
-            const btnH = btn.offsetHeight;
-            const yesW = yes.offsetWidth;
-
-            // Raio ideal: o tamanho do Sim + o tamanho do Não + margem
-            let radius = (yesW / 2) + (btnW / 2) + 30;
-
-            // CÁLCULO DE SEGURANÇA:
-            // O raio máximo permitido é a distância do centro até à borda do ecrã (menos uma margem)
-            // Se o ecrã tem 400px de largura, o centro é 200px. O raio max será ~150px.
-            const maxRadiusX = (windowW / 2) - (btnW / 2) - 20;
-            const maxRadiusY = (windowH / 2) - (btnH / 2) - 20;
             
-            // Escolhemos o menor limite para garantir que cabe
-            const maxSafeRadius = Math.min(maxRadiusX, maxRadiusY);
+            // Margem de segurança (para o botão não bater na borda do ecrã)
+            const safetyMargin = 60; 
 
-            // Se o raio ideal for maior que o ecrã permite, usamos o limite do ecrã
-            if (radius > maxSafeRadius) {
-                radius = maxSafeRadius;
+            // Cálculo do raio (Distância do centro)
+            // Tenta afastar 50px a mais que o botão SIM
+            let radius = (yes.offsetWidth / 2) + (btn.offsetWidth / 2) + 50;
+
+            // BARREIRA DE SEGURANÇA:
+            // O raio nunca pode ser maior que metade do ecrã menos a margem.
+            const maxRadius = Math.min((windowW / 2) - safetyMargin, (windowH / 2) - safetyMargin);
+
+            // Se o cálculo pedir para ir para fora, nós forçamos a ficar no limite
+            if (radius > maxRadius) {
+                radius = maxRadius;
             }
 
-            // Gerar ângulo aleatório
+            // Ângulo aleatório
             const angle = Math.random() * 2 * Math.PI;
-
-            // Calcular posição
+            
+            // Posição Final
             const x = Math.cos(angle) * radius;
             const y = Math.sin(angle) * radius;
 
-            // Aplicar
             btn.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
         }
 
