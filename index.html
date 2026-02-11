@@ -13,6 +13,7 @@
         body {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh;
+            /* Fundo Rosa Total */
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
@@ -24,15 +25,15 @@
             color: #d63384;
             font-family: 'Pacifico', cursive;
             font-size: 2rem;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
             padding: 0 10px;
         }
 
-        /* --- CONTADOR (AGORA EM NEGRITO) --- */
+        /* --- CONTADOR EM NEGRITO --- */
         #timer-container {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             z-index: 10;
         }
 
@@ -49,7 +50,7 @@
         #timer {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
         }
 
@@ -58,7 +59,7 @@
             backdrop-filter: blur(5px);
             padding: 8px 10px;
             border-radius: 12px;
-            min-width: 60px;
+            min-width: 55px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -67,25 +68,25 @@
         }
 
         .time-box span {
-            font-weight: 900; /* NÚMEROS MUITO NEGRITOS */
-            font-size: 1.4rem;
+            font-weight: 900; /* NÚMEROS EXTRA NEGRITOS */
+            font-size: 1.3rem;
             color: #ff4757;
             line-height: 1;
         }
 
         .time-box .label {
-            font-size: 0.65rem;
-            color: #d63384; /* Rosa mais escuro para contraste */
+            font-size: 0.6rem;
+            color: #d63384;
             text-transform: uppercase;
             margin-top: 4px;
-            font-weight: 800; /* TEXTO NEGRITO */
+            font-weight: 800; /* TEXTO LABEL NEGRITO */
         }
 
         img {
             border-radius: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            max-width: 200px;
+            max-width: 180px;
             height: auto;
             z-index: 10;
         }
@@ -94,7 +95,7 @@
         .buttons-area {
             position: relative;
             width: 100%;
-            height: 200px; /* Altura fixa para controlar a área */
+            height: 100px; /* Altura reduzida para manter tudo compacto */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -102,13 +103,13 @@
         }
 
         button {
-            padding: 15px 35px;
+            padding: 15px 30px;
             font-size: 18px;
-            font-weight: 800; /* Botões em Negrito */
+            font-weight: 800; /* Botões Negrito */
             cursor: pointer;
             border: none;
             border-radius: 50px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: background-color 0.2s, transform 0.2s;
             outline: none;
             font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
@@ -116,7 +117,7 @@
             white-space: nowrap;
         }
 
-        /* Botão SIM (Centro Absoluto) */
+        /* Botão SIM (Centro Fixo) */
         #yesBtn {
             background-color: #ff4757;
             color: white;
@@ -129,7 +130,7 @@
             z-index: 50; 
         }
         
-        /* Botão NÃO */
+        /* Botão NÃO (Mosca Teimosa) */
         #noBtn {
             background-color: white;
             color: #ff4757;
@@ -137,10 +138,10 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            /* Começa deslocado 80px para baixo */
-            transform: translate(-50%, -50%) translate(0px, 80px); 
-            z-index: 100; 
-            transition: all 0.3s ease-out; /* Movimento rápido e suave */
+            /* Começa ligeiramente deslocado */
+            transform: translate(-50%, -50%) translate(90px, 0px); 
+            z-index: 100; /* Fica POR CIMA do Sim para se ver sempre */
+            transition: all 0.2s ease-out; /* Movimento muito rápido */
         }
 
         @keyframes heartbeat {
@@ -282,43 +283,34 @@
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Crescer botão SIM (Limitado a 2.5x para não ocupar tudo)
+            // 2. Crescer botão SIM (Limitado)
             const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
             const currentPadV = parseFloat(window.getComputedStyle(yes).paddingTop);
             const currentPadH = parseFloat(window.getComputedStyle(yes).paddingLeft);
             
-            if (currentSize < 60) { // Limite de tamanho
-                yes.style.fontSize = (currentSize * 1.15) + 'px';
+            if (currentSize < 80) { // Cresce menos
+                yes.style.fontSize = (currentSize * 1.1) + 'px';
                 yes.style.padding = (currentPadV * 1.1) + 'px ' + (currentPadH * 1.1) + 'px';
             }
 
-            // 3. MOVIMENTO ORBITAL SEGURO (Barreira Invisível)
-            const windowW = window.innerWidth;
-            const windowH = window.innerHeight;
+            // 3. MOVIMENTO RESTRITO (AQUI ESTÁ A CORREÇÃO)
+            // Eu defino um raio FIXO e curto. Ele não depende mais do tamanho do coração.
+            // O botão vai saltar sempre dentro de um raio de 90px a 140px.
             
-            // Margem de segurança (para o botão não bater na borda do ecrã)
-            const safetyMargin = 60; 
-
-            // Cálculo do raio (Distância do centro)
-            // Tenta afastar 50px a mais que o botão SIM
-            let radius = (yes.offsetWidth / 2) + (btn.offsetWidth / 2) + 50;
-
-            // BARREIRA DE SEGURANÇA:
-            // O raio nunca pode ser maior que metade do ecrã menos a margem.
-            const maxRadius = Math.min((windowW / 2) - safetyMargin, (windowH / 2) - safetyMargin);
-
-            // Se o cálculo pedir para ir para fora, nós forçamos a ficar no limite
-            if (radius > maxRadius) {
-                radius = maxRadius;
-            }
+            const minRadius = 90;
+            const maxRadius = 140; // Máximo de distância permitida (mantém no centro)
+            
+            // Gera um raio aleatório entre 90 e 140
+            const randomRadius = Math.floor(Math.random() * (maxRadius - minRadius + 1) + minRadius);
 
             // Ângulo aleatório
             const angle = Math.random() * 2 * Math.PI;
             
             // Posição Final
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
+            const x = Math.cos(angle) * randomRadius;
+            const y = Math.sin(angle) * randomRadius;
 
+            // Aplica a transformação
             btn.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
         }
 
