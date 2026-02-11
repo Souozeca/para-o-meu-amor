@@ -18,7 +18,7 @@
             overflow: hidden; text-align: center;
         }
 
-        /* Cartão centralizado */
+        /* O Cartão Branco */
         .card {
             background: rgba(255, 255, 255, 0.90);
             padding: 30px;
@@ -30,18 +30,18 @@
             transition: transform 0.3s;
             z-index: 10;
             max-height: 90vh;
-            overflow-y: auto;
+            overflow-y: auto; /* Permite scroll se o ecrã for muito pequeno */
         }
 
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
             font-size: 2rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             line-height: 1.2;
         }
 
-        /* ESTILO DO CONTADOR DE TEMPO */
+        /* ESTILO DO CONTADOR (Caixinhas brancas) */
         #timer-container {
             background: #fff0f3;
             border-radius: 15px;
@@ -53,7 +53,7 @@
         #timer-title {
             font-size: 0.9rem;
             color: #d63384;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -68,7 +68,7 @@
 
         .time-box {
             background: white;
-            padding: 5px 8px;
+            padding: 5px 10px;
             border-radius: 8px;
             min-width: 55px;
             display: flex;
@@ -98,6 +98,7 @@
             height: auto;
         }
 
+        /* BOTÕES */
         .buttons {
             margin-top: 20px;
             display: flex;
@@ -107,7 +108,6 @@
             flex-wrap: wrap;
         }
 
-        /* ESTILOS DOS BOTÕES (TEXTO) */
         button {
             padding: 12px 30px;
             font-size: 18px;
@@ -122,17 +122,17 @@
             letter-spacing: 1px;
         }
 
+        /* Botão SIM (Vermelho/Rosa) */
         #yesBtn {
             background-color: #ff4757;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
             z-index: 20;
-            /* Animação de pulsar suave */
             animation: heartbeat 1.5s infinite;
         }
-        
         #yesBtn:hover { transform: scale(1.05); background-color: #ff6b81; }
 
+        /* Botão NÃO (Cinzento Claro) */
         #noBtn {
             background-color: #f1f2f6;
             color: #2f3542;
@@ -148,6 +148,7 @@
             60% { transform: scale(1); }
         }
 
+        /* Mensagem Final */
         #success-message {
             display: none;
             flex-direction: column;
@@ -215,13 +216,15 @@
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
-        /* DATA CONFIGURADA PARA: 20 de Abril de 2024 */
+        /* DATA DE NAMORO: 20 de Abril de 2024 
+           (Ano 2024, Mês 3=Abril, Dia 20)
+        */
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
 
         function updateTimer() {
             const now = new Date();
 
-            // LÓGICA DO CONTADOR CORRIGIDA
+            // Lógica exata de calendário
             let years = now.getFullYear() - startDate.getFullYear();
             let months = now.getMonth() - startDate.getMonth();
             let days = now.getDate() - startDate.getDate();
@@ -257,7 +260,7 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        // Lógica dos Botões (Texto em vez de emojis)
+        // Lógica dos Botões (Texto muda, botão NÃO não foge, botão SIM cresce)
         const phrases = ["Tens a certeza?", "Pensa bem...", "Olha o erro!", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Partiste-me o coração 💔", "Vou chorar..."];
         let count = 0;
 
