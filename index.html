@@ -27,7 +27,6 @@
             margin-bottom: 20px;
             text-shadow: 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
-            padding: 0 10px;
         }
 
         /* --- CONTADOR --- */
@@ -40,7 +39,7 @@
             font-size: 1.2rem;
             color: #d63384;
             margin-bottom: 15px;
-            font-weight: 900;
+            font-weight: 900; /* NEGRITO */
             text-transform: uppercase;
             letter-spacing: 2px;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
@@ -66,7 +65,7 @@
         }
 
         .time-box span {
-            font-weight: 900;
+            font-weight: 900; /* NEGRITO */
             font-size: 1.5rem;
             color: #ff4757;
             line-height: 1;
@@ -77,7 +76,7 @@
             color: #d63384;
             text-transform: uppercase;
             margin-top: 5px;
-            font-weight: 800;
+            font-weight: 800; /* NEGRITO */
         }
 
         img {
@@ -100,11 +99,11 @@
         button {
             padding: 15px 40px;
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 800; /* NEGRITO */
             cursor: pointer;
             border: none;
             border-radius: 50px;
-            transition: all 0.1s ease; /* Transição rápida para crescer suave */
+            transition: all 0.2s ease;
             outline: none;
             font-family: 'Poppins', sans-serif;
             text-transform: uppercase;
@@ -112,35 +111,37 @@
             white-space: nowrap;
         }
 
-        /* Botão SIM (O CENTRO DO MUNDO) */
+        /* Botão SIM */
         #yesBtn {
             background-color: #ff4757;
             color: white;
             box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5);
             animation: heartbeat 1.5s infinite;
             
-            /* ÂNCORA DE CENTRO ABSOLUTO */
+            /* POSICIONAMENTO PELO CENTRO */
             position: absolute;
-            left: 50%;
             top: 50%;
-            /* Isto garante que o centro do botão é o centro da área */
+            /* Fica no centro do ecrã MENOS 85px (para a esquerda) */
+            left: calc(50% - 85px); 
+            /* Ancora o centro do botão a esse ponto */
             transform: translate(-50%, -50%); 
             z-index: 20;
         }
         
-        /* Botão NÃO (Fixo à direita) */
+        /* Botão NÃO */
         #noBtn {
             background-color: white;
             color: #ff4757;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             
-            /* Posição fixa relativa ao centro */
+            /* POSICIONAMENTO PELO CENTRO */
             position: absolute;
-            left: 50%;
             top: 50%;
-            /* Empurra 110px para a direita a partir do centro */
-            transform: translate(-50%, -50%) translate(130px, 0); 
-            z-index: 30; /* Fica por cima inicialmente */
+            /* Fica no centro do ecrã MAIS 85px (para a direita) */
+            left: calc(50% + 85px);
+            /* Ancora o centro do botão a esse ponto */
+            transform: translate(-50%, -50%);
+            z-index: 30;
         }
 
         @keyframes heartbeat {
@@ -282,7 +283,7 @@
             btn.innerHTML = phrases[count % phrases.length];
             count++;
 
-            // 2. Cresce SIM (A partir do centro)
+            // 2. Cresce SIM (CENTRALIZADO)
             const currentSize = parseFloat(window.getComputedStyle(yes).fontSize);
             const currentPadV = parseFloat(window.getComputedStyle(yes).paddingTop);
             const currentPadH = parseFloat(window.getComputedStyle(yes).paddingLeft);
@@ -292,4 +293,23 @@
         }
 
         function accepted() {
-            document.getElementById
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('success-message').style.display = 'flex';
+            document.getElementById('musica').play();
+            launchConfetti();
+        }
+
+        function launchConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
