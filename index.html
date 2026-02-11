@@ -12,14 +12,92 @@
         
         body {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; /* Centrado para o envelope */
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
             background: linear-gradient(135deg, #ffe6e6 0%, #ffc0cb 100%);
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
             text-align: center;
+            padding-top: 20px;
         }
 
-        /* --- CORAÇÕES DE FUNDO --- */
+        /* --- 1. ECRÃ INICIAL (ENVELOPE) --- */
+        /* Este ecrã tapa tudo até ser clicado */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            z-index: 9999; /* Fica por cima de TUDO */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.8s ease-in-out, opacity 0.8s;
+        }
+
+        /* O Envelope */
+        .envelope-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #ff3838;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Aba triangular (Parte de cima) */
+        .flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 110px solid #ff5e57; /* Cor da aba */
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 10;
+        }
+
+        /* Frente do envelope */
+        .pocket {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-bottom: 190px solid #ff4d4d;
+            z-index: 5;
+        }
+
+        /* Selo */
+        .seal {
+            position: absolute;
+            top: 70px;
+            z-index: 15;
+            font-size: 40px;
+            animation: pulse 1s infinite;
+        }
+
+        .click-text {
+            margin-top: 50px;
+            font-family: 'Pacifico', cursive;
+            color: white;
+            font-size: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            animation: bounce 2s infinite;
+        }
+
+        /* Animação ao abrir */
+        .open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        .open .seal { opacity: 0; }
+
+        /* --- 2. FUNDO (CORAÇÕES) --- */
         .bg-hearts {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -32,134 +110,27 @@
             position: absolute;
             bottom: -10%;
             color: #d63384; 
-            opacity: 0.3; 
+            opacity: 0.4; 
             animation: floatUp linear infinite;
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* --- ECRÃ DO ENVELOPE (INITIAL) --- */
-        #envelope-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000; /* Fica por cima de tudo */
-            background: rgba(255, 230, 230, 0.4); /* Fundo ligeiramente visível */
-            backdrop-filter: blur(5px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        /* O Envelope em si */
-        .envelope-wrapper {
-            position: relative;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .envelope-wrapper:hover { transform: scale(1.05); }
-
-        .envelope {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            background-color: #ff4757; /* Cor base */
-            border-radius: 10px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Esconde o que sai fora */
-        }
-        
-        /* A aba de cima (Triângulo) */
-        .flap {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 110px solid #ff6b81; /* Cor mais clara */
-            transform-origin: top;
-            transition: transform 0.6s ease-in-out;
-            z-index: 5;
-        }
-        
-        /* O "bolso" da frente */
-        .pocket {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 190px solid #e84118; /* Cor mais escura para contraste */
-            z-index: 4;
-        }
-
-        /* Selo de Coração */
-        .heart-seal {
-            position: absolute;
-            top: 80px; /* Posição do selo */
-            width: 50px;
-            height: 50px;
-            background-color: gold;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 6;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            font-size: 28px;
-            animation: pulse 1.5s infinite;
-            transition: opacity 0.4s;
-        }
-
-        /* Texto "Para ti" */
-        .tap-text {
-            margin-top: 30px;
-            font-family: 'Pacifico', cursive;
-            font-size: 1.5rem;
-            color: #d63384;
-            animation: bounce 2s infinite;
-        }
-
-        /* Animação de Abrir */
-        .open-envelope .flap {
-            transform: rotateX(180deg);
-            z-index: 1; /* Vai para trás */
-        }
-        .open-envelope .heart-seal {
-            opacity: 0;
-        }
-
-        /* --- CONTEÚDO PRINCIPAL (Começa escondido) --- */
+        /* --- 3. CONTEÚDO PRINCIPAL (Começa escondido) --- */
         #main-content {
-            opacity: 0; /* Invisível inicialmente */
-            transform: scale(0.9);
-            transition: opacity 1s ease, transform 1s ease;
-            
-            /* Layout normal */
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding-top: 20px;
+            opacity: 0; /* Invisível */
+            transform: scale(0.8);
+            transition: all 1s ease;
+            width: 100%; height: 100%;
             z-index: 10;
+            position: relative;
         }
-        
+
         /* Classe para mostrar o conteúdo */
-        .show-content {
+        .visible {
             opacity: 1 !important;
             transform: scale(1) !important;
         }
 
+        /* Elementos do Site Principal */
         h1 {
             color: #d63384;
             font-family: 'Pacifico', cursive;
@@ -167,105 +138,42 @@
             margin-bottom: 5px;
             text-shadow: 0 2px 4px rgba(255,255,255,0.5);
             z-index: 10;
-            padding: 0 10px;
             margin-top: 10px;
         }
 
-        /* --- CONTADOR --- */
+        /* Contador */
         #timer-container { margin-bottom: 15px; }
-        #timer-title {
-            font-size: 0.9rem;
-            color: #d63384;
-            margin-bottom: 5px;
-            font-weight: 900; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+        #timer-title { font-size: 0.9rem; color: #d63384; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
         #timer { display: flex; justify-content: center; gap: 6px; }
-        .time-box {
-            background: rgba(255, 255, 255, 0.6); 
-            backdrop-filter: blur(5px);
-            padding: 8px 10px;
-            border-radius: 12px;
-            min-width: 55px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.8);
-        }
+        .time-box { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px); padding: 8px 10px; border-radius: 12px; min-width: 55px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); }
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
 
-        img {
-            border-radius: 20px;
-            margin-bottom: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            max-width: 180px;
-            height: auto;
-        }
+        img { border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
 
-        /* --- BOTÕES --- */
-        button {
-            padding: 15px 40px;
-            font-size: 20px;
-            font-weight: 800;
-            cursor: pointer;
-            border: none;
-            border-radius: 50px;
-            outline: none;
-            font-family: 'Poppins', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            transition: background-color 0.3s; 
-        }
+        /* Botões */
+        button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s; }
 
-        #yesBtn {
-            background-color: #ff4757;
-            color: white;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5);
-            position: absolute;
-            top: 55%; 
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1); 
-            z-index: 50; 
-        }
+        #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(1); z-index: 50; }
+        #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 40; }
+
+        /* Animações */
+        @keyframes heartbeat { 0% { transform: translate(-50%, -50%) scale(1); } 15% { transform: translate(-50%, -50%) scale(1.05); } 30% { transform: translate(-50%, -50%) scale(1); } 45% { transform: translate(-50%, -50%) scale(1.05); } 60% { transform: translate(-50%, -50%) scale(1); } }
+        .pulsing { animation: heartbeat 1.5s infinite; }
         
-        #noBtn {
-            background-color: white;
-            color: #ff4757;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            position: absolute;
-            top: 75%; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 40;
-        }
-
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-        
-        .pulsing { animation: pulse 1.5s infinite; }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-        /* MENSAGEM FINAL */
-        #success-message {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255,230,230,0.98);
-            z-index: 200;
-            animation: popIn 0.5s;
-        }
+        /* Mensagem Final */
+        #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 40px; text-align: center; padding: 0 20px; }
         .gallery { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
         .gallery img { width: 160px; height: 160px; object-fit: cover; border: 6px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); margin: 0; transform: none; }
         .gallery img:nth-child(1) { transform: rotate(-6deg); }
         .gallery img:nth-child(2) { transform: rotate(6deg); }
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -273,15 +181,13 @@
 
     <div class="bg-hearts" id="heartsContainer"></div>
 
-    <div id="envelope-screen" onclick="openLetter()">
-        <div class="envelope-wrapper" id="envelope">
-            <div class="envelope">
-                <div class="pocket"></div>
-                <div class="flap"></div>
-                <div class="heart-seal">❤️</div>
-            </div>
+    <div id="intro-screen" onclick="openEnvelope()">
+        <div class="envelope-container" id="envelope">
+            <div class="flap"></div>
+            <div class="pocket"></div>
+            <div class="seal">❤️</div>
         </div>
-        <div class="tap-text">Uma carta para ti... (Clica)</div>
+        <div class="click-text">Uma carta para ti... (Clica)</div>
     </div>
 
     <div id="main-content">
@@ -316,7 +222,31 @@
     <audio id="musica" src="https://www.myinstants.com/media/sounds/careless-whisper-chorus.mp3"></audio>
 
     <script>
-        // CRIA CORAÇÕES DE FUNDO
+        // --- FUNÇÃO PARA ABRIR O ENVELOPE ---
+        function openEnvelope() {
+            // 1. Tocar Música
+            var audio = document.getElementById('musica');
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Erro áudio: ", e));
+
+            // 2. Animar Envelope
+            document.getElementById('envelope').classList.add('open');
+
+            // 3. Esconder Envelope e Mostrar Site (após 0.8s)
+            setTimeout(() => {
+                document.getElementById('intro-screen').style.opacity = '0';
+                
+                // Remove o ecrã da frente para poder clicar nos botões
+                setTimeout(() => {
+                    document.getElementById('intro-screen').style.display = 'none';
+                }, 800);
+
+                // Mostra o conteúdo
+                document.getElementById('main-content').classList.add('visible');
+            }, 800);
+        }
+
+        // --- CORAÇÕES ---
         function createHearts() {
             const container = document.getElementById('heartsContainer');
             for (let i = 0; i < 20; i++) {
@@ -332,27 +262,7 @@
         }
         createHearts();
 
-        // LÓGICA DO ENVELOPE
-        function openLetter() {
-            // 1. Tocar música (permitido porque houve clique)
-            var audio = document.getElementById('musica');
-            audio.volume = 0.5; // Começa suave
-            audio.play().catch(e => console.log("Audio play failed asking for interaction"));
-
-            // 2. Animar envelope
-            document.getElementById('envelope').classList.add('open-envelope');
-            
-            // 3. Esconder envelope e mostrar site
-            setTimeout(() => {
-                document.getElementById('envelope-screen').style.opacity = '0';
-                document.getElementById('envelope-screen').style.pointerEvents = 'none'; // Deixa de ser clicável
-                
-                // Mostrar conteúdo principal
-                document.getElementById('main-content').classList.add('show-content');
-            }, 800); // Espera 0.8s pela animação da aba
-        }
-
-        /* CONTADOR */
+        // --- CONTADOR ---
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
         function updateTimer() {
             const now = new Date();
@@ -375,7 +285,7 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        /* BOTÕES */
+        // --- BOTÕES ---
         const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
         let count = 0;
         let scale = 1;
