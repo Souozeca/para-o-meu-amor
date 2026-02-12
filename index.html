@@ -153,7 +153,10 @@
             width: 100% !important; /* Forçar largura total */
             height: 100% !important; /* Forçar altura total */
             object-fit: cover; /* Corta o excesso para não esticar */
-            opacity: 0; transition: opacity 1.5s ease-in-out; 
+            
+            /* MUDANÇA AQUI: Transição mais lenta (2.5s) */
+            opacity: 0; transition: opacity 2.5s ease-in-out; 
+            
             max-width: none !important; /* ANULA A REGRA DOS 180PX */
             border-radius: 0 !important;
             margin: 0 !important;
@@ -309,15 +312,16 @@
             startSlideshow(); 
         }
 
-        // --- SLIDESHOW (5 FOTOS) ---
+        // --- SLIDESHOW (5 FOTOS - MAIS LENTO) ---
         function startSlideshow() {
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
+            // MUDANÇA AQUI: Intervalo aumentado para 6000ms (6 segundos)
             setInterval(() => {
                 slides[currentSlide].classList.remove('active');
                 currentSlide = (currentSlide + 1) % slides.length;
                 slides[currentSlide].classList.add('active');
-            }, 3000);
+            }, 6000);
         }
 
         // --- PÉTALAS REAIS ---
