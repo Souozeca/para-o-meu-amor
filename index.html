@@ -36,10 +36,13 @@
             100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
         }
 
-        /* --- 1. ECRÃ DO ENVELOPE --- */
+        /* --- 1. ECRÃ DO ENVELOPE (CORRIGIDO AQUI) --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(40, 0, 0, 0.6); backdrop-filter: blur(4px);
+            /* MUDANÇA: Opacidade baixou de 0.6 para 0.2 (Muito mais claro) */
+            background: rgba(40, 0, 0, 0.2); 
+            /* MUDANÇA: Menos desfocado para veres melhor o fundo */
+            backdrop-filter: blur(2px);
             z-index: 9990; display: flex; flex-direction: column;
             justify-content: center; align-items: center; transition: opacity 1.5s ease;
         }
