@@ -47,7 +47,7 @@
             position: relative;
             width: 320px;
             height: 220px;
-            background: #750000; /* Vermelho Bordeaux */
+            background: #750000; /* Bordeaux Luxuoso */
             border-radius: 4px;
             display: flex;
             justify-content: center;
@@ -161,25 +161,32 @@
         /* Resto */
         .bg-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
         .heart-bubble { position: absolute; bottom: -10%; color: #d63384; opacity: 0.4; animation: floatUp linear infinite; }
+        
         #main-content { opacity: 0; transform: scale(0.9); transition: all 1s ease; width: 100%; height: 100%; z-index: 10; position: relative; }
         .visible { opacity: 1 !important; transform: scale(1) !important; }
+        
         h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 10px; }
+        
         #timer-container { margin-bottom: 15px; }
         #timer-title { font-size: 0.9rem; color: #d63384; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
         #timer { display: flex; justify-content: center; gap: 6px; }
         .time-box { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px); padding: 8px 10px; border-radius: 12px; min-width: 55px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); }
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
+        
         img { border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
+        
         button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s; }
         #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(1); z-index: 50; }
         #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 40; }
+        
         @keyframes heartbeat { 0% { transform: translate(-50%, -50%) scale(1); } 15% { transform: translate(-50%, -50%) scale(1.05); } 30% { transform: translate(-50%, -50%) scale(1); } 45% { transform: translate(-50%, -50%) scale(1.05); } 60% { transform: translate(-50%, -50%) scale(1); } }
         .pulsing { animation: heartbeat 1.5s infinite; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        
         #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 40px; text-align: center; padding: 0 20px; }
         .gallery { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
@@ -328,19 +335,40 @@
         function accepted() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('success-message').style.display = 'flex';
-            launchConfetti();
+            launchPetals(); // Chama a nova função das pétalas
         }
 
-        function launchConfetti() {
-            var duration = 3 * 1000;
+        // --- FUNÇÃO CHUVA DE PÉTALAS ---
+        function launchPetals() {
+            var duration = 5 * 1000;
             var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-            var interval = setInterval(function() {
+            var skew = 1;
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            (function frame() {
                 var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-            }, 250);
+                var ticks = Math.max(200, 500 * (timeLeft / duration));
+                skew = Math.max(0.8, skew - 0.001);
+
+                if (timeLeft > 0) {
+                    confetti({
+                        particleCount: 5,
+                        startVelocity: 0,
+                        ticks: ticks,
+                        origin: {
+                            x: Math.random(),
+                            y: (Math.random() * skew) - 0.2
+                        },
+                        colors: ['#ff0000', '#800000', '#990000', '#ff4d4d'], // Vermelhos
+                        shapes: ['circle'],
+                        gravity: randomInRange(0.4, 0.6),
+                        scalar: randomInRange(0.8, 1.4),
+                        drift: randomInRange(-0.4, 0.4)
+                    });
+                    requestAnimationFrame(frame);
+                }
+            }());
         }
     </script>
 </body>
