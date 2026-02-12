@@ -21,138 +21,102 @@
             padding-top: 20px;
         }
 
+        /* --- PÉTALAS REAIS (NOVO CSS) --- */
+        .rose-petal {
+            position: fixed;
+            top: -50px;
+            z-index: 9999; /* Fica à frente de tudo */
+            background: #d32f2f;
+            /* Forma de Pétala (Curva) */
+            border-radius: 5px 100% 5px 100%;
+            opacity: 0.9;
+            box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            25% { transform: translateY(25vh) rotate(45deg) translateX(20px); }
+            50% { transform: translateY(50vh) rotate(90deg) translateX(-20px); }
+            75% { transform: translateY(75vh) rotate(180deg) translateX(20px); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
+        }
+
         /* --- 1. ECRÃ DO ENVELOPE --- */
         #intro-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(40, 0, 0, 0.6); 
             backdrop-filter: blur(4px);
-            z-index: 9999; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            z-index: 9990; 
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             transition: opacity 1.5s ease;
         }
 
         .envelope-wrapper {
-            position: relative;
-            cursor: pointer;
+            position: relative; cursor: pointer;
             transition: transform 0.3s ease;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
         }
         .envelope-wrapper:hover { transform: scale(1.02); }
 
         .envelope {
-            position: relative;
-            width: 320px;
-            height: 220px;
-            background: #750000; 
-            border-radius: 4px;
-            display: flex;
-            justify-content: center;
-            z-index: 10;
+            position: relative; width: 320px; height: 220px;
+            background: #750000; border-radius: 4px;
+            display: flex; justify-content: center; z-index: 10;
         }
 
         /* --- CARTA --- */
         .letter {
-            position: absolute;
-            bottom: 0;
-            width: 290px;
-            height: 200px;
-            background: #fff;
-            border-radius: 2px;
-            z-index: 5;
-            /* Sobe muito devagar (3.5s) */
+            position: absolute; bottom: 0; width: 290px; height: 200px;
+            background: #fff; border-radius: 2px; z-index: 5;
             transition: transform 3.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            overflow: hidden; 
-            padding: 8px; 
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; padding: 8px; 
         }
 
-        .letter img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 2px;
-            display: block;
-        }
+        .letter img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; display: block; }
 
         /* ABA */
         .flap {
-            position: absolute;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-top: 130px solid #8a0b0b; 
-            transform-origin: top;
-            /* Abre devagar (2s) */
+            position: absolute; top: 0; left: 0; width: 0; height: 0;
+            border-left: 160px solid transparent; border-right: 160px solid transparent;
+            border-top: 130px solid #8a0b0b; transform-origin: top;
             transition: transform 2s ease-in-out, z-index 2s;
-            z-index: 20;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
+            z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
         }
 
         /* BOLSO */
         .pocket {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 0;
-            border-left: 160px solid transparent;
-            border-right: 160px solid transparent;
-            border-bottom: 220px solid #800000;
-            z-index: 15;
+            position: absolute; bottom: 0; left: 0; width: 0; height: 0;
+            border-left: 160px solid transparent; border-right: 160px solid transparent;
+            border-bottom: 220px solid #800000; z-index: 15;
         }
 
         /* SELO */
         .seal {
-            position: absolute;
-            top: 95px;
-            z-index: 25;
-            width: 50px;
-            height: 50px;
+            position: absolute; top: 95px; z-index: 25; width: 50px; height: 50px;
             background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
-            border-radius: 50%;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #5c4010; 
-            border: 2px solid #daa520;
+            border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; color: #5c4010; border: 2px solid #daa520;
             animation: pulse 2s infinite;
         }
 
         /* ETIQUETA */
         .label-sticker {
-            position: absolute;
-            bottom: 30px;
-            z-index: 30; 
-            background: #fff;
-            width: 110%; 
-            left: -5%;   
-            padding: 10px 0;
-            text-align: center;
-            transform: rotate(-3deg); 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
-            color: #333;
-            border: 1px solid #ddd; 
+            position: absolute; bottom: 30px; z-index: 30; background: #fff;
+            width: 110%; left: -5%; padding: 10px 0; text-align: center;
+            transform: rotate(-3deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-family: 'Dancing Script', cursive; font-size: 1.5rem;
+            color: #333; border: 1px solid #ddd; 
         }
 
         .click-text {
-            margin-top: 70px;
-            font-family: 'Poppins', sans-serif;
-            color: white;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            animation: bounce 2s infinite;
-            opacity: 0.9;
+            margin-top: 70px; font-family: 'Poppins', sans-serif;
+            color: white; font-size: 1.1rem; text-transform: uppercase;
+            letter-spacing: 3px; animation: bounce 2s infinite; opacity: 0.9;
         }
 
         /* Animações */
@@ -201,7 +165,7 @@
         <div class="envelope-wrapper">
             <div class="envelope">
                 <div class="letter">
-                    <img src="foto.jpg" alt="Nós">
+                    <img src="foto.jpg" alt="Nós" onerror="this.src='https://placehold.co/600x400?text=Foto+Aqui'">
                 </div>
                 
                 <div class="pocket"></div>
@@ -266,10 +230,8 @@
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             
-            // Espera 1.2s antes da carta começar a subir
             setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
 
-            // Espera 6 segundos antes de mudar de ecrã
             setTimeout(() => {
                 screen.classList.add('fade-out');
                 setTimeout(() => screen.style.display = 'none', 1000);
@@ -332,41 +294,46 @@
         function accepted() {
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('success-message').style.display = 'flex';
-            launchPetals(); // PÉTALAS AQUI
+            
+            // CHAMA A FUNÇÃO NOVA DAS PÉTALAS
+            spawnRealPetals(); 
         }
 
-        // --- FUNÇÃO PÉTALAS (POUCAS E GRANDES) ---
-        function launchPetals() {
-            var duration = 5 * 1000;
-            var animationEnd = Date.now() + duration;
-            var skew = 1;
+        // --- SISTEMA DE PÉTALAS REAIS (CSS) ---
+        function spawnRealPetals() {
+            // Cria 30 pétalas com tempos diferentes
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    createOnePetal();
+                }, i * 200); // Uma pétala a cada 200ms
+            }
+        }
 
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+        function createOnePetal() {
+            const petal = document.createElement('div');
+            petal.classList.add('rose-petal');
+            
+            // Posição aleatória na largura do ecrã
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // Tamanho aleatório (Grandes e visíveis)
+            const size = Math.random() * 15 + 20; // Entre 20px e 35px
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+            
+            // Cores aleatórias (Vermelho, Bordeaux, Carmesim)
+            const colors = ['#800000', '#b71c1c', '#d32f2f', '#c62828'];
+            petal.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Duração da queda aleatória (entre 4s e 7s)
+            petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            
+            document.body.appendChild(petal);
 
-            (function frame() {
-                var timeLeft = animationEnd - Date.now();
-                var ticks = Math.max(200, 500 * (timeLeft / duration));
-                skew = Math.max(0.8, skew - 0.001);
-
-                if (timeLeft > 0) {
-                    confetti({
-                        particleCount: 2, // MUDANÇA: Só 2 de cada vez (muito poucas)
-                        startVelocity: 0,
-                        ticks: ticks,
-                        origin: {
-                            x: Math.random(),
-                            y: (Math.random() * skew) - 0.2
-                        },
-                        colors: ['#ff0000', '#800000', '#990000', '#ff4d4d'],
-                        shapes: ['circle'],
-                        gravity: randomInRange(0.3, 0.5), // MUDANÇA: Caem mais devagar
-                        scalar: randomInRange(2.5, 4), // MUDANÇA: Muito maiores!
-                        drift: randomInRange(-0.4, 0.4),
-                        zIndex: 9999
-                    });
-                    requestAnimationFrame(frame);
-                }
-            }());
+            // Remove a pétala do HTML depois de cair para não pesar
+            setTimeout(() => {
+                petal.remove();
+            }, 7000);
         }
     </script>
 </body>
