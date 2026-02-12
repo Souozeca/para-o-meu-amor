@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Para o meu amor ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -20,7 +20,7 @@
             padding-top: 20px;
         }
 
-        /* --- 1. ECRÃ DO ENVELOPE (PREMIUM) --- */
+        /* --- 1. ECRÃ DO ENVELOPE (PREMIUM 3D) --- */
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -36,17 +36,17 @@
         .envelope-wrapper {
             position: relative;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
-        .envelope-wrapper:hover { transform: scale(1.02); }
+        .envelope-wrapper:hover { transform: scale(1.05) rotate(1deg); }
 
         .envelope {
             position: relative;
-            width: 300px;
-            height: 200px;
-            background: #ff3838;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 320px;
+            height: 220px;
+            background: #e63946;
+            border-radius: 5px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
             display: flex;
             justify-content: center;
             z-index: 10;
@@ -56,68 +56,98 @@
         .letter {
             position: absolute;
             bottom: 0;
-            width: 260px;
-            height: 160px;
-            background: white;
+            width: 280px;
+            height: 180px;
+            background: #fffdf0; /* Cor creme/papel */
             border-radius: 5px;
             z-index: 5;
-            transition: transform 0.6s ease-in-out;
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Pacifico', cursive;
+            font-family: 'Dancing Script', cursive;
             color: #d63384;
-            font-size: 1.4rem;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            font-size: 1.8rem;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
         }
 
-        /* Aba triangular (Topo) */
+        /* Aba triangular (Topo) - Com gradiente para 3D */
         .flap {
             position: absolute;
             top: 0; left: 0;
             width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-top: 110px solid #ff5e57;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 130px solid #ff5e57; 
             transform-origin: top;
             transition: transform 0.6s ease-in-out, z-index 0.6s;
             z-index: 20;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));
         }
 
-        /* Bolso da Frente */
+        /* Bolso da Frente - Com gradiente para profundidade */
         .pocket {
             position: absolute;
             bottom: 0; left: 0;
             width: 0; height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
-            border-bottom: 200px solid #ff4d4d;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-bottom: 210px solid #ff3f34; 
             z-index: 15;
+            filter: drop-shadow(0 -2px 5px rgba(0,0,0,0.1));
         }
 
-        /* Selo */
+        /* SELO DE CERA DOURADO (PREMIUM) */
         .seal {
             position: absolute;
-            top: 75px;
+            top: 85px;
             z-index: 25;
-            font-size: 40px;
-            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));
-            animation: pulse 1.5s infinite;
-            transition: opacity 0.4s;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #daa520, #b8860b);
+            border-radius: 50%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 2px 5px rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #8b6914; /* Cor do coração gravado */
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+            animation: pulse 2s infinite ease-in-out;
+            border: 2px solid #b8860b;
+        }
+
+        /* Texto na frente do envelope */
+        .envelope-text {
+            position: absolute;
+            bottom: 20px;
+            z-index: 30;
+            color: white;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            opacity: 0.9;
+            pointer-events: none;
         }
 
         .click-text {
             margin-top: 60px;
-            font-family: 'Pacifico', cursive;
-            color: white;
-            font-size: 1.4rem;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #d63384;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             animation: bounce 2s infinite;
+            background: rgba(255,255,255,0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
         }
 
         /* Animações do Envelope */
         .open-flap { transform: rotateX(180deg); z-index: 1 !important; }
-        .slide-letter { transform: translateY(-100px); z-index: 30 !important; }
+        .slide-letter { transform: translateY(-120px); z-index: 30 !important; }
         .fade-out { opacity: 0; pointer-events: none; }
 
         /* --- 2. FUNDO E ELEMENTOS --- */
@@ -155,8 +185,8 @@
         @keyframes heartbeat { 0% { transform: translate(-50%, -50%) scale(1); } 15% { transform: translate(-50%, -50%) scale(1.05); } 30% { transform: translate(-50%, -50%) scale(1); } 45% { transform: translate(-50%, -50%) scale(1.05); } 60% { transform: translate(-50%, -50%) scale(1); } }
         .pulsing { animation: heartbeat 1.5s infinite; }
         @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
         #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
@@ -180,13 +210,14 @@
     <div id="intro-screen" onclick="openEnvelope()">
         <div class="envelope-wrapper">
             <div class="envelope">
-                <div class="letter">Para Ti... ❤️</div> 
+                <div class="letter">Abre-me... ❤️</div> 
                 <div class="pocket"></div>
+                <div class="envelope-text">Para o Amor da Minha Vida</div>
                 <div class="flap" id="flap"></div>
-                <div class="seal" id="seal">❤️</div>
+                <div class="seal" id="seal">♥</div>
             </div>
         </div>
-        <div class="click-text">Clica para abrir</div>
+        <div class="click-text">Toca para abrir</div>
     </div>
 
     <div id="main-content">
@@ -225,12 +256,12 @@
             player = new YT.Player('player', {
                 height: '0',
                 width: '0',
-                videoId: 'TKB7pZO3okM', // ID DA MÚSICA (Die With A Smile)
+                videoId: 'TKB7pZO3okM', // Lady Gaga & Bruno Mars
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
                     'loop': 1,
-                    'playlist': 'TKB7pZO3okM' // Necessário para loop funcionar
+                    'playlist': 'TKB7pZO3okM' 
                 },
                 events: {
                     'onReady': onPlayerReady
@@ -239,7 +270,7 @@
         }
 
         function onPlayerReady(event) {
-            event.target.setVolume(50); // Volume a 50%
+            event.target.setVolume(70); // Volume
         }
 
         // Carregar a API do YouTube
@@ -261,19 +292,21 @@
                 player.playVideo();
             }
 
-            // Animação
+            // Animação: Abrir e Sair Selo
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
-
+            
+            // Carta sobe
             setTimeout(() => {
                 letter.classList.add('slide-letter');
             }, 400);
 
+            // Tudo desaparece e entra o site
             setTimeout(() => {
                 screen.classList.add('fade-out');
                 setTimeout(() => screen.style.display = 'none', 1000);
                 document.getElementById('main-content').classList.add('visible');
-            }, 1200);
+            }, 1500); // Demora um pouco mais para apreciar a carta
         }
 
         // --- 3. ELEMENTOS VISUAIS ---
