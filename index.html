@@ -21,7 +21,7 @@
             padding-top: 20px;
         }
 
-        /* --- PÉTALAS REAIS --- */
+        /* --- PÉTALAS REAIS (CSS PURO) --- */
         .rose-petal {
             position: fixed; top: -50px; z-index: 9999;
             background: #d32f2f; border-radius: 5px 100% 5px 100%;
@@ -56,6 +56,7 @@
         .letter {
             position: absolute; bottom: 0; width: 290px; height: 200px;
             background: #fff; border-radius: 2px; z-index: 5;
+            /* Sobe devagar (3.5s) */
             transition: transform 3.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; padding: 8px; 
@@ -65,6 +66,7 @@
             position: absolute; top: 0; left: 0; width: 0; height: 0;
             border-left: 160px solid transparent; border-right: 160px solid transparent;
             border-top: 130px solid #8a0b0b; transform-origin: top;
+            /* Abre devagar (2s) */
             transition: transform 2s ease-in-out, z-index 2s;
             z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
         }
@@ -120,7 +122,7 @@
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* --- ESTILOS DO ECRÃ FINAL & SLIDESHOW --- */
+        /* --- ESTILOS DO SLIDESHOW --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -128,33 +130,24 @@
         }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; }
         
-        /* Container do Slideshow */
         #slideshow-container {
             position: relative;
             width: 80%;
             max-width: 320px;
-            height: 420px; /* Altura para fotos verticais */
+            height: 420px; 
             border: 8px solid white;
             border-radius: 10px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
             overflow: hidden;
             background: #fff;
-            transform: rotate(-2deg); /* Ligeiramente inclinado */
+            transform: rotate(-2deg); 
         }
         
-        /* As imagens do slide */
         .slide {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0; /* Começam invisíveis */
-            transition: opacity 1.5s ease-in-out; /* Fade Suave */
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out; 
         }
-        
-        .slide.active {
-            opacity: 1; /* A que tiver esta classe fica visível */
-        }
+        .slide.active { opacity: 1; }
 
         .hidden { display: none !important; }
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
@@ -203,11 +196,9 @@
         <p>Yeeey! Sábia decisão! ❤️<br>És o amor da minha vida!</p>
         
         <div id="slideshow-container">
-            <img src="foto.jpg" class="slide active">
-            
-            <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop" class="slide">
-            
-            <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=600&auto=format&fit=crop" class="slide">
+            <img src="foto1.jpg" class="slide active">
+            <img src="foto2.jpg" class="slide">
+            <img src="foto3.jpg" class="slide">
         </div>
     </div>
 
@@ -301,28 +292,21 @@
             document.getElementById('success-message').style.display = 'flex';
             
             spawnRealPetals(); 
-            startSlideshow(); // INICIA O SLIDESHOW AQUI
+            startSlideshow(); 
         }
 
-        // --- FUNÇÃO DO SLIDESHOW ---
+        // --- SLIDESHOW (3 FOTOS) ---
         function startSlideshow() {
             const slides = document.querySelectorAll('.slide');
             let currentSlide = 0;
-
-            // Muda de foto a cada 3000ms (3 segundos)
             setInterval(() => {
-                // Remove a classe 'active' da foto atual
                 slides[currentSlide].classList.remove('active');
-                
-                // Passa para a próxima (volta ao 0 se chegar ao fim)
                 currentSlide = (currentSlide + 1) % slides.length;
-                
-                // Adiciona a classe 'active' à nova foto
                 slides[currentSlide].classList.add('active');
             }, 3000);
         }
 
-        // --- SISTEMA DE PÉTALAS REAIS ---
+        // --- PÉTALAS REAIS ---
         function spawnRealPetals() {
             for (let i = 0; i < 30; i++) {
                 setTimeout(() => { createOnePetal(); }, i * 200);
