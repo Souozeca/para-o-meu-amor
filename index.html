@@ -69,16 +69,15 @@
             justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             overflow: hidden; 
-            padding: 8px; /* Margem branca */
+            padding: 8px; 
         }
 
-        /* FOTO */
         .letter img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 2px;
-            display: block; /* Garante que ocupa o espaço */
+            display: block;
         }
 
         /* ABA */
@@ -200,7 +199,7 @@
         <div class="envelope-wrapper">
             <div class="envelope">
                 <div class="letter">
-                    <img src="foto.jpg" alt="Nós">
+                    <img src="foto.jpg" alt="Nós" onerror="this.src='https://placehold.co/600x400?text=Foto+Aqui'">
                 </div>
                 
                 <div class="pocket"></div>
@@ -242,7 +241,6 @@
     </div>
 
     <script>
-        // --- 1. YOUTUBE API (Mizzy Miles - Bênção) ---
         var player;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
@@ -255,7 +253,6 @@
         }
         function onPlayerReady(event) { event.target.setVolume(100); }
 
-        // --- 2. ABRIR ENVELOPE ---
         function openEnvelope() {
             const flap = document.getElementById('flap');
             const seal = document.getElementById('seal');
@@ -276,7 +273,6 @@
             }, 1800);
         }
 
-        // --- 3. CORAÇÕES ---
         function createHearts() {
             const container = document.getElementById('heartsContainer');
             for (let i = 0; i < 20; i++) {
@@ -292,7 +288,6 @@
         }
         createHearts();
 
-        // --- 4. CONTADOR ---
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
         function updateTimer() {
             const now = new Date();
@@ -315,7 +310,6 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        // --- 5. LÓGICA BOTÕES ---
         const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
         let count = 0;
         let scale = 1;
