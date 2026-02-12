@@ -56,20 +56,19 @@
         .letter {
             position: absolute; bottom: 0; width: 290px; height: 200px;
             background: #fff; border-radius: 2px; z-index: 5;
+            /* Sobe devagar (3.5s) */
             transition: transform 3.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; 
-            padding: 8px; /* Mantém a margem branca à volta da foto */
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; padding: 8px; 
         }
         
-        /* --- CORREÇÃO DA FOTO DO ENVELOPE --- */
-        /* Esta regra força a imagem a ocupar o espaço todo da carta e ignora a regra geral das outras imagens */
+        /* CORREÇÃO DA FOTO DO ENVELOPE */
         .letter img { 
             width: 100% !important; 
             height: 100% !important; 
             max-width: none !important;
             margin: 0 !important;
-            border-radius: 4px !important; /* Cantos menos redondos para ajustar melhor */
+            border-radius: 4px !important;
             box-shadow: none !important;
             object-fit: cover; 
             display: block; 
@@ -124,7 +123,7 @@
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
         
-        /* REGRA GERAL PARA IMAGENS (EXCETO SLIDESHOW) - ISTO ESTAVA A AFETAR O ENVELOPE */
+        /* REGRA GERAL PARA IMAGENS (EXCETO SLIDESHOW E ENVELOPE) */
         img:not(.slide):not(.letter img) { 
             border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
             max-width: 180px; height: auto; 
@@ -293,7 +292,16 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        const phrases = ["Tens a certeza?", "Pensa bem...", "Nem penses!", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "A sério?!"];
+        // --- AS TUAS FRASES PERSONALIZADAS ---
+        const phrases = [
+            "Tens a certeza?",
+            "Pensa bem...",
+            "Estás a fazer-te difícil?",
+            "Vais arrepender-te!",
+            "Diz que simmm!",
+            "Vou chorar...",
+            "Último aviso!"
+        ];
         let count = 0;
         let scale = 1;
 
