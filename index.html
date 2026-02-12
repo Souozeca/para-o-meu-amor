@@ -25,9 +25,9 @@
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* MUDANÇA AQUI: Opacidade de 0.9 para 0.6 (mais transparente) */
+            /* Fundo mais transparente (0.6) para veres o site atrás */
             background: rgba(40, 0, 0, 0.6); 
-            backdrop-filter: blur(4px); /* Blur ligeiramente menor */
+            backdrop-filter: blur(4px);
             z-index: 9999; 
             display: flex;
             flex-direction: column;
@@ -64,23 +64,22 @@
             background: #fff;
             border-radius: 2px;
             z-index: 5;
-            /* MUDANÇA AQUI: Tempo de subida aumentado para 2s */
+            /* Subida Lenta (2s) */
             transition: transform 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             overflow: hidden; 
-            padding: 8px; /* Margem branca */
+            padding: 8px; 
         }
 
-        /* FOTO */
         .letter img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 2px;
-            display: block; /* Garante que ocupa o espaço */
+            display: block;
         }
 
         /* ABA */
@@ -92,7 +91,7 @@
             border-right: 160px solid transparent;
             border-top: 130px solid #8a0b0b; 
             transform-origin: top;
-            /* MUDANÇA AQUI: Tempo de abertura da aba aumentado para 1.2s */
+            /* Abertura Lenta (1.2s) */
             transition: transform 1.2s ease-in-out, z-index 1.2s;
             z-index: 20;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
@@ -150,7 +149,6 @@
             margin-top: 70px;
             font-family: 'Poppins', sans-serif;
             color: white;
-            /* MUDANÇA AQUI: Texto um pouco maior */
             font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 3px;
@@ -185,6 +183,7 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        
         #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 40px; text-align: center; padding: 0 20px; }
         .gallery { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
@@ -269,10 +268,8 @@
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             
-            // MUDANÇA AQUI: Espera mais tempo (800ms) antes da carta começar a subir
             setTimeout(() => { letter.classList.add('slide-letter'); }, 800);
 
-            // MUDANÇA AQUI: Espera muito mais tempo (3500ms = 3.5s) para apreciar a foto antes de mudar de ecrã
             setTimeout(() => {
                 screen.classList.add('fade-out');
                 setTimeout(() => screen.style.display = 'none', 1000);
@@ -338,7 +335,7 @@
             launchPetals(); // PÉTALAS AQUI
         }
 
-        // --- FUNÇÃO CHUVA DE PÉTALAS ---
+        // --- FUNÇÃO PÉTALAS COM CORREÇÃO ---
         function launchPetals() {
             var duration = 5 * 1000;
             var animationEnd = Date.now() + duration;
@@ -364,7 +361,8 @@
                         shapes: ['circle'],
                         gravity: randomInRange(0.4, 0.6),
                         scalar: randomInRange(0.8, 1.4),
-                        drift: randomInRange(-0.4, 0.4)
+                        drift: randomInRange(-0.4, 0.4),
+                        zIndex: 9999 // A CORREÇÃO MÁGICA ESTÁ AQUI
                     });
                     requestAnimationFrame(frame);
                 }
