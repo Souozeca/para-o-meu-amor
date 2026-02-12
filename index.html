@@ -25,7 +25,7 @@
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Fundo mais transparente (0.6) para veres o site atrás */
+            /* Fundo semi-transparente para ver os corações atrás */
             background: rgba(40, 0, 0, 0.6); 
             backdrop-filter: blur(4px);
             z-index: 9999; 
@@ -48,7 +48,7 @@
             position: relative;
             width: 320px;
             height: 220px;
-            background: #750000; /* Vermelho Bordeaux */
+            background: #750000; 
             border-radius: 4px;
             display: flex;
             justify-content: center;
@@ -64,8 +64,8 @@
             background: #fff;
             border-radius: 2px;
             z-index: 5;
-            /* Subida Lenta (2s) */
-            transition: transform 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            /* MUDANÇA: Sobe muito devagar (3.5s) */
+            transition: transform 3.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -91,8 +91,8 @@
             border-right: 160px solid transparent;
             border-top: 130px solid #8a0b0b; 
             transform-origin: top;
-            /* Abertura Lenta (1.2s) */
-            transition: transform 1.2s ease-in-out, z-index 1.2s;
+            /* MUDANÇA: Abre devagar (2s) */
+            transition: transform 2s ease-in-out, z-index 2s;
             z-index: 20;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
         }
@@ -183,7 +183,6 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-        
         #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 40px; text-align: center; padding: 0 20px; }
         .gallery { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
@@ -268,13 +267,15 @@
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             
-            setTimeout(() => { letter.classList.add('slide-letter'); }, 800);
+            // MUDANÇA: Começa a subir aos 1.2s
+            setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
 
+            // MUDANÇA: Espera 6 segundos (6000ms) antes de mudar de ecrã
             setTimeout(() => {
                 screen.classList.add('fade-out');
                 setTimeout(() => screen.style.display = 'none', 1000);
                 document.getElementById('main-content').classList.add('visible');
-            }, 3500);
+            }, 6000);
         }
 
         function createHearts() {
@@ -335,7 +336,7 @@
             launchPetals(); // PÉTALAS AQUI
         }
 
-        // --- FUNÇÃO PÉTALAS COM CORREÇÃO ---
+        // --- FUNÇÃO PÉTALAS REFORÇADA ---
         function launchPetals() {
             var duration = 5 * 1000;
             var animationEnd = Date.now() + duration;
@@ -350,7 +351,7 @@
 
                 if (timeLeft > 0) {
                     confetti({
-                        particleCount: 5,
+                        particleCount: 15, // AUMENTADO PARA 15 (Eram 5)
                         startVelocity: 0,
                         ticks: ticks,
                         origin: {
@@ -360,9 +361,9 @@
                         colors: ['#ff0000', '#800000', '#990000', '#ff4d4d'],
                         shapes: ['circle'],
                         gravity: randomInRange(0.4, 0.6),
-                        scalar: randomInRange(0.8, 1.4),
+                        scalar: randomInRange(1.2, 2), // AUMENTADO O TAMANHO
                         drift: randomInRange(-0.4, 0.4),
-                        zIndex: 9999 // A CORREÇÃO MÁGICA ESTÁ AQUI
+                        zIndex: 9999
                     });
                     requestAnimationFrame(frame);
                 }
