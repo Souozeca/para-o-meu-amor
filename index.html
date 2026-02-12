@@ -21,20 +21,13 @@
             padding-top: 20px;
         }
 
-        /* --- PÉTALAS REAIS (NOVO CSS) --- */
+        /* --- PÉTALAS REAIS --- */
         .rose-petal {
-            position: fixed;
-            top: -50px;
-            z-index: 9999; /* Fica à frente de tudo */
-            background: #d32f2f;
-            /* Forma de Pétala (Curva) */
-            border-radius: 5px 100% 5px 100%;
-            opacity: 0.9;
-            box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
-            pointer-events: none;
-            animation: fall linear forwards;
+            position: fixed; top: -50px; z-index: 9999;
+            background: #d32f2f; border-radius: 5px 100% 5px 100%;
+            opacity: 0.9; box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+            pointer-events: none; animation: fall linear forwards;
         }
-
         @keyframes fall {
             0% { transform: translateY(0) rotate(0deg) translateX(0); }
             25% { transform: translateY(25vh) rotate(45deg) translateX(20px); }
@@ -46,28 +39,20 @@
         /* --- 1. ECRÃ DO ENVELOPE --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(40, 0, 0, 0.6); 
-            backdrop-filter: blur(4px);
-            z-index: 9990; 
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            transition: opacity 1.5s ease;
+            background: rgba(40, 0, 0, 0.6); backdrop-filter: blur(4px);
+            z-index: 9990; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; transition: opacity 1.5s ease;
         }
-
         .envelope-wrapper {
-            position: relative; cursor: pointer;
-            transition: transform 0.3s ease;
+            position: relative; cursor: pointer; transition: transform 0.3s ease;
             filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
         }
         .envelope-wrapper:hover { transform: scale(1.02); }
-
         .envelope {
             position: relative; width: 320px; height: 220px;
             background: #750000; border-radius: 4px;
             display: flex; justify-content: center; z-index: 10;
         }
-
-        /* --- CARTA --- */
         .letter {
             position: absolute; bottom: 0; width: 290px; height: 200px;
             background: #fff; border-radius: 2px; z-index: 5;
@@ -75,10 +60,7 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; padding: 8px; 
         }
-
         .letter img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; display: block; }
-
-        /* ABA */
         .flap {
             position: absolute; top: 0; left: 0; width: 0; height: 0;
             border-left: 160px solid transparent; border-right: 160px solid transparent;
@@ -86,15 +68,11 @@
             transition: transform 2s ease-in-out, z-index 2s;
             z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
         }
-
-        /* BOLSO */
         .pocket {
             position: absolute; bottom: 0; left: 0; width: 0; height: 0;
             border-left: 160px solid transparent; border-right: 160px solid transparent;
             border-bottom: 220px solid #800000; z-index: 15;
         }
-
-        /* SELO */
         .seal {
             position: absolute; top: 95px; z-index: 25; width: 50px; height: 50px;
             background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
@@ -103,8 +81,6 @@
             font-size: 24px; color: #5c4010; border: 2px solid #daa520;
             animation: pulse 2s infinite;
         }
-
-        /* ETIQUETA */
         .label-sticker {
             position: absolute; bottom: 30px; z-index: 30; background: #fff;
             width: 110%; left: -5%; padding: 10px 0; text-align: center;
@@ -112,19 +88,16 @@
             font-family: 'Dancing Script', cursive; font-size: 1.5rem;
             color: #333; border: 1px solid #ddd; 
         }
-
         .click-text {
             margin-top: 70px; font-family: 'Poppins', sans-serif;
             color: white; font-size: 1.1rem; text-transform: uppercase;
             letter-spacing: 3px; animation: bounce 2s infinite; opacity: 0.9;
         }
-
-        /* Animações */
         .open-flap { transform: rotateX(180deg); z-index: 1 !important; }
         .slide-letter { transform: translateY(-160px); z-index: 30 !important; } 
         .fade-out { opacity: 0; pointer-events: none; }
 
-        /* Resto */
+        /* --- RESTO DO CSS --- */
         .bg-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
         .heart-bubble { position: absolute; bottom: -10%; color: #d63384; opacity: 0.4; animation: floatUp linear infinite; }
         #main-content { opacity: 0; transform: scale(0.9); transition: all 1s ease; width: 100%; height: 100%; z-index: 10; position: relative; }
@@ -146,12 +119,43 @@
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-        #success-message { display: none; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; }
-        #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 40px; text-align: center; padding: 0 20px; }
-        .gallery { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .gallery img { width: 160px; height: 160px; object-fit: cover; border: 6px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); margin: 0; transform: none; }
-        .gallery img:nth-child(1) { transform: rotate(-6deg); }
-        .gallery img:nth-child(2) { transform: rotate(6deg); }
+        
+        /* --- ESTILOS DO ECRÃ FINAL & SLIDESHOW --- */
+        #success-message { 
+            display: none; flex-direction: column; align-items: center; justify-content: center; 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,230,230,0.98); z-index: 200; animation: popIn 0.5s; 
+        }
+        #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; }
+        
+        /* Container do Slideshow */
+        #slideshow-container {
+            position: relative;
+            width: 80%;
+            max-width: 320px;
+            height: 420px; /* Altura para fotos verticais */
+            border: 8px solid white;
+            border-radius: 10px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            background: #fff;
+            transform: rotate(-2deg); /* Ligeiramente inclinado */
+        }
+        
+        /* As imagens do slide */
+        .slide {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0; /* Começam invisíveis */
+            transition: opacity 1.5s ease-in-out; /* Fade Suave */
+        }
+        
+        .slide.active {
+            opacity: 1; /* A que tiver esta classe fica visível */
+        }
+
         .hidden { display: none !important; }
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
     </style>
@@ -167,7 +171,6 @@
                 <div class="letter">
                     <img src="foto.jpg" alt="Nós" onerror="this.src='https://placehold.co/600x400?text=Foto+Aqui'">
                 </div>
-                
                 <div class="pocket"></div>
                 <div class="flap" id="flap"></div>
                 <div class="label-sticker">Para: O Amor da Minha Vida</div>
@@ -191,18 +194,20 @@
         </div>
 
         <h1 id="question">Queres ser a minha Valentine? ❤️</h1>
-        
         <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW54amZndm96eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
-
         <button id="yesBtn" class="pulsing" onclick="accepted()">SIM</button>
         <button id="noBtn" onclick="reject()">NÃO</button>
     </div>
 
     <div id="success-message">
         <p>Yeeey! Sábia decisão! ❤️<br>És o amor da minha vida!</p>
-        <div class="gallery">
-            <img src="https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif"> 
-            <img src="https://media.giphy.com/media/l0HlPtbGpcnqa0fja/giphy.gif">
+        
+        <div id="slideshow-container">
+            <img src="foto.jpg" class="slide active">
+            
+            <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop" class="slide">
+            
+            <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=600&auto=format&fit=crop" class="slide">
         </div>
     </div>
 
@@ -295,45 +300,47 @@
             document.getElementById('main-content').classList.add('hidden');
             document.getElementById('success-message').style.display = 'flex';
             
-            // CHAMA A FUNÇÃO NOVA DAS PÉTALAS
             spawnRealPetals(); 
+            startSlideshow(); // INICIA O SLIDESHOW AQUI
         }
 
-        // --- SISTEMA DE PÉTALAS REAIS (CSS) ---
+        // --- FUNÇÃO DO SLIDESHOW ---
+        function startSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            // Muda de foto a cada 3000ms (3 segundos)
+            setInterval(() => {
+                // Remove a classe 'active' da foto atual
+                slides[currentSlide].classList.remove('active');
+                
+                // Passa para a próxima (volta ao 0 se chegar ao fim)
+                currentSlide = (currentSlide + 1) % slides.length;
+                
+                // Adiciona a classe 'active' à nova foto
+                slides[currentSlide].classList.add('active');
+            }, 3000);
+        }
+
+        // --- SISTEMA DE PÉTALAS REAIS ---
         function spawnRealPetals() {
-            // Cria 30 pétalas com tempos diferentes
             for (let i = 0; i < 30; i++) {
-                setTimeout(() => {
-                    createOnePetal();
-                }, i * 200); // Uma pétala a cada 200ms
+                setTimeout(() => { createOnePetal(); }, i * 200);
             }
         }
 
         function createOnePetal() {
             const petal = document.createElement('div');
             petal.classList.add('rose-petal');
-            
-            // Posição aleatória na largura do ecrã
             petal.style.left = Math.random() * 100 + 'vw';
-            
-            // Tamanho aleatório (Grandes e visíveis)
-            const size = Math.random() * 15 + 20; // Entre 20px e 35px
+            const size = Math.random() * 15 + 20; 
             petal.style.width = size + 'px';
             petal.style.height = size + 'px';
-            
-            // Cores aleatórias (Vermelho, Bordeaux, Carmesim)
             const colors = ['#800000', '#b71c1c', '#d32f2f', '#c62828'];
             petal.style.background = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Duração da queda aleatória (entre 4s e 7s)
             petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            
             document.body.appendChild(petal);
-
-            // Remove a pétala do HTML depois de cair para não pesar
-            setTimeout(() => {
-                petal.remove();
-            }, 7000);
+            setTimeout(() => { petal.remove(); }, 7000);
         }
     </script>
 </body>
