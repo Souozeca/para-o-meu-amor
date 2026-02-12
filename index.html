@@ -25,7 +25,6 @@
         #intro-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Fundo semi-transparente para ver os corações atrás */
             background: rgba(40, 0, 0, 0.6); 
             backdrop-filter: blur(4px);
             z-index: 9999; 
@@ -64,7 +63,7 @@
             background: #fff;
             border-radius: 2px;
             z-index: 5;
-            /* MUDANÇA: Sobe muito devagar (3.5s) */
+            /* Sobe muito devagar (3.5s) */
             transition: transform 3.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             display: flex;
             align-items: center;
@@ -91,7 +90,7 @@
             border-right: 160px solid transparent;
             border-top: 130px solid #8a0b0b; 
             transform-origin: top;
-            /* MUDANÇA: Abre devagar (2s) */
+            /* Abre devagar (2s) */
             transition: transform 2s ease-in-out, z-index 2s;
             z-index: 20;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
@@ -267,10 +266,10 @@
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             
-            // MUDANÇA: Começa a subir aos 1.2s
+            // Espera 1.2s antes da carta começar a subir
             setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
 
-            // MUDANÇA: Espera 6 segundos (6000ms) antes de mudar de ecrã
+            // Espera 6 segundos antes de mudar de ecrã
             setTimeout(() => {
                 screen.classList.add('fade-out');
                 setTimeout(() => screen.style.display = 'none', 1000);
@@ -336,7 +335,7 @@
             launchPetals(); // PÉTALAS AQUI
         }
 
-        // --- FUNÇÃO PÉTALAS REFORÇADA ---
+        // --- FUNÇÃO PÉTALAS (POUCAS E GRANDES) ---
         function launchPetals() {
             var duration = 5 * 1000;
             var animationEnd = Date.now() + duration;
@@ -351,7 +350,7 @@
 
                 if (timeLeft > 0) {
                     confetti({
-                        particleCount: 15, // AUMENTADO PARA 15 (Eram 5)
+                        particleCount: 2, // MUDANÇA: Só 2 de cada vez (muito poucas)
                         startVelocity: 0,
                         ticks: ticks,
                         origin: {
@@ -360,8 +359,8 @@
                         },
                         colors: ['#ff0000', '#800000', '#990000', '#ff4d4d'],
                         shapes: ['circle'],
-                        gravity: randomInRange(0.4, 0.6),
-                        scalar: randomInRange(1.2, 2), // AUMENTADO O TAMANHO
+                        gravity: randomInRange(0.3, 0.5), // MUDANÇA: Caem mais devagar
+                        scalar: randomInRange(2.5, 4), // MUDANÇA: Muito maiores!
                         drift: randomInRange(-0.4, 0.4),
                         zIndex: 9999
                     });
