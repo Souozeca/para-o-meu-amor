@@ -51,7 +51,7 @@
             100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
         }
 
-        /* --- 1. ECRÃ DO ENVELOPE E CADEADO --- */
+        /* --- 1. ECRÃ DO ENVELOPE --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.2); 
@@ -100,14 +100,13 @@
         .slide-letter { transform: translateY(-160px); z-index: 30 !important; } 
         .fade-out { opacity: 0; pointer-events: none; }
 
-        /* --- O CADEADO DIGITAL (NOVO) --- */
+        /* --- O CADEADO DIGITAL --- */
         #lock-modal {
             display: none; flex-direction: column; align-items: center;
             background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.5); position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
-            z-index: 10000; opacity: 0; transition: all 0.3s ease;
-            width: 85%; max-width: 320px;
+            z-index: 10000; opacity: 0; transition: all 0.3s ease; width: 85%; max-width: 320px;
         }
         #lock-modal.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         #lock-modal h2 { color: #d63384; font-size: 1.3rem; margin-bottom: 5px; font-weight: 900; }
@@ -125,14 +124,12 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 0, 5, 0.95); 
             z-index: 80; opacity: 0; transition: opacity 1s ease;
-            flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer;
+            flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
         }
         #memories-text-container {
             position: absolute; width: 90%; text-align: center;
             color: #fff; font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 300; line-height: 2.2;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-            transform: translateY(100vh); 
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8); transform: translateY(100vh); 
         }
         #memories-text-container p { margin-bottom: 40px; color: #ffc0cb; font-weight: 700; }
         #memories-text-container span { color: white; }
@@ -172,14 +169,19 @@
         @keyframes floatGameUp { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(-120vh) scale(1) rotate(20deg); opacity: 1; } }
         @keyframes popHeart { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.8; filter: drop-shadow(0 0 15px #ff4757); } 100% { transform: scale(0); opacity: 0; } }
 
-        /* --- RESTO DO CSS --- */
+        /* --- RESTO DO CSS GERAL --- */
         .bg-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
         .heart-bubble { position: absolute; bottom: -10%; color: #d63384; opacity: 0.4; animation: floatUp linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
         
-        #main-content { display: none; opacity: 0; transform: scale(0.9); transition: all 1s ease; width: 100%; height: 100%; z-index: 10; position: relative; }
+        #main-content { 
+            display: none; opacity: 0; transform: scale(0.9); transition: all 1s ease; 
+            width: 100%; height: 100%; z-index: 10; position: relative; 
+            flex-direction: column; align-items: center; justify-content: center;
+        }
         .visible { opacity: 1 !important; transform: scale(1) !important; }
         
-        h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 10px; }
+        /* TEMPORIZADOR */
         #timer-container { margin-bottom: 15px; }
         #timer-title { font-size: 0.9rem; color: #d63384; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
         #timer { display: flex; justify-content: center; gap: 6px; }
@@ -187,15 +189,34 @@
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
         
-        img:not(.slide):not(.letter img) { border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
+        /* --- 4. ÁREA DA RASPADINHA (NOVO) --- */
+        #scratch-wrapper {
+            position: relative; display: flex; flex-direction: column; align-items: center;
+            padding: 25px 20px; background: rgba(255, 255, 255, 0.6); border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 90%; margin-bottom: 20px;
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+        #scratch-canvas {
+            position: absolute; top: 0; left: 0; z-index: 20; border-radius: 20px;
+            cursor: crosshair; transition: opacity 1s ease;
+        }
+        h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 0; }
+        img:not(.slide):not(.letter img) { border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
         
-        button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s; }
-        #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(1); z-index: 50; }
-        #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 40; }
+        /* BOTÕES DE AÇÃO LIGADOS À RASPADINHA */
+        #button-container {
+            display: flex; flex-direction: column; gap: 15px;
+            opacity: 0; pointer-events: none; transition: opacity 1s ease;
+            align-items: center; justify-content: center; width: 100%;
+        }
+        #button-container.show { opacity: 1; pointer-events: auto; }
+
+        button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s, transform 0.2s ease; }
+        #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); z-index: 50; }
+        #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 40; }
         
-        @keyframes heartbeat { 0% { transform: translate(-50%, -50%) scale(1); } 15% { transform: translate(-50%, -50%) scale(1.05); } 30% { transform: translate(-50%, -50%) scale(1); } 45% { transform: translate(-50%, -50%) scale(1.05); } 60% { transform: translate(-50%, -50%) scale(1); } }
+        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.08); } 30% { transform: scale(1); } 45% { transform: scale(1.08); } 60% { transform: scale(1); } }
         .pulsing { animation: heartbeat 1.5s infinite; }
-        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
         /* --- ESTILOS DO SLIDESHOW --- */
@@ -288,10 +309,16 @@
             </div>
         </div>
 
-        <h1 id="question">Queres ser a minha Valentine? ❤️</h1>
-        <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW54amZndm96eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
-        <button id="yesBtn" class="pulsing" onclick="accepted()">SIM</button>
-        <button id="noBtn" onclick="reject()">NÃO</button>
+        <div id="scratch-wrapper">
+            <h1 id="question">Queres ser a minha Valentine? ❤️</h1>
+            <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW54amZndm96eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
+            <canvas id="scratch-canvas"></canvas>
+        </div>
+
+        <div id="button-container">
+            <button id="yesBtn" class="pulsing" onclick="accepted()">SIM</button>
+            <button id="noBtn" onclick="reject()">NÃO</button>
+        </div>
     </div>
 
     <div id="success-message">
@@ -335,7 +362,7 @@
 
         // --- SISTEMA DE CADEADO ---
         function promptPassword(event) {
-            event.stopPropagation(); // Impede duplo clique no fundo
+            event.stopPropagation(); 
             if (envelopeOpened) return; 
             
             const modal = document.getElementById('lock-modal');
@@ -346,7 +373,6 @@
             document.getElementById('password-input').focus();
         }
 
-        // Formatação Automática da Data (Coloca as barras sozinho)
         document.getElementById('password-input').addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, ''); 
             if (value.length > 8) value = value.slice(0, 8);
@@ -356,29 +382,25 @@
                 value = value.slice(0, 2) + '/' + value.slice(2);
             }
             e.target.value = value;
-            document.getElementById('error-msg').style.display = 'none'; // Limpa o erro ao escrever
+            document.getElementById('error-msg').style.display = 'none'; 
         });
 
-        // Permite dar "Enter" no teclado para submeter
         document.getElementById('password-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') checkPassword();
         });
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
-            // Se a data for exatamente 20/04/2024
+            // SENHA CORRETA AQUI:
             if (input === '20/04/2024') {
                 document.getElementById('lock-modal').classList.remove('show');
                 setTimeout(() => { 
                     document.getElementById('lock-modal').style.display = 'none'; 
-                    openEnvelope(); // Se acertar, abre a carta!
+                    openEnvelope(); 
                 }, 300);
             } else {
-                // Se falhar
                 const errorMsg = document.getElementById('error-msg');
                 errorMsg.style.display = 'block';
-                
-                // Efeito Tremer (Shake)
                 const modal = document.getElementById('lock-modal');
                 modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(-10px)';
                 setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(10px)', 50);
@@ -388,7 +410,6 @@
             }
         }
 
-        // --- SEQUÊNCIA INICIAL DO ENVELOPE ---
         function openEnvelope() {
             if (envelopeOpened) return; 
             envelopeOpened = true;
@@ -427,7 +448,6 @@
                 memoriesText.classList.add('start-scroll'); 
             }, 50);
 
-            // 22 segundos
             memoriesTimeout1 = setTimeout(() => {
                 if (memoriesSkipped) return; 
                 memoriesScreen.style.opacity = '0';
@@ -443,7 +463,6 @@
         function skipMemories() {
             if (memoriesSkipped) return; 
             memoriesSkipped = true;
-            
             clearTimeout(memoriesTimeout1); 
             clearTimeout(memoriesTimeout2);
             
@@ -515,13 +534,116 @@
             }, 500); 
         }
 
-        // --- LÓGICA DO RESTO DO SITE ---
+        // --- LÓGICA DO RESTO DO SITE E DA RASPADINHA ---
         function showMainContent() {
             const main = document.getElementById('main-content');
             main.style.display = 'flex';
-            main.style.flexDirection = 'column';
-            main.style.alignItems = 'center';
-            setTimeout(() => { main.classList.add('visible'); }, 50);
+            
+            // Pausa ligeira para o CSS calcular o espaço e podermos desenhar a raspadinha
+            setTimeout(() => { 
+                main.classList.add('visible'); 
+                initScratchCard(); // Cria a raspadinha
+            }, 50);
+        }
+
+        function initScratchCard() {
+            const wrapper = document.getElementById('scratch-wrapper');
+            const canvas = document.getElementById('scratch-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Define o tamanho exato da camada dourada por cima da foto e do texto
+            canvas.width = wrapper.offsetWidth;
+            canvas.height = wrapper.offsetHeight;
+            
+            // Pinta o Ouro
+            let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            grad.addColorStop(0, '#e6c27a');
+            grad.addColorStop(0.5, '#ffd700');
+            grad.addColorStop(1, '#daa520');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Padrão suave
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            for(let i=0; i<canvas.width; i+=20) { ctx.fillRect(i, 0, 1, canvas.height); }
+            
+            // Texto da Raspadinha
+            ctx.font = "bold 22px Poppins";
+            ctx.fillStyle = "#fff";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.shadowColor = "rgba(0,0,0,0.4)";
+            ctx.shadowBlur = 5;
+            ctx.fillText("Raspa aqui! 🪙", canvas.width/2, canvas.height/2);
+            
+            ctx.shadowBlur = 0; // Limpar a sombra para a borracha
+            
+            let isDrawing = false;
+            
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                let x, y;
+                if (e.touches && e.touches.length > 0) {
+                    x = e.touches[0].clientX - rect.left;
+                    y = e.touches[0].clientY - rect.top;
+                } else {
+                    x = e.clientX - rect.left;
+                    y = e.clientY - rect.top;
+                }
+                return { x, y };
+            }
+            
+            function scratch(e) {
+                if (!isDrawing) return;
+                if(e.cancelable) e.preventDefault(); // Impede o ecrã de "deslizar" no telemóvel ao raspar
+                
+                const pos = getPos(e);
+                ctx.globalCompositeOperation = 'destination-out'; // Faz o pincel atuar como borracha
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); // Tamanho do dedo/moeda
+                ctx.fill();
+                checkReveal();
+            }
+            
+            // Eventos do Rato
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('mouseup', () => { isDrawing = false; });
+            canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+            
+            // Eventos do Touch (Telemóvel)
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+            canvas.addEventListener('touchend', () => { isDrawing = false; });
+        }
+
+        let checkTimeout;
+        let isRevealed = false;
+        
+        function checkReveal() {
+            if (checkTimeout || isRevealed) return;
+            
+            // Verifica a cada 150ms para não travar o telemóvel
+            checkTimeout = setTimeout(() => {
+                const canvas = document.getElementById('scratch-canvas');
+                const ctx = canvas.getContext('2d');
+                const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                
+                let clearCount = 0;
+                for (let i = 3; i < pixels.length; i += 4) {
+                    if (pixels[i] === 0) clearCount++;
+                }
+                const percent = (clearCount / (pixels.length / 4)) * 100;
+                
+                // Se já raspou quase metade do ouro (45%), revela o resto e mostra os botões!
+                if (percent > 45) { 
+                    isRevealed = true;
+                    canvas.style.opacity = '0'; // Desvanece a rasgadinha
+                    canvas.style.pointerEvents = 'none';
+                    document.getElementById('button-container').classList.add('show'); // Revela botões SIM/NÃO
+                }
+                checkTimeout = null;
+            }, 150);
         }
 
         function createHearts() {
@@ -567,9 +689,9 @@
         function reject() {
             const btn = document.getElementById('noBtn'); const yes = document.getElementById('yesBtn');
             btn.innerHTML = phrases[count % phrases.length]; count++;
-            yes.classList.remove('pulsing'); scale += 0.5;
-            yes.style.transform = `translate(-50%, -50%) scale(${scale})`;
-            yes.style.transition = "transform 0.2s ease";
+            yes.classList.remove('pulsing'); 
+            scale += 0.3; // Escala ajustada para o novo layout sem atrapalhar a raspadinha
+            yes.style.transform = `scale(${scale})`;
         }
 
         function accepted() {
