@@ -78,7 +78,7 @@
         .spin { animation: spinMusic 3s linear infinite; }
         @keyframes spinMusic { 100% { transform: rotate(360deg); } }
 
-        /* --- PÉTALAS REAIS --- */
+        /* --- PÉTALAS REAIS (CSS PURO) --- */
         .rose-petal {
             position: fixed; top: -50px; z-index: 9999;
             background: #d32f2f; border-radius: 5px 100% 5px 100%;
@@ -265,7 +265,7 @@
         .pulsing { animation: heartbeat 1.5s infinite; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* --- ESTILOS DO SLIDESHOW COM FUNDO ANIMADO --- */
+        /* --- ESTILOS DO SLIDESHOW / ECRÃ FINAL --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -274,7 +274,24 @@
             animation: popIn 0.5s, gradientBG 15s ease infinite; 
             z-index: 200; 
         }
-        #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); z-index: 300; position: relative; }
+        
+        /* Modificado para suportar o efeito Máquina de Escrever e Cursor */
+        #success-message p { 
+            font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; 
+            text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); 
+            z-index: 300; position: relative; min-height: 80px; 
+        }
+        
+        /* ADICIONADO: Efeito do cursor a piscar */
+        #final-text-typing::after {
+            content: '|';
+            animation: blinkCursor 0.7s infinite;
+            font-weight: normal;
+        }
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
         
         /* --- EFEITO CÂMERA POLAROID --- */
         #polaroid-container {
@@ -295,6 +312,7 @@
         .polaroid.drop {
             opacity: 1; transform: translateY(0) rotateZ(var(--rot)) scale(1);
         }
+        #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
     </style>
 </head>
 <body class="candle-mode">
@@ -378,7 +396,7 @@
     </div>
 
     <div id="success-message">
-        <p>A melhor resposta do mundo! ❤️<br><br>Amo-te daqui até à lua!</p>
+        <p id="final-text-typing"></p>
         
         <div id="polaroid-container">
             <div class="polaroid">
@@ -476,7 +494,6 @@
                 setTimeout(() => { 
                     document.getElementById('lock-modal').style.display = 'none'; 
                     openEnvelope(); 
-                    // Remove spotlight do DOM depois do fade out para não estorvar
                     setTimeout(() => document.getElementById('spotlight').style.display = 'none', 1500);
                 }, 300);
             } else {
@@ -549,18 +566,16 @@
             gameScreen.style.display = 'flex';
             setTimeout(() => { gameScreen.classList.add('visible'); }, 50);
             const container = document.getElementById('game-hearts-container');
-            container.innerHTML = ''; 
-            poppedCount = 0;
+            container.innerHTML = ''; poppedCount = 0;
             document.getElementById('hearts-left').innerText = totalToPop;
-
             const heartEmojis = ['❤️', '💖', '💘', '💝', '💗'];
-            for (let i = 0; i < 8; i++) { // Alterado para 8 corações para ser mais difícil
+            for (let i = 0; i < 8; i++) { 
                 let heart = document.createElement('div');
                 heart.classList.add('game-heart');
                 heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
                 heart.style.left = (Math.random() * 80 + 10) + '%'; 
                 heart.style.fontSize = (Math.random() * 35 + 45) + 'px'; 
-                heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Ligeiramente mais rápido
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
                 heart.style.animationDelay = (Math.random() * 2) + 's';
                 heart.addEventListener('touchstart', popHeartEvent, {passive: false});
                 heart.addEventListener('mousedown', popHeartEvent);
@@ -667,7 +682,6 @@
         }
         setInterval(updateTimer, 1000); updateTimer(); 
 
-        // O ARRAY QUE TINHA SIDO APAGADO VOLTOU AQUI (ISSO FAZIA O BOTÃO "NÃO" FALHAR)
         const phrases = ["Tens a certeza?", "Pensa bem...", "Estás a fazer-te difícil?", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "Último aviso!"];
         let count = 0; let scale = 1;
 
@@ -678,10 +692,43 @@
             yes.style.transform = `scale(${scale})`;
         }
 
+        // --- ADICIONADO: LÓGICA DO EFEITO MÁQUINA DE ESCREVER ---
+        const typeLine1 = "A melhor resposta do mundo! ❤️";
+        const typeLine2 = "Amo-te daqui até à lua!";
+        let typeIndex1 = 0;
+        let typeIndex2 = 0;
+        let typingElement;
+
+        function typeWriter1() {
+            if (typeIndex1 < [...typeLine1].length) {
+                typingElement.innerHTML += [...typeLine1][typeIndex1];
+                typeIndex1++;
+                setTimeout(typeWriter1, 70);
+            } else {
+                typingElement.innerHTML += "<br><br>";
+                setTimeout(typeWriter2, 600); // Pausa dramática antes de escrever a 2ª linha
+            }
+        }
+
+        function typeWriter2() {
+            if (typeIndex2 < [...typeLine2].length) {
+                typingElement.innerHTML += [...typeLine2][typeIndex2];
+                typeIndex2++;
+                setTimeout(typeWriter2, 70);
+            }
+        }
+        // --- FIM DA LÓGICA MÁQUINA DE ESCREVER ---
+
         function accepted() {
             document.getElementById('main-content').classList.remove('visible');
             setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
             document.getElementById('success-message').style.display = 'flex';
+            
+            // --- INICIA A MÁQUINA DE ESCREVER AQUI ---
+            typingElement = document.getElementById('final-text-typing');
+            typingElement.innerHTML = ""; // Garante que começa limpo
+            setTimeout(typeWriter1, 600); // Começa a digitar depois da página aparecer
+            
             spawnRealPetals(); 
             startSlideshow(); 
         }
