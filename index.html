@@ -11,25 +11,23 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
+        /* --- ESTADOS DO FUNDO --- */
         body {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            background: linear-gradient(135deg, #ffc0cb 0%, #c8e6c9 100%, #ffb6c1, #a8e6cf);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
             text-align: center;
             padding-top: 20px;
-            transition: background 2s ease; /* ADICIONADO: Transição suave de cor */
+            transition: background 2s ease; /* Transição suave de cor */
         }
 
-        /* --- ADICIONADO: MODO LUZ DE VELAS --- */
+        /* MODO INICIAL: LUZ DE VELAS */
         body.candle-mode {
-            background: #1a0505;
-            animation: none;
+            background: #1a0505; /* Bordeaux muito escuro */
         }
         
+        /* Efeito de chama trémula no fundo escuro */
         body.candle-mode::before {
             content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, rgba(255,140,0,0.1) 0%, transparent 70%);
@@ -37,26 +35,33 @@
             pointer-events: none; z-index: 1;
         }
 
-        @keyframes flicker {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
+        /* MODO COLORIDO: O TEU ORIGINAL */
+        body.light-mode {
+            background: linear-gradient(135deg, #ffc0cb 0%, #c8e6c9 100%, #ffb6c1, #a8e6cf);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
-
-        #spotlight {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 40px, rgba(0,0,0,0.92) 150px);
-            pointer-events: none; z-index: 9995;
-            transition: opacity 1.5s ease;
-            display: none; 
-        }
-        body.candle-mode #spotlight { display: block; }
-        /* --- FIM DA ADIÇÃO --- */
 
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        /* FOCO DE LUZ (Lanterna) */
+        #spotlight {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 40px, rgba(0,0,0,0.92) 150px);
+            pointer-events: none; z-index: 9995;
+            transition: opacity 1.5s ease;
+            display: none; /* Escondido por defeito */
+        }
+        body.candle-mode #spotlight { display: block; }
 
         /* --- BOTÃO DE MÚSICA NO CANTO --- */
         #music-btn {
@@ -73,7 +78,7 @@
         .spin { animation: spinMusic 3s linear infinite; }
         @keyframes spinMusic { 100% { transform: rotate(360deg); } }
 
-        /* --- PÉTALAS REAIS (CSS PURO) --- */
+        /* --- PÉTALAS REAIS --- */
         .rose-petal {
             position: fixed; top: -50px; z-index: 9999;
             background: #d32f2f; border-radius: 5px 100% 5px 100%;
@@ -284,9 +289,40 @@
         .slide.active { opacity: 1; }
         .hidden { display: none !important; }
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
+
+        /* --- ADICIONADO: ESTILOS DOS BALÕES INTERATIVOS E PALAVRAS --- */
+        .interactive-balloon {
+            position: fixed; bottom: -100px; z-index: 9998;
+            font-size: 45px; cursor: pointer; user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            animation: floatBalloon linear forwards;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            transition: transform 0.1s;
+        }
+        .interactive-balloon:active { transform: scale(0.8); }
+        @keyframes floatBalloon {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-120vh) rotate(15deg); }
+        }
+        .pop-word {
+            position: fixed; z-index: 9999;
+            color: #ffcc33; font-family: 'Pacifico', cursive; font-size: 2.2rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+            pointer-events: none;
+            animation: floatWord 2s ease-out forwards;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes floatWord {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+            20% { opacity: 1; transform: translate(-50%, -70%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -150%) scale(1); }
+        }
+        /* --- FIM DA ADIÇÃO CSS --- */
     </style>
 </head>
-<body class="candle-mode"> <div id="spotlight"></div>
+<body class="candle-mode">
+
+    <div id="spotlight"></div>
 
     <div id="player"></div>
 
@@ -377,7 +413,7 @@
     </div>
 
     <script>
-        // --- ADICIONADO: LÓGICA DO FOCO DE LUZ ---
+        // --- LOGICA DO FOCO DE LUZ ---
         window.addEventListener('mousemove', e => {
             document.documentElement.style.setProperty('--x', e.clientX + 'px');
             document.documentElement.style.setProperty('--y', e.clientY + 'px');
@@ -386,7 +422,6 @@
             document.documentElement.style.setProperty('--x', e.touches[0].clientX + 'px');
             document.documentElement.style.setProperty('--y', e.touches[0].clientY + 'px');
         }, {passive: false});
-        // --- FIM DA ADIÇÃO ---
 
         var player;
         let isMusicPlaying = false;
@@ -447,19 +482,17 @@
         function checkPassword() {
             const input = document.getElementById('password-input').value;
             if (input === '20/04/2024') {
-                // --- ADICIONADO: ACENDER AS LUZES ---
+                // ACENDER AS LUZES AQUI!
                 document.body.classList.remove('candle-mode');
+                document.body.classList.add('light-mode');
                 document.getElementById('spotlight').style.opacity = '0';
-                setTimeout(() => { 
-                    const spot = document.getElementById('spotlight');
-                    if(spot) spot.style.display = 'none'; 
-                }, 1500);
-                // --- FIM DA ADIÇÃO ---
-
+                
                 document.getElementById('lock-modal').classList.remove('show');
                 setTimeout(() => { 
                     document.getElementById('lock-modal').style.display = 'none'; 
                     openEnvelope(); 
+                    // Remove spotlight do DOM depois do fade out para não estorvar
+                    setTimeout(() => document.getElementById('spotlight').style.display = 'none', 1500);
                 }, 300);
             } else {
                 const errorMsg = document.getElementById('error-msg');
@@ -755,6 +788,7 @@
             document.getElementById('success-message').style.display = 'flex';
             spawnRealPetals(); 
             startSlideshow(); 
+            spawnBalloons(); // --- ADICIONADO: INICIA OS BALÕES QUANDO DIZ SIM ---
         }
 
         function startSlideshow() {
@@ -782,6 +816,56 @@
             document.body.appendChild(petal);
             setTimeout(() => { petal.remove(); }, 7000);
         }
+
+        // --- ADICIONADO: LÓGICA DOS BALÕES INTERATIVOS E PALAVRAS ---
+        const complimentWords = ["Linda! 💖", "Perfeita! ✨", "Incrível! 😍", "Única! 🌹", "Maravilhosa! 💘", "Preciosa! 💎"];
+        let balloonInterval;
+
+        function spawnBalloons() {
+            // Cria um balão a cada 1.5 segundos no ecrã final
+            balloonInterval = setInterval(createOneBalloon, 1500);
+        }
+
+        function createOneBalloon() {
+            const balloon = document.createElement('div');
+            balloon.classList.add('interactive-balloon');
+            balloon.innerHTML = '❤️'; // Pode ser ❤️ ou 🎈
+            balloon.style.left = Math.random() * 80 + 10 + '%';
+            balloon.style.animationDuration = (Math.random() * 4 + 5) + 's'; 
+            
+            const popEvent = (e) => {
+                if(e.cancelable && e.type === 'touchstart') e.preventDefault();
+                
+                const rect = balloon.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                
+                balloon.remove(); 
+                showComplimentWord(x, y); 
+            };
+            
+            balloon.addEventListener('mousedown', popEvent);
+            balloon.addEventListener('touchstart', popEvent, {passive: false});
+            
+            document.body.appendChild(balloon);
+            
+            // Remove o balão se ele sair do ecrã sem ser rebentado
+            setTimeout(() => { if (document.body.contains(balloon)) balloon.remove(); }, 10000);
+        }
+
+        function showComplimentWord(x, y) {
+            const wordDiv = document.createElement('div');
+            wordDiv.classList.add('pop-word');
+            wordDiv.innerHTML = complimentWords[Math.floor(Math.random() * complimentWords.length)];
+            wordDiv.style.left = x + 'px';
+            wordDiv.style.top = y + 'px';
+            
+            document.body.appendChild(wordDiv);
+            
+            // Remove a palavra após a animação terminar
+            setTimeout(() => { if (document.body.contains(wordDiv)) wordDiv.remove(); }, 2000);
+        }
+        // --- FIM DA ADIÇÃO JAVASCRIPT ---
     </script>
 </body>
 </html>
