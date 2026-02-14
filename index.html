@@ -282,7 +282,7 @@
             z-index: 300; position: relative; min-height: 80px; 
         }
         
-        /* ADICIONADO: Efeito do cursor a piscar */
+        /* Efeito do cursor a piscar */
         #final-text-typing::after {
             content: '|';
             animation: blinkCursor 0.7s infinite;
@@ -313,9 +313,37 @@
             opacity: 1; transform: translateY(0) rotateZ(var(--rot)) scale(1);
         }
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
+
+        /* --- ADICIONADO: SELO DE COMPROMISSO --- */
+        #stamp-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 99999; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.4); 
+            transition: opacity 0.5s ease;
+        }
+        .stamp-text {
+            font-family: 'Pacifico', cursive; font-size: 5rem; color: #ff4757;
+            border: 8px solid #ff4757; padding: 20px 40px; border-radius: 20px;
+            text-transform: uppercase; text-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+            box-shadow: 0 0 30px rgba(255, 71, 87, 0.4), inset 0 0 20px rgba(255, 71, 87, 0.4);
+            transform: scale(10); opacity: 0; transform-origin: center;
+        }
+        .stamp-text.slam {
+            animation: slamStamp 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        @keyframes slamStamp {
+            0% { transform: scale(10) rotate(-20deg); opacity: 0; }
+            50% { transform: scale(0.8) rotate(-10deg); opacity: 1; }
+            70% { transform: scale(1.1) rotate(-15deg); opacity: 1; }
+            100% { transform: scale(1) rotate(-15deg); opacity: 1; }
+        }
     </style>
 </head>
 <body class="candle-mode">
+
+    <div id="stamp-overlay">
+        <div class="stamp-text">ACEITE! ❤️</div>
+    </div>
 
     <div id="spotlight"></div>
 
@@ -692,7 +720,7 @@
             yes.style.transform = `scale(${scale})`;
         }
 
-        // --- ADICIONADO: LÓGICA DO EFEITO MÁQUINA DE ESCREVER ---
+        // --- LÓGICA DO EFEITO MÁQUINA DE ESCREVER ---
         const typeLine1 = "A melhor resposta do mundo! ❤️";
         const typeLine2 = "Amo-te daqui até à lua!";
         let typeIndex1 = 0;
@@ -706,7 +734,7 @@
                 setTimeout(typeWriter1, 70);
             } else {
                 typingElement.innerHTML += "<br><br>";
-                setTimeout(typeWriter2, 600); // Pausa dramática antes de escrever a 2ª linha
+                setTimeout(typeWriter2, 600); // Pausa dramática
             }
         }
 
@@ -717,20 +745,38 @@
                 setTimeout(typeWriter2, 70);
             }
         }
-        // --- FIM DA LÓGICA MÁQUINA DE ESCREVER ---
 
+        // --- MODIFICADO: FUNÇÃO ACCEPTED COM O CARIMBO ---
         function accepted() {
-            document.getElementById('main-content').classList.remove('visible');
-            setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
-            document.getElementById('success-message').style.display = 'flex';
+            // 1. Mostrar o Carimbo e parar a animação do botão
+            const stampOverlay = document.getElementById('stamp-overlay');
+            const stampText = document.querySelector('.stamp-text');
+            stampOverlay.style.display = 'flex';
+            document.getElementById('yesBtn').classList.remove('pulsing');
             
-            // --- INICIA A MÁQUINA DE ESCREVER AQUI ---
-            typingElement = document.getElementById('final-text-typing');
-            typingElement.innerHTML = ""; // Garante que começa limpo
-            setTimeout(typeWriter1, 600); // Começa a digitar depois da página aparecer
-            
-            spawnRealPetals(); 
-            startSlideshow(); 
+            // 2. Disparar a animação de bater na mesa
+            setTimeout(() => {
+                stampText.classList.add('slam');
+            }, 50);
+
+            // 3. Esperar 2 segundos e depois avançar para a parte final
+            setTimeout(() => {
+                stampOverlay.style.opacity = '0';
+                setTimeout(() => stampOverlay.style.display = 'none', 500); // fade out do carimbo
+                
+                // O código original de transição
+                document.getElementById('main-content').classList.remove('visible');
+                setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
+                document.getElementById('success-message').style.display = 'flex';
+                
+                // Inicia a Máquina de Escrever
+                typingElement = document.getElementById('final-text-typing');
+                typingElement.innerHTML = ""; 
+                setTimeout(typeWriter1, 600); 
+                
+                spawnRealPetals(); 
+                startSlideshow(); 
+            }, 2000);
         }
 
         function startSlideshow() {
