@@ -29,7 +29,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- BOTÃO DE MÚSICA NO CANTO --- */
         #music-btn {
             position: fixed; top: 30px; right: 20px; width: 50px; height: 50px;
             background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px);
@@ -39,12 +38,10 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, background 0.3s;
         }
-        #music-btn:hover { transform: scale(1.1); background: rgba(255, 255, 255, 1); }
         #music-icon { font-size: 24px; display: inline-block; }
         .spin { animation: spinMusic 3s linear infinite; }
         @keyframes spinMusic { 100% { transform: rotate(360deg); } }
 
-        /* --- PÉTALAS REAIS (CSS PURO) --- */
         .rose-petal {
             position: fixed; top: -50px; z-index: 9999;
             background: #d32f2f; border-radius: 5px 100% 5px 100%;
@@ -53,13 +50,9 @@
         }
         @keyframes fall {
             0% { transform: translateY(0) rotate(0deg) translateX(0); }
-            25% { transform: translateY(25vh) rotate(45deg) translateX(20px); }
-            50% { transform: translateY(50vh) rotate(90deg) translateX(-20px); }
-            75% { transform: translateY(75vh) rotate(180deg) translateX(20px); }
             100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
         }
 
-        /* --- 1. ECRÃ DO ENVELOPE --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.2); 
@@ -67,7 +60,6 @@
             justify-content: center; align-items: center; transition: opacity 1.5s ease;
         }
         .envelope-wrapper { position: relative; cursor: pointer; transition: transform 0.3s ease; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); }
-        .envelope-wrapper:hover { transform: scale(1.02); }
         .envelope { position: relative; width: 320px; height: 220px; background: #750000; border-radius: 4px; display: flex; justify-content: center; z-index: 10; }
         .letter {
             position: absolute; bottom: 0; width: 290px; height: 200px;
@@ -76,16 +68,12 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; padding: 8px; 
         }
-        .letter img { 
-            width: 100% !important; height: 100% !important; max-width: none !important;
-            margin: 0 !important; border-radius: 4px !important; box-shadow: none !important;
-            object-fit: cover; display: block; 
-        }
+        .letter img { width: 100% !important; height: 100% !important; object-fit: cover; }
         .flap {
             position: absolute; top: 0; left: 0; width: 0; height: 0;
             border-left: 160px solid transparent; border-right: 160px solid transparent;
             border-top: 130px solid #8a0b0b; transform-origin: top;
-            transition: transform 2s ease-in-out, z-index 2s; z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
+            transition: transform 2s ease-in-out, z-index 2s; z-index: 20;
         }
         .pocket {
             position: absolute; bottom: 0; left: 0; width: 0; height: 0;
@@ -97,18 +85,16 @@
             background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
             border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.4);
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px; color: #5c4010; border: 2px solid #daa520; animation: pulse 2s infinite;
+            font-size: 24px; color: #5c4010; border: 2px solid #daa520;
         }
         .label-sticker {
             position: absolute; bottom: 30px; z-index: 30; background: #fff; width: 110%; left: -5%; padding: 10px 0; text-align: center;
-            transform: rotate(-3deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: #333; border: 1px solid #ddd; 
+            transform: rotate(-3deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: #333;
         }
-        .click-text { margin-top: 70px; font-family: 'Poppins', sans-serif; color: white; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; animation: bounce 2s infinite; opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
         .open-flap { transform: rotateX(180deg); z-index: 1 !important; }
         .slide-letter { transform: translateY(-160px); z-index: 30 !important; } 
         .fade-out { opacity: 0; pointer-events: none; }
 
-        /* --- O CADEADO DIGITAL --- */
         #lock-modal {
             display: none; flex-direction: column; align-items: center;
             background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px;
@@ -117,622 +103,251 @@
             z-index: 10000; opacity: 0; transition: all 0.3s ease; width: 85%; max-width: 320px;
         }
         #lock-modal.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        #lock-modal h2 { color: #d63384; font-size: 1.3rem; margin-bottom: 5px; font-weight: 900; }
-        #lock-modal p.hint { color: #555; font-size: 0.9rem; margin-bottom: 15px; }
         #lock-modal input {
             padding: 12px; font-size: 1.2rem; border: 2px solid #ffc0cb; border-radius: 8px; 
-            text-align: center; width: 100%; margin-bottom: 15px; 
-            font-family: 'Poppins', sans-serif; font-weight: 700; outline: none; letter-spacing: 2px;
+            text-align: center; width: 100%; margin-bottom: 15px; font-family: 'Poppins', sans-serif;
         }
-        #lock-modal input:focus { border-color: #ff4757; }
-        #lock-modal button { padding: 12px 0; width: 100%; font-size: 1.1rem; }
+        #lock-modal button { padding: 12px 0; width: 100%; font-size: 1.1rem; background: #ff4757; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
 
-        /* --- 2. O CAMINHO DAS MEMÓRIAS --- */
         #memories-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 0, 5, 0.95); 
-            z-index: 80; opacity: 0; transition: opacity 1s ease;
-            flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
+            background: rgba(15, 0, 5, 0.95); z-index: 80; opacity: 0; transition: opacity 1s ease;
+            flex-direction: column; align-items: center; justify-content: center;
         }
         #memories-text-container {
             position: absolute; width: 90%; text-align: center;
-            color: #fff; font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 300; line-height: 2.2;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8); transform: translateY(100vh); 
+            color: #fff; font-family: 'Poppins', sans-serif; font-size: 1.5rem; transform: translateY(100vh); 
         }
-        #memories-text-container p { margin-bottom: 40px; color: #ffc0cb; font-weight: 700; }
-        #memories-text-container span { color: white; }
-        
         .start-scroll { animation: scrollUp 22s linear forwards; }
         @keyframes scrollUp {
             0% { transform: translateY(100vh); opacity: 0; }
             10% { opacity: 1; }
-            80% { opacity: 1; }
+            90% { opacity: 1; }
             100% { transform: translateY(-100vh); opacity: 0; }
         }
 
-        /* --- 3. JOGO: CAÇA AOS CORAÇÕES --- */
         #game-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             flex-direction: column; align-items: center; justify-content: center;
-            z-index: 50; opacity: 0; transform: scale(0.9); transition: all 1s ease;
-        }
-        #game-screen h2 {
-            font-family: 'Poppins', sans-serif; font-size: 1.6rem; color: #750000;
-            font-weight: 900; z-index: 60; text-shadow: 0 2px 4px rgba(255,255,255,0.8);
-            padding: 0 20px; line-height: 1.3; text-align: center;
-        }
-        #game-screen h3 {
-            font-family: 'Poppins', sans-serif; font-size: 1.2rem; color: #fff;
-            background: #ff4757; padding: 8px 25px; border-radius: 30px; z-index: 60;
-            margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); font-weight: 700;
+            z-index: 50; opacity: 0; transition: all 1s ease;
         }
         #game-hearts-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 55; overflow: hidden; }
-        .game-heart {
-            position: absolute; bottom: -100px; cursor: pointer; user-select: none;
-            -webkit-tap-highlight-color: transparent; animation: floatGameUp linear infinite;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); transition: transform 0.1s ease-out; touch-action: manipulation; 
-        }
-        .game-heart:active { transform: scale(0.8); }
-        .game-heart.popped { animation: popHeart 0.3s forwards !important; pointer-events: none; }
-        @keyframes floatGameUp { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(-120vh) scale(1) rotate(20deg); opacity: 1; } }
-        @keyframes popHeart { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.8; filter: drop-shadow(0 0 15px #ff4757); } 100% { transform: scale(0); opacity: 0; } }
+        .game-heart { position: absolute; bottom: -100px; cursor: pointer; animation: floatGameUp linear infinite; }
+        @keyframes floatGameUp { 0% { transform: translateY(0); } 100% { transform: translateY(-120vh); } }
 
-        /* --- RESTO DO CSS GERAL --- */
-        .bg-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
-        .heart-bubble { position: absolute; bottom: -10%; color: #d63384; opacity: 0.4; animation: floatUp linear infinite; }
-        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
-        
         #main-content { 
-            display: none; opacity: 0; transform: scale(0.9); transition: all 1s ease; 
+            display: none; opacity: 0; transition: all 1s ease; 
             width: 100%; height: 100%; z-index: 10; position: relative; 
             flex-direction: column; align-items: center; justify-content: center;
         }
         .visible { opacity: 1 !important; transform: scale(1) !important; }
         
-        /* TEMPORIZADOR */
-        #timer-container { margin-bottom: 15px; }
-        #timer-title { font-size: 0.9rem; color: #d63384; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
-        #timer { display: flex; justify-content: center; gap: 6px; }
-        .time-box { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(5px); padding: 8px 10px; border-radius: 12px; min-width: 55px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.8); }
-        .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
-        .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
+        #timer { display: flex; justify-content: center; gap: 6px; margin-bottom: 20px; }
+        .time-box { background: rgba(255, 255, 255, 0.6); padding: 8px 10px; border-radius: 12px; min-width: 55px; display: flex; flex-direction: column; }
+        .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; }
+        .time-box .label { font-size: 0.6rem; color: #d63384; font-weight: 800; }
         
-        /* --- 4. ÁREA DA RASPADINHA --- */
         #scratch-wrapper {
             position: relative; display: flex; flex-direction: column; align-items: center;
             padding: 25px 20px; background: rgba(255, 255, 255, 0.6); border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 90%; margin-bottom: 20px;
-            border: 2px solid rgba(255,255,255,0.8);
+            max-width: 90%; margin-bottom: 20px;
         }
-        #scratch-canvas {
-            position: absolute; top: 0; left: 0; z-index: 20; border-radius: 20px;
-            cursor: crosshair; transition: opacity 1s ease;
-        }
-        h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 0; }
+        #scratch-canvas { position: absolute; top: 0; left: 0; z-index: 20; border-radius: 20px; cursor: crosshair; }
         
-        img:not(.slide):not(.letter img) { 
-            border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
-            max-width: 200px; height: auto; object-fit: cover; 
-        }
-        
-        /* BOTÕES DE AÇÃO LIGADOS À RASPADINHA */
-        #button-container {
-            display: flex; flex-direction: column; gap: 15px;
-            opacity: 0; pointer-events: none; transition: opacity 1s ease;
-            align-items: center; justify-content: center; width: 100%;
-        }
+        #button-container { display: flex; flex-direction: column; gap: 15px; opacity: 0; pointer-events: none; transition: opacity 1s ease; }
         #button-container.show { opacity: 1; pointer-events: auto; }
+        button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; font-family: 'Poppins', sans-serif; }
+        #yesBtn { background-color: #ff4757; color: white; }
+        #noBtn { background-color: white; color: #ff4757; }
 
-        button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s, transform 0.2s ease; }
-        #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); z-index: 50; }
-        #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 40; }
-        
-        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.08); } 30% { transform: scale(1); } 45% { transform: scale(1.08); } 60% { transform: scale(1); } }
-        .pulsing { animation: heartbeat 1.5s infinite; }
-        @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
-        
-        /* --- ESTILOS DO SLIDESHOW COM FUNDO ANIMADO --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, rgba(255,192,203,0.95), rgba(200,230,201,0.95), rgba(255,182,193,0.95), rgba(168,230,207,0.95));
-            background-size: 400% 400%;
-            animation: popIn 0.5s, gradientBG 15s ease infinite; 
-            z-index: 200; 
+            background: linear-gradient(135deg, #ffc0cb, #c8e6c9); z-index: 200; 
         }
-        #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
+        #success-message p { font-size: 1.8rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; padding: 0 20px; }
         
         #slideshow-container {
             position: relative; width: 85%; max-width: 340px; height: 450px; 
-            border: 8px solid white; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            overflow: hidden; background: #fff; transform: rotate(-2deg); 
+            border: 8px solid white; border-radius: 10px; overflow: hidden;
         }
-        .slide {
-            position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; 
-            object-fit: cover; opacity: 0; transition: opacity 2.5s ease-in-out; 
-            max-width: none !important; border-radius: 0 !important; margin: 0 !important; box-shadow: none !important;
-        }
-        .slide.active { opacity: 1; }
-        .hidden { display: none !important; }
-        #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 2s; }
+        .active { opacity: 1; }
+        #player { position: absolute; top: -9999px; }
     </style>
 </head>
 <body>
 
     <div id="player"></div>
-
-    <div id="music-btn" onclick="toggleMusic()">
-        <span id="music-icon">🎵</span>
-    </div>
-
-    <div class="bg-hearts" id="heartsContainer"></div>
+    <div id="music-btn" onclick="toggleMusic()"><span id="music-icon">🎵</span></div>
 
     <div id="intro-screen">
         <div class="envelope-wrapper" onclick="promptPassword(event)">
             <div class="envelope">
-                <div class="letter">
-                    <img src="foto.jpg" alt="Nós" onerror="this.src='https://placehold.co/600x400?text=Foto+Aqui'">
-                </div>
+                <div class="letter"><img src="foto.jpg" alt="Foto" onerror="this.src='https://placehold.co/400x400?text=❤️'"></div>
                 <div class="pocket"></div>
                 <div class="flap" id="flap"></div>
                 <div class="label-sticker">Para: O Amor da Minha Vida</div>
-                <div class="seal" id="seal">♥</div>
+                <div class="seal">♥</div>
             </div>
         </div>
-        <div class="click-text">Toca para abrir</div>
-
         <div id="lock-modal">
-            <h2>Melhor data de sempre 🔒</h2>
-            <p class="hint">Desbloqueia o envelope com a nossa data.</p>
+            <h2 style="color:#ff4757; margin-bottom:10px;">Data Especial 🔒</h2>
             <input type="text" id="password-input" placeholder="DD/MM/AAAA" maxlength="10">
-            <button id="unlock-btn" onclick="checkPassword()">Desbloquear ❤️</button>
-            <p id="error-msg" style="color: red; font-size: 0.85rem; margin-top: 10px; display: none; font-weight: 700;">Data incorreta. Tenta outra vez! 💔</p>
+            <button onclick="checkPassword()">Abrir ❤️</button>
         </div>
     </div>
 
     <div id="memories-screen" onclick="skipMemories()">
         <div id="memories-text-container">
-            <p>Amo o teu sorriso... <span>💖</span></p>
-            <p>Amo a forma como me aturas...</p>
-            <p>Amo cada momento nosso... <span>✨</span></p>
-            <p>És a minha pessoa favorita...</p>
-            <p>A nossa história está só a começar... <span>📖</span></p>
-            <p>Mal posso esperar pelo nosso futuro...</p>
-            <p>Que venham muitas mais aventuras juntos...</p>
-            <p>Ao teu lado, a vida é mais bonita... <span>🌺</span></p>
+            <p style="margin-bottom:30px;">Amo o teu sorriso... 💖</p>
+            <p style="margin-bottom:30px;">Amo cada momento nosso... ✨</p>
+            <p style="margin-bottom:30px;">És a minha pessoa favorita...</p>
+            <p>A nossa história está só a começar... 📖</p>
         </div>
-        <div style="position: absolute; bottom: 20px; color: rgba(255,255,255,0.4); font-size: 0.8rem; font-family: 'Poppins', sans-serif;">(Toca no ecrã para saltar)</div>
     </div>
 
     <div id="game-screen">
-        <h2>Clica em <span style="color: #ff4757; font-size: 2rem;">3</span> corações<br>para descobrires a surpresa!</h2>
-        <h3>Faltam: <span id="hearts-left">3</span></h3>
+        <h2 style="color:#750000; z-index:100;">Clica em 3 corações!</h2>
         <div id="game-hearts-container"></div>
     </div>
 
     <div id="main-content">
-        <div id="timer-container">
-            <div id="timer-title">AMO-TE HÁ:</div>
-            <div id="timer">
-                <div class="time-box"><span id="years">0</span><div class="label">Anos</div></div>
-                <div class="time-box"><span id="months">0</span><div class="label">Meses</div></div>
-                <div class="time-box"><span id="days">0</span><div class="label">Dias</div></div>
-                <div class="time-box"><span id="hours">0</span><div class="label">Horas</div></div>
-                <div class="time-box"><span id="minutes">0</span><div class="label">Min</div></div>
-                <div class="time-box"><span id="seconds">0</span><div class="label">Seg</div></div>
-            </div>
+        <div id="timer">
+            <div class="time-box"><span id="years">0</span><div class="label">Anos</div></div>
+            <div class="time-box"><span id="months">0</span><div class="label">Meses</div></div>
+            <div class="time-box"><span id="days">0</span><div class="label">Dias</div></div>
         </div>
-
         <div id="scratch-wrapper">
-            <h1 id="question">Queres ser a minha Valentine? ❤️</h1>
-            <img id="gif" src="nossa_foto.jpg" alt="A nossa foto">
+            <h1 style="color:#d63384; font-family:'Pacifico';">Queres ser a minha Valentine?</h1>
+            <img src="nossa_foto.jpg" style="width:200px; border-radius:20px;">
             <canvas id="scratch-canvas"></canvas>
         </div>
-
         <div id="button-container">
-            <button id="yesBtn" class="pulsing" onclick="accepted()">SIM</button>
+            <button id="yesBtn" onclick="accepted()">SIM</button>
             <button id="noBtn" onclick="reject()">NÃO</button>
         </div>
     </div>
 
     <div id="success-message">
         <p>A melhor resposta do mundo! ❤️<br><br>Amo-te daqui até à lua!</p>
-        
         <div id="slideshow-container">
             <img src="foto1.jpg" class="slide active">
             <img src="foto2.jpg" class="slide">
             <img src="foto3.jpg" class="slide">
-            <img src="foto4.jpg" class="slide"> 
-            <img src="foto5.jpg" class="slide"> 
         </div>
     </div>
 
     <script>
         var player;
-        let isMusicPlaying = false;
-        let envelopeOpened = false;
-
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 height: '0', width: '0', videoId: 'TKB7pZO3okM',
                 playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'TKB7pZO3okM' },
-                events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+                events: { 'onReady': (e) => e.target.setVolume(100) }
             });
         }
-        function onPlayerReady(event) { event.target.setVolume(100); }
-        function onPlayerStateChange(event) {
-            const icon = document.getElementById('music-icon');
-            if (event.data == YT.PlayerState.PLAYING) {
-                icon.classList.add('spin'); isMusicPlaying = true;
-            } else {
-                icon.classList.remove('spin'); isMusicPlaying = false;
-            }
-        }
-        function toggleMusic() {
-            if (player && typeof player.getPlayerState === 'function') {
-                if (isMusicPlaying) player.pauseVideo();
-                else player.playVideo();
-            }
+        function toggleMusic() { 
+            const state = player.getPlayerState();
+            if(state == 1) player.pauseVideo(); else player.playVideo();
+            document.getElementById('music-icon').classList.toggle('spin');
         }
 
-        // --- SISTEMA DE CADEADO ---
-        function promptPassword(event) {
-            event.stopPropagation(); 
-            if (envelopeOpened) return; 
-            
-            const modal = document.getElementById('lock-modal');
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('show'); }, 10);
-            
-            document.querySelector('.click-text').style.display = 'none';
-            document.getElementById('password-input').focus();
+        function promptPassword(e) {
+            document.getElementById('lock-modal').style.display = 'flex';
+            setTimeout(() => document.getElementById('lock-modal').classList.add('show'), 10);
         }
-
-        document.getElementById('password-input').addEventListener('input', function (e) {
-            let value = e.target.value.replace(/\D/g, ''); 
-            if (value.length > 8) value = value.slice(0, 8);
-            if (value.length >= 5) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4);
-            } else if (value.length >= 3) {
-                value = value.slice(0, 2) + '/' + value.slice(2);
-            }
-            e.target.value = value;
-            document.getElementById('error-msg').style.display = 'none'; 
-        });
-
-        document.getElementById('password-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') checkPassword();
-        });
 
         function checkPassword() {
-            const input = document.getElementById('password-input').value;
-            if (input === '20/04/2024') {
-                document.getElementById('lock-modal').classList.remove('show');
-                setTimeout(() => { 
-                    document.getElementById('lock-modal').style.display = 'none'; 
-                    openEnvelope(); 
-                }, 300);
-            } else {
-                const errorMsg = document.getElementById('error-msg');
-                errorMsg.style.display = 'block';
-                const modal = document.getElementById('lock-modal');
-                modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(-10px)';
-                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(10px)', 50);
-                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(-10px)', 100);
-                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(10px)', 150);
-                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(0)', 200);
+            if(document.getElementById('password-input').value === '20/04/2024') {
+                document.getElementById('lock-modal').style.display = 'none';
+                document.getElementById('flap').classList.add('open-flap');
+                setTimeout(() => document.querySelector('.letter').classList.add('slide-letter'), 1000);
+                setTimeout(() => {
+                    document.getElementById('intro-screen').classList.add('fade-out');
+                    startMemories();
+                }, 4000);
+                player.playVideo();
             }
         }
-
-        function openEnvelope() {
-            if (envelopeOpened) return; 
-            envelopeOpened = true;
-
-            const flap = document.getElementById('flap');
-            const seal = document.getElementById('seal');
-            const letter = document.querySelector('.letter');
-            const screen = document.getElementById('intro-screen');
-
-            if (player && typeof player.playVideo === 'function') player.playVideo();
-
-            flap.classList.add('open-flap');
-            seal.style.opacity = '0';
-            setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
-
-            setTimeout(() => {
-                screen.classList.add('fade-out');
-                setTimeout(() => {
-                    screen.style.display = 'none';
-                    startMemories(); 
-                }, 1000);
-            }, 5500);
-        }
-
-        // --- LÓGICA DAS MEMÓRIAS ---
-        let memoriesTimeout1, memoriesTimeout2;
-        let memoriesSkipped = false;
 
         function startMemories() {
-            const memoriesScreen = document.getElementById('memories-screen');
-            const memoriesText = document.getElementById('memories-text-container');
-            
-            memoriesScreen.style.display = 'flex';
-            setTimeout(() => { 
-                memoriesScreen.style.opacity = '1'; 
-                memoriesText.classList.add('start-scroll'); 
-            }, 50);
-
-            memoriesTimeout1 = setTimeout(() => {
-                if (memoriesSkipped) return; 
-                memoriesScreen.style.opacity = '0';
-                
-                memoriesTimeout2 = setTimeout(() => {
-                    if (memoriesSkipped) return;
-                    memoriesScreen.style.display = 'none';
-                    startGame(); 
-                }, 1000);
-            }, 22000); 
-        }
-
-        function skipMemories() {
-            if (memoriesSkipped) return; 
-            memoriesSkipped = true;
-            clearTimeout(memoriesTimeout1); 
-            clearTimeout(memoriesTimeout2);
-            
-            const memoriesScreen = document.getElementById('memories-screen');
-            memoriesScreen.style.opacity = '0'; 
+            const screen = document.getElementById('memories-screen');
+            screen.style.display = 'flex';
             setTimeout(() => {
-                memoriesScreen.style.display = 'none';
-                startGame(); 
-            }, 500);
+                screen.style.opacity = '1';
+                document.getElementById('memories-text-container').classList.add('start-scroll');
+            }, 100);
+            setTimeout(startGame, 22000);
         }
 
-        // --- LÓGICA DO JOGO DOS CORAÇÕES ---
-        let poppedCount = 0;
-        const totalToPop = 3;
+        function skipMemories() { startGame(); }
 
         function startGame() {
-            const gameScreen = document.getElementById('game-screen');
-            gameScreen.style.display = 'flex';
-            setTimeout(() => { gameScreen.classList.add('visible'); }, 50);
-            
+            document.getElementById('memories-screen').style.display = 'none';
+            const screen = document.getElementById('game-screen');
+            screen.style.display = 'flex';
+            screen.style.opacity = '1';
             const container = document.getElementById('game-hearts-container');
-            container.innerHTML = ''; 
-            poppedCount = 0;
-            document.getElementById('hearts-left').innerText = totalToPop;
-
-            const heartEmojis = ['❤️', '💖', '💘', '💝', '💗'];
-            for (let i = 0; i < 25; i++) {
-                let heart = document.createElement('div');
-                heart.classList.add('game-heart');
-                heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                
-                heart.style.left = (Math.random() * 80 + 10) + '%'; 
-                heart.style.fontSize = (Math.random() * 35 + 45) + 'px'; 
-                heart.style.animationDuration = (Math.random() * 4 + 3) + 's'; 
-                heart.style.animationDelay = (Math.random() * 3) + 's';
-                
-                heart.addEventListener('touchstart', popHeartEvent, {passive: false});
-                heart.addEventListener('mousedown', popHeartEvent);
-
-                container.appendChild(heart);
+            let pops = 0;
+            for(let i=0; i<20; i++) {
+                let h = document.createElement('div');
+                h.className = 'game-heart';
+                h.innerHTML = '❤️';
+                h.style.left = Math.random()*90+'%';
+                h.style.fontSize = '40px';
+                h.style.animationDuration = (Math.random()*3+2)+'s';
+                h.onclick = () => { h.style.display='none'; pops++; if(pops>=3) showMain(); };
+                container.appendChild(h);
             }
         }
 
-        function popHeartEvent(e) {
-            if(e.type === 'touchstart') e.preventDefault(); 
-            if(this.classList.contains('popped')) return;
-            
-            this.classList.add('popped');
-            poppedCount++;
-            
-            let left = totalToPop - poppedCount;
-            document.getElementById('hearts-left').innerText = Math.max(left, 0);
-
-            if(poppedCount >= totalToPop) {
-                endGame();
-            }
-        }
-
-        function endGame() {
-            const gameScreen = document.getElementById('game-screen');
-            gameScreen.style.pointerEvents = 'none'; 
-            
-            setTimeout(() => {
-                gameScreen.classList.remove('visible'); 
-                setTimeout(() => {
-                    gameScreen.style.display = 'none';
-                    showMainContent(); 
-                }, 1000);
-            }, 500); 
-        }
-
-        // --- LÓGICA DO RESTO DO SITE E DA RASPADINHA ---
-        function showMainContent() {
+        function showMain() {
+            document.getElementById('game-screen').style.display = 'none';
             const main = document.getElementById('main-content');
             main.style.display = 'flex';
-            
-            setTimeout(() => { 
-                main.classList.add('visible'); 
-                initScratchCard(); 
-            }, 200);
+            setTimeout(() => main.classList.add('visible'), 100);
+            initScratch();
         }
 
-        function initScratchCard() {
-            const wrapper = document.getElementById('scratch-wrapper');
+        function initScratch() {
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
-            
-            canvas.width = wrapper.offsetWidth;
-            canvas.height = wrapper.offsetHeight;
-            
-            let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, '#e6c27a');
-            grad.addColorStop(0.5, '#ffd700');
-            grad.addColorStop(1, '#daa520');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "rgba(255,255,255,0.3)";
-            for(let i=0; i<canvas.width; i+=20) { ctx.fillRect(i, 0, 1, canvas.height); }
-            
-            ctx.font = "bold 22px Poppins";
-            ctx.fillStyle = "#fff";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.shadowColor = "rgba(0,0,0,0.4)";
-            ctx.shadowBlur = 5;
-            ctx.fillText("Raspa aqui! 🪙", canvas.width/2, canvas.height/2);
-            
-            ctx.shadowBlur = 0; 
-            
-            let isDrawing = false;
-            
-            function getPos(e) {
+            canvas.width = 300; canvas.height = 350;
+            ctx.fillStyle = '#ffd700';
+            ctx.fillRect(0,0,300,350);
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px Arial';
+            ctx.fillText('Raspa Aqui!', 100, 170);
+
+            canvas.onmousemove = (e) => {
+                if(e.buttons !== 1) return;
                 const rect = canvas.getBoundingClientRect();
-                let x, y;
-                if (e.touches && e.touches.length > 0) {
-                    x = e.touches[0].clientX - rect.left;
-                    y = e.touches[0].clientY - rect.top;
-                } else {
-                    x = e.clientX - rect.left;
-                    y = e.clientY - rect.top;
-                }
-                return { x, y };
-            }
-            
-            function scratch(e) {
-                if (!isDrawing) return;
-                if(e.cancelable) e.preventDefault(); 
-                
-                const pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out'; 
+                ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); 
+                ctx.arc(e.clientX-rect.left, e.clientY-rect.top, 30, 0, Math.PI*2);
                 ctx.fill();
-                checkReveal();
-            }
-            
-            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
-            canvas.addEventListener('mousemove', scratch);
-            canvas.addEventListener('mouseup', () => { isDrawing = false; });
-            canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-            
-            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
-            canvas.addEventListener('touchmove', scratch, {passive: false});
-            canvas.addEventListener('touchend', () => { isDrawing = false; });
-        }
-
-        let checkTimeout;
-        let isRevealed = false;
-        
-        function checkReveal() {
-            if (checkTimeout || isRevealed) return;
-            
-            checkTimeout = setTimeout(() => {
-                const canvas = document.getElementById('scratch-canvas');
-                const ctx = canvas.getContext('2d');
-                const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                
-                let clearCount = 0;
-                for (let i = 3; i < pixels.length; i += 4) {
-                    if (pixels[i] === 0) clearCount++;
-                }
-                const percent = (clearCount / (pixels.length / 4)) * 100;
-                
-                if (percent > 45) { 
-                    isRevealed = true;
-                    canvas.style.opacity = '0'; 
-                    canvas.style.pointerEvents = 'none';
-                    document.getElementById('button-container').classList.add('show'); 
-                }
-                checkTimeout = null;
-            }, 150);
-        }
-
-        function createHearts() {
-            const container = document.getElementById('heartsContainer');
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('heart-bubble');
-                heart.innerHTML = '❤';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
-                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
-                heart.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(heart);
-            }
-        }
-        createHearts();
-
-        const startDate = new Date(2024, 3, 20, 0, 0, 0); 
-        function updateTimer() {
-            const now = new Date();
-            let years = now.getFullYear() - startDate.getFullYear();
-            let months = now.getMonth() - startDate.getMonth();
-            let days = now.getDate() - startDate.getDate();
-            if (days < 0) { months--; const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0); days += lastMonth.getDate(); }
-            if (months < 0) { years--; months += 12; }
-            const diff = now - startDate;
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById("years").innerText = years;
-            document.getElementById("months").innerText = months;
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours;
-            document.getElementById("minutes").innerText = minutes;
-            document.getElementById("seconds").innerText = seconds;
-        }
-        setInterval(updateTimer, 1000);
-        updateTimer(); 
-
-        const phrases = ["Tens a certeza?", "Pensa bem...", "Estás a fazer-te difícil?", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "Último aviso!"];
-        let count = 0; let scale = 1;
-
-        function reject() {
-            const btn = document.getElementById('noBtn'); const yes = document.getElementById('yesBtn');
-            btn.innerHTML = phrases[count % phrases.length]; count++;
-            yes.classList.remove('pulsing'); 
-            scale += 0.3; 
-            yes.style.transform = `scale(${scale})`;
+                document.getElementById('button-container').classList.add('show');
+            };
         }
 
         function accepted() {
-            document.getElementById('main-content').classList.remove('visible');
-            setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
-            
+            document.getElementById('main-content').style.display = 'none';
             document.getElementById('success-message').style.display = 'flex';
-            spawnRealPetals(); 
-            startSlideshow(); 
-        }
-
-        function startSlideshow() {
-            const slides = document.querySelectorAll('.slide');
-            let currentSlide = 0;
             setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 6000);
+                const active = document.querySelector('.slide.active');
+                active.classList.remove('active');
+                let next = active.nextElementSibling || document.querySelector('.slide');
+                next.classList.add('active');
+            }, 3000);
         }
 
-        function spawnRealPetals() {
-            for (let i = 0; i < 30; i++) { setTimeout(() => { createOnePetal(); }, i * 200); }
-        }
-
-        function createOnePetal() {
-            const petal = document.createElement('div'); petal.classList.add('rose-petal');
-            petal.style.left = Math.random() * 100 + 'vw';
-            const size = Math.random() * 15 + 20; 
-            petal.style.width = size + 'px'; petal.style.height = size + 'px';
-            const colors = ['#800000', '#b71c1c', '#d32f2f', '#c62828'];
-            petal.style.background = colors[Math.floor(Math.random() * colors.length)];
-            petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            document.body.appendChild(petal);
-            setTimeout(() => { petal.remove(); }, 7000);
+        function reject() {
+            const yes = document.getElementById('yesBtn');
+            const currentScale = yes.style.transform.replace(/[^\d.]/g, '') || 1;
+            yes.style.transform = `scale(${parseFloat(currentScale) + 0.2})`;
         }
     </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
