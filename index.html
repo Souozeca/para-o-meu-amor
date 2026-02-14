@@ -78,7 +78,7 @@
         .spin { animation: spinMusic 3s linear infinite; }
         @keyframes spinMusic { 100% { transform: rotate(360deg); } }
 
-        /* --- PÉTALAS REAIS (CSS PURO) --- */
+        /* --- PÉTALAS REAIS --- */
         .rose-petal {
             position: fixed; top: -50px; z-index: 9999;
             background: #d32f2f; border-radius: 5px 100% 5px 100%;
@@ -276,20 +276,6 @@
         }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); z-index: 300; position: relative; }
         
-        #slideshow-container {
-            position: relative; width: 85%; max-width: 340px; height: 450px; 
-            border: 8px solid white; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            overflow: hidden; background: #fff; transform: rotate(-2deg); 
-        }
-        .slide {
-            position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; 
-            object-fit: cover; opacity: 0; transition: opacity 2.5s ease-in-out; 
-            max-width: none !important; border-radius: 0 !important; margin: 0 !important; box-shadow: none !important;
-        }
-        .slide.active { opacity: 1; }
-        .hidden { display: none !important; }
-        #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
-
         /* --- EFEITO CÂMERA POLAROID --- */
         #polaroid-container {
             position: relative; width: 100%; max-width: 340px; height: 450px; 
@@ -305,10 +291,6 @@
         }
         .polaroid img {
             width: 100%; height: 280px; object-fit: cover; border-radius: 2px; border: 1px solid #eee;
-        }
-        .polaroid .caption {
-            font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #333;
-            margin-top: 15px; text-align: center; line-height: 1; font-weight: 700;
         }
         .polaroid.drop {
             opacity: 1; transform: translateY(0) rotateZ(var(--rot)) scale(1);
@@ -558,22 +540,28 @@
             setTimeout(() => { memoriesScreen.style.display = 'none'; startGame(); }, 500);
         }
 
+        // --- LÓGICA DO JOGO DOS CORAÇÕES ---
+        let poppedCount = 0;
+        const totalToPop = 3;
+
         function startGame() {
             const gameScreen = document.getElementById('game-screen');
             gameScreen.style.display = 'flex';
             setTimeout(() => { gameScreen.classList.add('visible'); }, 50);
             const container = document.getElementById('game-hearts-container');
-            container.innerHTML = ''; poppedCount = 0;
-            document.getElementById('hearts-left').innerText = 3;
+            container.innerHTML = ''; 
+            poppedCount = 0;
+            document.getElementById('hearts-left').innerText = totalToPop;
+
             const heartEmojis = ['❤️', '💖', '💘', '💝', '💗'];
-            for (let i = 0; i < 10; i++) { // Alterado de 25 para 10 corações
+            for (let i = 0; i < 8; i++) { // Alterado para 8 corações para ser mais difícil
                 let heart = document.createElement('div');
                 heart.classList.add('game-heart');
                 heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
                 heart.style.left = (Math.random() * 80 + 10) + '%'; 
                 heart.style.fontSize = (Math.random() * 35 + 45) + 'px'; 
-                heart.style.animationDuration = (Math.random() * 4 + 3) + 's'; 
-                heart.style.animationDelay = (Math.random() * 3) + 's';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Ligeiramente mais rápido
+                heart.style.animationDelay = (Math.random() * 2) + 's';
                 heart.addEventListener('touchstart', popHeartEvent, {passive: false});
                 heart.addEventListener('mousedown', popHeartEvent);
                 container.appendChild(heart);
@@ -585,9 +573,9 @@
             if(this.classList.contains('popped')) return;
             this.classList.add('popped');
             poppedCount++;
-            let left = 3 - poppedCount;
+            let left = totalToPop - poppedCount;
             document.getElementById('hearts-left').innerText = Math.max(left, 0);
-            if(poppedCount >= 3) { endGame(); }
+            if(poppedCount >= totalToPop) { endGame(); }
         }
 
         function endGame() {
@@ -679,6 +667,7 @@
         }
         setInterval(updateTimer, 1000); updateTimer(); 
 
+        // O ARRAY QUE TINHA SIDO APAGADO VOLTOU AQUI (ISSO FAZIA O BOTÃO "NÃO" FALHAR)
         const phrases = ["Tens a certeza?", "Pensa bem...", "Estás a fazer-te difícil?", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "Último aviso!"];
         let count = 0; let scale = 1;
 
