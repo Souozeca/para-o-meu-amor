@@ -21,22 +21,22 @@
             padding-top: 20px;
         }
 
-        /* --- CONTROLO DE MÚSICA (MELHORADO E DESTACADO) --- */
+        /* --- BOTÃO DE MÚSICA NO CANTO --- */
         #music-btn {
             position: fixed;
-            top: 30px; /* Mais para baixo para fugir da notch do telemóvel */
+            top: 30px; 
             right: 20px;
             width: 50px;
             height: 50px;
-            background: rgba(255, 255, 255, 0.8); /* Mais visível */
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(5px);
-            border: 2px solid #ff4757; /* Borda vermelha para destacar */
+            border: 2px solid #ff4757;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            z-index: 999999; /* Máxima prioridade, sempre à frente */
+            z-index: 999999; /* Sempre à frente */
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, background 0.3s;
         }
@@ -48,6 +48,7 @@
             font-size: 24px;
             display: inline-block;
         }
+        /* Faz a nota musical rodar */
         .spin {
             animation: spinMusic 3s linear infinite;
         }
@@ -70,10 +71,10 @@
             100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
         }
 
-        /* --- 1. ECRÃ DO ENVELOPE --- */
+        /* --- 1. ECRÃ DO ENVELOPE (FUNDO CORRIGIDO) --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.2); 
+            background: rgba(0, 0, 0, 0.2); /* Escurece suavemente sem estragar a cor */
             z-index: 9990; display: flex; flex-direction: column;
             justify-content: center; align-items: center; transition: opacity 1.5s ease;
         }
@@ -256,22 +257,34 @@
                 width: '0',
                 videoId: 'TKB7pZO3okM',
                 playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'TKB7pZO3okM' },
-                events: { 'onReady': onPlayerReady }
+                events: { 
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange // Deteta automaticamente se a música tocou ou pausou
+                }
             });
         }
         function onPlayerReady(event) { event.target.setVolume(100); }
 
-        // NOVA FUNÇÃO DO BOTÃO: Força a animação sem depender da API do YouTube
-        function toggleMusic() {
+        // Sincroniza a rotação da nota musical com o estado do vídeo do YouTube
+        function onPlayerStateChange(event) {
             const icon = document.getElementById('music-icon');
-            if (isMusicPlaying) {
-                if(player && typeof player.pauseVideo === 'function') player.pauseVideo();
-                icon.classList.remove('spin');
-                isMusicPlaying = false;
-            } else {
-                if(player && typeof player.playVideo === 'function') player.playVideo();
+            if (event.data == YT.PlayerState.PLAYING) {
                 icon.classList.add('spin');
                 isMusicPlaying = true;
+            } else {
+                icon.classList.remove('spin');
+                isMusicPlaying = false;
+            }
+        }
+
+        // FUNÇÃO PARA TOCAR/PAUSAR AO CLICAR NO BOTÃO DA MÚSICA
+        function toggleMusic() {
+            if (player && typeof player.getPlayerState === 'function') {
+                if (isMusicPlaying) {
+                    player.pauseVideo();
+                } else {
+                    player.playVideo();
+                }
             }
         }
 
@@ -281,11 +294,9 @@
             const letter = document.querySelector('.letter');
             const screen = document.getElementById('intro-screen');
 
-            // Começa a tocar música e a rodar a nota mal ela toca no envelope
+            // Começa a música logo que ela toca no envelope
             if (player && typeof player.playVideo === 'function') { 
                 player.playVideo(); 
-                document.getElementById('music-icon').classList.add('spin');
-                isMusicPlaying = true;
             }
 
             flap.classList.add('open-flap');
@@ -337,6 +348,7 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
+        // --- AS TUAS FRASES PERSONALIZADAS ---
         const phrases = [
             "Tens a certeza?",
             "Pensa bem...",
