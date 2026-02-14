@@ -14,13 +14,29 @@
         body {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            background: linear-gradient(135deg, #ffc0cb 0%, #c8e6c9 100%, #ffb6c1, #a8e6cf);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
             text-align: center;
             padding-top: 20px;
+            transition: background 2s ease; /* Transição para quando as luzes acenderem */
+        }
+
+        /* --- MODO LUZ DE VELAS (INICIAL) --- */
+        body.candle-mode {
+            background: #1a0505; /* Fundo Bordeaux Escuro */
+        }
+        body.candle-mode::before {
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,140,0,0.1) 0%, transparent 70%);
+            animation: flicker 4s infinite alternate;
+            pointer-events: none; z-index: 1;
+        }
+
+        /* --- MODO COLORIDO (O TEU ORIGINAL) --- */
+        body.light-mode {
+            background: linear-gradient(135deg, #ffc0cb 0%, #c8e6c9 100%, #ffb6c1, #a8e6cf);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
 
         @keyframes gradientBG {
@@ -28,6 +44,21 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        /* FOCO DE LUZ (Lanterna) */
+        #spotlight {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), transparent 40px, rgba(0,0,0,0.92) 150px);
+            pointer-events: none; z-index: 9995;
+            transition: opacity 1.5s ease;
+            display: none;
+        }
+        body.candle-mode #spotlight { display: block; }
 
         /* --- BOTÃO DE MÚSICA NO CANTO --- */
         #music-btn {
@@ -257,7 +288,7 @@
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
     </style>
 </head>
-<body>
+<body class="candle-mode"> <div id="spotlight"></div>
 
     <div id="player"></div>
 
@@ -337,7 +368,6 @@
 
     <div id="success-message">
         <p>A melhor resposta do mundo! ❤️<br><br>Amo-te daqui até à lua!</p>
-        
         <div id="slideshow-container">
             <img src="foto1.jpg" class="slide active">
             <img src="foto2.jpg" class="slide">
@@ -348,6 +378,16 @@
     </div>
 
     <script>
+        // --- LOGICA DO FOCO DE LUZ (PARA O MODO VELA) ---
+        window.addEventListener('mousemove', e => {
+            document.documentElement.style.setProperty('--x', e.clientX + 'px');
+            document.documentElement.style.setProperty('--y', e.clientY + 'px');
+        });
+        window.addEventListener('touchmove', e => {
+            document.documentElement.style.setProperty('--x', e.touches[0].clientX + 'px');
+            document.documentElement.style.setProperty('--y', e.touches[0].clientY + 'px');
+        }, {passive: false});
+
         var player;
         let isMusicPlaying = false;
         let envelopeOpened = false;
@@ -379,11 +419,9 @@
         function promptPassword(event) {
             event.stopPropagation(); 
             if (envelopeOpened) return; 
-            
             const modal = document.getElementById('lock-modal');
             modal.style.display = 'flex';
             setTimeout(() => { modal.classList.add('show'); }, 10);
-            
             document.querySelector('.click-text').style.display = 'none';
             document.getElementById('password-input').focus();
         }
@@ -391,11 +429,8 @@
         document.getElementById('password-input').addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, ''); 
             if (value.length > 8) value = value.slice(0, 8);
-            if (value.length >= 5) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4);
-            } else if (value.length >= 3) {
-                value = value.slice(0, 2) + '/' + value.slice(2);
-            }
+            if (value.length >= 5) { value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4); } 
+            else if (value.length >= 3) { value = value.slice(0, 2) + '/' + value.slice(2); }
             e.target.value = value;
             document.getElementById('error-msg').style.display = 'none'; 
         });
@@ -407,10 +442,17 @@
         function checkPassword() {
             const input = document.getElementById('password-input').value;
             if (input === '20/04/2024') {
+                // ACENDER AS LUZES AQUI!
+                document.body.classList.remove('candle-mode');
+                document.body.classList.add('light-mode');
+                document.getElementById('spotlight').style.opacity = '0';
+                
                 document.getElementById('lock-modal').classList.remove('show');
                 setTimeout(() => { 
                     document.getElementById('lock-modal').style.display = 'none'; 
                     openEnvelope(); 
+                    // Remove spotlight do DOM depois do fade out para não estorvar
+                    setTimeout(() => document.getElementById('spotlight').style.display = 'none', 1500);
                 }, 300);
             } else {
                 const errorMsg = document.getElementById('error-msg');
@@ -427,45 +469,31 @@
         function openEnvelope() {
             if (envelopeOpened) return; 
             envelopeOpened = true;
-
             const flap = document.getElementById('flap');
             const seal = document.getElementById('seal');
             const letter = document.querySelector('.letter');
             const screen = document.getElementById('intro-screen');
-
             if (player && typeof player.playVideo === 'function') player.playVideo();
-
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
-
             setTimeout(() => {
                 screen.classList.add('fade-out');
-                setTimeout(() => {
-                    screen.style.display = 'none';
-                    startMemories(); 
-                }, 1000);
+                setTimeout(() => { screen.style.display = 'none'; startMemories(); }, 1000);
             }, 5500);
         }
-
-        // --- LÓGICA DAS MEMÓRIAS ---
-        let memoriesTimeout1, memoriesTimeout2;
-        let memoriesSkipped = false;
 
         function startMemories() {
             const memoriesScreen = document.getElementById('memories-screen');
             const memoriesText = document.getElementById('memories-text-container');
-            
             memoriesScreen.style.display = 'flex';
             setTimeout(() => { 
                 memoriesScreen.style.opacity = '1'; 
                 memoriesText.classList.add('start-scroll'); 
             }, 50);
-
             memoriesTimeout1 = setTimeout(() => {
                 if (memoriesSkipped) return; 
                 memoriesScreen.style.opacity = '0';
-                
                 memoriesTimeout2 = setTimeout(() => {
                     if (memoriesSkipped) return;
                     memoriesScreen.style.display = 'none';
@@ -477,45 +505,30 @@
         function skipMemories() {
             if (memoriesSkipped) return; 
             memoriesSkipped = true;
-            clearTimeout(memoriesTimeout1); 
-            clearTimeout(memoriesTimeout2);
-            
+            clearTimeout(memoriesTimeout1); clearTimeout(memoriesTimeout2);
             const memoriesScreen = document.getElementById('memories-screen');
             memoriesScreen.style.opacity = '0'; 
-            setTimeout(() => {
-                memoriesScreen.style.display = 'none';
-                startGame(); 
-            }, 500);
+            setTimeout(() => { memoriesScreen.style.display = 'none'; startGame(); }, 500);
         }
-
-        // --- LÓGICA DO JOGO DOS CORAÇÕES ---
-        let poppedCount = 0;
-        const totalToPop = 3;
 
         function startGame() {
             const gameScreen = document.getElementById('game-screen');
             gameScreen.style.display = 'flex';
             setTimeout(() => { gameScreen.classList.add('visible'); }, 50);
-            
             const container = document.getElementById('game-hearts-container');
-            container.innerHTML = ''; 
-            poppedCount = 0;
-            document.getElementById('hearts-left').innerText = totalToPop;
-
+            container.innerHTML = ''; poppedCount = 0;
+            document.getElementById('hearts-left').innerText = 3;
             const heartEmojis = ['❤️', '💖', '💘', '💝', '💗'];
             for (let i = 0; i < 25; i++) {
                 let heart = document.createElement('div');
                 heart.classList.add('game-heart');
                 heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                
                 heart.style.left = (Math.random() * 80 + 10) + '%'; 
                 heart.style.fontSize = (Math.random() * 35 + 45) + 'px'; 
                 heart.style.animationDuration = (Math.random() * 4 + 3) + 's'; 
                 heart.style.animationDelay = (Math.random() * 3) + 's';
-                
                 heart.addEventListener('touchstart', popHeartEvent, {passive: false});
                 heart.addEventListener('mousedown', popHeartEvent);
-
                 container.appendChild(heart);
             }
         }
@@ -523,148 +536,80 @@
         function popHeartEvent(e) {
             if(e.type === 'touchstart') e.preventDefault(); 
             if(this.classList.contains('popped')) return;
-            
             this.classList.add('popped');
             poppedCount++;
-            
-            let left = totalToPop - poppedCount;
+            let left = 3 - poppedCount;
             document.getElementById('hearts-left').innerText = Math.max(left, 0);
-
-            if(poppedCount >= totalToPop) {
-                endGame();
-            }
+            if(poppedCount >= 3) { endGame(); }
         }
 
         function endGame() {
             const gameScreen = document.getElementById('game-screen');
             gameScreen.style.pointerEvents = 'none'; 
-            
             setTimeout(() => {
                 gameScreen.classList.remove('visible'); 
-                setTimeout(() => {
-                    gameScreen.style.display = 'none';
-                    showMainContent(); 
-                }, 1000);
+                setTimeout(() => { gameScreen.style.display = 'none'; showMainContent(); }, 1000);
             }, 500); 
         }
 
-        // --- LÓGICA DO RESTO DO SITE E DA RASPADINHA ---
         function showMainContent() {
             const main = document.getElementById('main-content');
             main.style.display = 'flex';
-            
-            setTimeout(() => { 
-                main.classList.add('visible'); 
-                initScratchCard(); 
-            }, 200);
+            setTimeout(() => { main.classList.add('visible'); initScratchCard(); }, 200);
         }
 
         function initScratchCard() {
             const wrapper = document.getElementById('scratch-wrapper');
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
-            
             canvas.width = wrapper.offsetWidth;
             canvas.height = wrapper.offsetHeight;
-            
             let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, '#e6c27a');
-            grad.addColorStop(0.5, '#ffd700');
-            grad.addColorStop(1, '#daa520');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "rgba(255,255,255,0.3)";
-            for(let i=0; i<canvas.width; i+=20) { ctx.fillRect(i, 0, 1, canvas.height); }
-            
-            ctx.font = "bold 22px Poppins";
-            ctx.fillStyle = "#fff";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.shadowColor = "rgba(0,0,0,0.4)";
-            ctx.shadowBlur = 5;
+            grad.addColorStop(0, '#e6c27a'); grad.addColorStop(0.5, '#ffd700'); grad.addColorStop(1, '#daa520');
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "bold 22px Poppins"; ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
             ctx.fillText("Raspa aqui! 🪙", canvas.width/2, canvas.height/2);
-            
-            ctx.shadowBlur = 0; 
-            
             let isDrawing = false;
-            
             function getPos(e) {
                 const rect = canvas.getBoundingClientRect();
                 let x, y;
-                if (e.touches && e.touches.length > 0) {
-                    x = e.touches[0].clientX - rect.left;
-                    y = e.touches[0].clientY - rect.top;
-                } else {
-                    x = e.clientX - rect.left;
-                    y = e.clientY - rect.top;
-                }
+                if (e.touches && e.touches.length > 0) { x = e.touches[0].clientX - rect.left; y = e.touches[0].clientY - rect.top; } 
+                else { x = e.clientX - rect.left; y = e.clientY - rect.top; }
                 return { x, y };
             }
-            
             function scratch(e) {
                 if (!isDrawing) return;
                 if(e.cancelable) e.preventDefault(); 
-                
                 const pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out'; 
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); 
-                ctx.fill();
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); ctx.fill();
                 checkReveal();
             }
-            
             canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
             canvas.addEventListener('mousemove', scratch);
             canvas.addEventListener('mouseup', () => { isDrawing = false; });
-            canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-            
             canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
             canvas.addEventListener('touchmove', scratch, {passive: false});
             canvas.addEventListener('touchend', () => { isDrawing = false; });
         }
 
-        let checkTimeout;
-        let isRevealed = false;
-        
+        let checkTimeout; let isRevealed = false;
         function checkReveal() {
             if (checkTimeout || isRevealed) return;
-            
             checkTimeout = setTimeout(() => {
                 const canvas = document.getElementById('scratch-canvas');
                 const ctx = canvas.getContext('2d');
                 const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                
                 let clearCount = 0;
-                for (let i = 3; i < pixels.length; i += 4) {
-                    if (pixels[i] === 0) clearCount++;
-                }
+                for (let i = 3; i < pixels.length; i += 4) { if (pixels[i] === 0) clearCount++; }
                 const percent = (clearCount / (pixels.length / 4)) * 100;
-                
                 if (percent > 45) { 
-                    isRevealed = true;
-                    canvas.style.opacity = '0'; 
-                    canvas.style.pointerEvents = 'none';
+                    isRevealed = true; canvas.style.opacity = '0'; canvas.style.pointerEvents = 'none';
                     document.getElementById('button-container').classList.add('show'); 
                 }
                 checkTimeout = null;
             }, 150);
         }
-
-        function createHearts() {
-            const container = document.getElementById('heartsContainer');
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('heart-bubble');
-                heart.innerHTML = '❤';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
-                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
-                heart.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(heart);
-            }
-        }
-        createHearts();
 
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
         function updateTimer() {
@@ -685,27 +630,21 @@
             document.getElementById("minutes").innerText = minutes;
             document.getElementById("seconds").innerText = seconds;
         }
-        setInterval(updateTimer, 1000);
-        updateTimer(); 
+        setInterval(updateTimer, 1000); updateTimer(); 
 
-        const phrases = ["Tens a certeza?", "Pensa bem...", "Estás a fazer-te difícil?", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "Último aviso!"];
         let count = 0; let scale = 1;
-
         function reject() {
             const btn = document.getElementById('noBtn'); const yes = document.getElementById('yesBtn');
             btn.innerHTML = phrases[count % phrases.length]; count++;
-            yes.classList.remove('pulsing'); 
-            scale += 0.3; 
+            yes.classList.remove('pulsing'); scale += 0.3;
             yes.style.transform = `scale(${scale})`;
         }
 
         function accepted() {
             document.getElementById('main-content').classList.remove('visible');
             setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
-            
             document.getElementById('success-message').style.display = 'flex';
-            spawnRealPetals(); 
-            startSlideshow(); 
+            spawnRealPetals(); startSlideshow(); 
         }
 
         function startSlideshow() {
@@ -718,15 +657,12 @@
             }, 6000);
         }
 
-        function spawnRealPetals() {
-            for (let i = 0; i < 30; i++) { setTimeout(() => { createOnePetal(); }, i * 200); }
-        }
+        function spawnRealPetals() { for (let i = 0; i < 30; i++) { setTimeout(() => { createOnePetal(); }, i * 200); } }
 
         function createOnePetal() {
             const petal = document.createElement('div'); petal.classList.add('rose-petal');
             petal.style.left = Math.random() * 100 + 'vw';
-            const size = Math.random() * 15 + 20; 
-            petal.style.width = size + 'px'; petal.style.height = size + 'px';
+            const size = Math.random() * 15 + 20; petal.style.width = size + 'px'; petal.style.height = size + 'px';
             const colors = ['#800000', '#b71c1c', '#d32f2f', '#c62828'];
             petal.style.background = colors[Math.floor(Math.random() * colors.length)];
             petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
