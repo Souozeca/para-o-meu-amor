@@ -189,7 +189,7 @@
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
         
-        /* --- 4. ÁREA DA RASPADINHA (NOVO) --- */
+        /* --- 4. ÁREA DA RASPADINHA --- */
         #scratch-wrapper {
             position: relative; display: flex; flex-direction: column; align-items: center;
             padding: 25px 20px; background: rgba(255, 255, 255, 0.6); border-radius: 20px;
@@ -201,7 +201,12 @@
             cursor: crosshair; transition: opacity 1s ease;
         }
         h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 0; }
-        img:not(.slide):not(.letter img) { border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
+        
+        /* O estilo para a vossa foto dentro da raspadinha */
+        img:not(.slide):not(.letter img) { 
+            border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
+            max-width: 200px; height: auto; object-fit: cover; 
+        }
         
         /* BOTÕES DE AÇÃO LIGADOS À RASPADINHA */
         #button-container {
@@ -311,7 +316,9 @@
 
         <div id="scratch-wrapper">
             <h1 id="question">Queres ser a minha Valentine? ❤️</h1>
-            <img id="gif" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpndW54amZndm96eXp6eXp6eXp6eXp6eXp6eXp6eXp6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif">
+            
+            <img id="gif" src="nossa_foto.jpg" alt="A nossa foto">
+            
             <canvas id="scratch-canvas"></canvas>
         </div>
 
@@ -391,7 +398,6 @@
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
-            // SENHA CORRETA AQUI:
             if (input === '20/04/2024') {
                 document.getElementById('lock-modal').classList.remove('show');
                 setTimeout(() => { 
@@ -539,11 +545,11 @@
             const main = document.getElementById('main-content');
             main.style.display = 'flex';
             
-            // Pausa ligeira para o CSS calcular o espaço e podermos desenhar a raspadinha
+            // Pausa ligeira para desenhar a raspadinha quando a foto já carregou
             setTimeout(() => { 
                 main.classList.add('visible'); 
-                initScratchCard(); // Cria a raspadinha
-            }, 50);
+                initScratchCard(); 
+            }, 200);
         }
 
         function initScratchCard() {
@@ -551,11 +557,9 @@
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
             
-            // Define o tamanho exato da camada dourada por cima da foto e do texto
             canvas.width = wrapper.offsetWidth;
             canvas.height = wrapper.offsetHeight;
             
-            // Pinta o Ouro
             let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             grad.addColorStop(0, '#e6c27a');
             grad.addColorStop(0.5, '#ffd700');
@@ -563,11 +567,9 @@
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Padrão suave
             ctx.fillStyle = "rgba(255,255,255,0.3)";
             for(let i=0; i<canvas.width; i+=20) { ctx.fillRect(i, 0, 1, canvas.height); }
             
-            // Texto da Raspadinha
             ctx.font = "bold 22px Poppins";
             ctx.fillStyle = "#fff";
             ctx.textAlign = "center";
@@ -576,7 +578,7 @@
             ctx.shadowBlur = 5;
             ctx.fillText("Raspa aqui! 🪙", canvas.width/2, canvas.height/2);
             
-            ctx.shadowBlur = 0; // Limpar a sombra para a borracha
+            ctx.shadowBlur = 0; 
             
             let isDrawing = false;
             
@@ -595,23 +597,21 @@
             
             function scratch(e) {
                 if (!isDrawing) return;
-                if(e.cancelable) e.preventDefault(); // Impede o ecrã de "deslizar" no telemóvel ao raspar
+                if(e.cancelable) e.preventDefault(); 
                 
                 const pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out'; // Faz o pincel atuar como borracha
+                ctx.globalCompositeOperation = 'destination-out'; 
                 ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); // Tamanho do dedo/moeda
+                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); 
                 ctx.fill();
                 checkReveal();
             }
             
-            // Eventos do Rato
             canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
             canvas.addEventListener('mousemove', scratch);
             canvas.addEventListener('mouseup', () => { isDrawing = false; });
             canvas.addEventListener('mouseleave', () => { isDrawing = false; });
             
-            // Eventos do Touch (Telemóvel)
             canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
             canvas.addEventListener('touchmove', scratch, {passive: false});
             canvas.addEventListener('touchend', () => { isDrawing = false; });
@@ -623,7 +623,6 @@
         function checkReveal() {
             if (checkTimeout || isRevealed) return;
             
-            // Verifica a cada 150ms para não travar o telemóvel
             checkTimeout = setTimeout(() => {
                 const canvas = document.getElementById('scratch-canvas');
                 const ctx = canvas.getContext('2d');
@@ -635,12 +634,11 @@
                 }
                 const percent = (clearCount / (pixels.length / 4)) * 100;
                 
-                // Se já raspou quase metade do ouro (45%), revela o resto e mostra os botões!
                 if (percent > 45) { 
                     isRevealed = true;
-                    canvas.style.opacity = '0'; // Desvanece a rasgadinha
+                    canvas.style.opacity = '0'; 
                     canvas.style.pointerEvents = 'none';
-                    document.getElementById('button-container').classList.add('show'); // Revela botões SIM/NÃO
+                    document.getElementById('button-container').classList.add('show'); 
                 }
                 checkTimeout = null;
             }, 150);
@@ -690,7 +688,7 @@
             const btn = document.getElementById('noBtn'); const yes = document.getElementById('yesBtn');
             btn.innerHTML = phrases[count % phrases.length]; count++;
             yes.classList.remove('pulsing'); 
-            scale += 0.3; // Escala ajustada para o novo layout sem atrapalhar a raspadinha
+            scale += 0.3; 
             yes.style.transform = `scale(${scale})`;
         }
 
