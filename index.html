@@ -265,7 +265,7 @@
         .pulsing { animation: heartbeat 1.5s infinite; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* --- ESTILOS DO SLIDESHOW ANTIGO (MANTIDOS PARA NÃO APAGAR NADA) --- */
+        /* --- ESTILOS DO SLIDESHOW COM FUNDO ANIMADO --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -306,6 +306,7 @@
         .polaroid img {
             width: 100%; height: 280px; object-fit: cover; border-radius: 2px; border: 1px solid #eee;
         }
+        /* Mantive o CSS da .caption aqui, caso algum dia queiras voltar a usar as frases */
         .polaroid .caption {
             font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #333;
             margin-top: 15px; text-align: center; line-height: 1; font-weight: 700;
@@ -401,23 +402,18 @@
         <div id="polaroid-container">
             <div class="polaroid">
                 <img src="foto1.jpg" alt="Foto 1">
-                <div class="caption">A nossa primeira viagem ❤️</div>
             </div>
             <div class="polaroid">
                 <img src="foto2.jpg" alt="Foto 2">
-                <div class="caption">O teu sorriso lindo... ✨</div>
             </div>
             <div class="polaroid">
                 <img src="foto3.jpg" alt="Foto 3">
-                <div class="caption">Momentos perfeitos 🥰</div>
             </div>
             <div class="polaroid">
                 <img src="foto4.jpg" alt="Foto 4">
-                <div class="caption">Sempre juntos 💑</div>
             </div>
             <div class="polaroid">
                 <img src="foto5.jpg" alt="Foto 5">
-                <div class="caption">Para toda a vida 🌙</div>
             </div>
         </div>
     </div>
