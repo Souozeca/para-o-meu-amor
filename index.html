@@ -244,7 +244,7 @@
         }
         h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 0; }
         
-        img:not(.slide):not(.letter img) { 
+        img:not(.slide):not(.letter img):not(.polaroid img) { 
             border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
             max-width: 200px; height: auto; object-fit: cover; 
         }
@@ -265,7 +265,7 @@
         .pulsing { animation: heartbeat 1.5s infinite; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* --- ESTILOS DO SLIDESHOW COM FUNDO ANIMADO --- */
+        /* --- ESTILOS DO SLIDESHOW ANTIGO (MANTIDOS PARA NÃO APAGAR NADA) --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -274,7 +274,7 @@
             animation: popIn 0.5s, gradientBG 15s ease infinite; 
             z-index: 200; 
         }
-        #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
+        #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); z-index: 300; position: relative; }
         
         #slideshow-container {
             position: relative; width: 85%; max-width: 340px; height: 450px; 
@@ -290,34 +290,29 @@
         .hidden { display: none !important; }
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
 
-        /* --- ADICIONADO: ESTILOS DOS BALÕES INTERATIVOS E PALAVRAS --- */
-        .interactive-balloon {
-            position: fixed; bottom: -100px; z-index: 9998;
-            font-size: 45px; cursor: pointer; user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            animation: floatBalloon linear forwards;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-            transition: transform 0.1s;
+        /* --- ADICIONADO: EFEITO CÂMERA POLAROID --- */
+        #polaroid-container {
+            position: relative; width: 100%; max-width: 340px; height: 450px; 
+            margin: 0 auto; display: flex; justify-content: center; align-items: center;
+            perspective: 1000px; z-index: 205;
         }
-        .interactive-balloon:active { transform: scale(0.8); }
-        @keyframes floatBalloon {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-120vh) rotate(15deg); }
+        .polaroid {
+            position: absolute; width: 280px; background: #fff; padding: 15px 15px 25px 15px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6); border-radius: 4px;
+            opacity: 0; transform: translateY(-120vh) rotateZ(0deg) scale(0.5);
+            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 1s ease;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .pop-word {
-            position: fixed; z-index: 9999;
-            color: #ffcc33; font-family: 'Pacifico', cursive; font-size: 2.2rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-            pointer-events: none;
-            animation: floatWord 2s ease-out forwards;
-            transform: translate(-50%, -50%);
+        .polaroid img {
+            width: 100%; height: 280px; object-fit: cover; border-radius: 2px; border: 1px solid #eee;
         }
-        @keyframes floatWord {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-            20% { opacity: 1; transform: translate(-50%, -70%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -150%) scale(1); }
+        .polaroid .caption {
+            font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #333;
+            margin-top: 15px; text-align: center; line-height: 1; font-weight: 700;
         }
-        /* --- FIM DA ADIÇÃO CSS --- */
+        .polaroid.drop {
+            opacity: 1; transform: translateY(0) rotateZ(var(--rot)) scale(1);
+        }
     </style>
 </head>
 <body class="candle-mode">
@@ -403,12 +398,27 @@
     <div id="success-message">
         <p>A melhor resposta do mundo! ❤️<br><br>Amo-te daqui até à lua!</p>
         
-        <div id="slideshow-container">
-            <img src="foto1.jpg" class="slide active">
-            <img src="foto2.jpg" class="slide">
-            <img src="foto3.jpg" class="slide">
-            <img src="foto4.jpg" class="slide"> 
-            <img src="foto5.jpg" class="slide"> 
+        <div id="polaroid-container">
+            <div class="polaroid">
+                <img src="foto1.jpg" alt="Foto 1">
+                <div class="caption">A nossa primeira viagem ❤️</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto2.jpg" alt="Foto 2">
+                <div class="caption">O teu sorriso lindo... ✨</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto3.jpg" alt="Foto 3">
+                <div class="caption">Momentos perfeitos 🥰</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto4.jpg" alt="Foto 4">
+                <div class="caption">Sempre juntos 💑</div>
+            </div>
+            <div class="polaroid">
+                <img src="foto5.jpg" alt="Foto 5">
+                <div class="caption">Para toda a vida 🌙</div>
+            </div>
         </div>
     </div>
 
@@ -454,11 +464,9 @@
         function promptPassword(event) {
             event.stopPropagation(); 
             if (envelopeOpened) return; 
-            
             const modal = document.getElementById('lock-modal');
             modal.style.display = 'flex';
             setTimeout(() => { modal.classList.add('show'); }, 10);
-            
             document.querySelector('.click-text').style.display = 'none';
             document.getElementById('password-input').focus();
         }
@@ -509,24 +517,17 @@
         function openEnvelope() {
             if (envelopeOpened) return; 
             envelopeOpened = true;
-
             const flap = document.getElementById('flap');
             const seal = document.getElementById('seal');
             const letter = document.querySelector('.letter');
             const screen = document.getElementById('intro-screen');
-
             if (player && typeof player.playVideo === 'function') player.playVideo();
-
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
-
             setTimeout(() => {
                 screen.classList.add('fade-out');
-                setTimeout(() => {
-                    screen.style.display = 'none';
-                    startMemories(); 
-                }, 1000);
+                setTimeout(() => { screen.style.display = 'none'; startMemories(); }, 1000);
             }, 5500);
         }
 
@@ -537,17 +538,14 @@
         function startMemories() {
             const memoriesScreen = document.getElementById('memories-screen');
             const memoriesText = document.getElementById('memories-text-container');
-            
             memoriesScreen.style.display = 'flex';
             setTimeout(() => { 
                 memoriesScreen.style.opacity = '1'; 
                 memoriesText.classList.add('start-scroll'); 
             }, 50);
-
             memoriesTimeout1 = setTimeout(() => {
                 if (memoriesSkipped) return; 
                 memoriesScreen.style.opacity = '0';
-                
                 memoriesTimeout2 = setTimeout(() => {
                     if (memoriesSkipped) return;
                     memoriesScreen.style.display = 'none';
@@ -559,45 +557,30 @@
         function skipMemories() {
             if (memoriesSkipped) return; 
             memoriesSkipped = true;
-            clearTimeout(memoriesTimeout1); 
-            clearTimeout(memoriesTimeout2);
-            
+            clearTimeout(memoriesTimeout1); clearTimeout(memoriesTimeout2);
             const memoriesScreen = document.getElementById('memories-screen');
             memoriesScreen.style.opacity = '0'; 
-            setTimeout(() => {
-                memoriesScreen.style.display = 'none';
-                startGame(); 
-            }, 500);
+            setTimeout(() => { memoriesScreen.style.display = 'none'; startGame(); }, 500);
         }
-
-        // --- LÓGICA DO JOGO DOS CORAÇÕES ---
-        let poppedCount = 0;
-        const totalToPop = 3;
 
         function startGame() {
             const gameScreen = document.getElementById('game-screen');
             gameScreen.style.display = 'flex';
             setTimeout(() => { gameScreen.classList.add('visible'); }, 50);
-            
             const container = document.getElementById('game-hearts-container');
-            container.innerHTML = ''; 
-            poppedCount = 0;
-            document.getElementById('hearts-left').innerText = totalToPop;
-
+            container.innerHTML = ''; poppedCount = 0;
+            document.getElementById('hearts-left').innerText = 3;
             const heartEmojis = ['❤️', '💖', '💘', '💝', '💗'];
             for (let i = 0; i < 25; i++) {
                 let heart = document.createElement('div');
                 heart.classList.add('game-heart');
                 heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                
                 heart.style.left = (Math.random() * 80 + 10) + '%'; 
                 heart.style.fontSize = (Math.random() * 35 + 45) + 'px'; 
                 heart.style.animationDuration = (Math.random() * 4 + 3) + 's'; 
                 heart.style.animationDelay = (Math.random() * 3) + 's';
-                
                 heart.addEventListener('touchstart', popHeartEvent, {passive: false});
                 heart.addEventListener('mousedown', popHeartEvent);
-
                 container.appendChild(heart);
             }
         }
@@ -605,148 +588,80 @@
         function popHeartEvent(e) {
             if(e.type === 'touchstart') e.preventDefault(); 
             if(this.classList.contains('popped')) return;
-            
             this.classList.add('popped');
             poppedCount++;
-            
-            let left = totalToPop - poppedCount;
+            let left = 3 - poppedCount;
             document.getElementById('hearts-left').innerText = Math.max(left, 0);
-
-            if(poppedCount >= totalToPop) {
-                endGame();
-            }
+            if(poppedCount >= 3) { endGame(); }
         }
 
         function endGame() {
             const gameScreen = document.getElementById('game-screen');
             gameScreen.style.pointerEvents = 'none'; 
-            
             setTimeout(() => {
                 gameScreen.classList.remove('visible'); 
-                setTimeout(() => {
-                    gameScreen.style.display = 'none';
-                    showMainContent(); 
-                }, 1000);
+                setTimeout(() => { gameScreen.style.display = 'none'; showMainContent(); }, 1000);
             }, 500); 
         }
 
-        // --- LÓGICA DO RESTO DO SITE E DA RASPADINHA ---
         function showMainContent() {
             const main = document.getElementById('main-content');
             main.style.display = 'flex';
-            
-            setTimeout(() => { 
-                main.classList.add('visible'); 
-                initScratchCard(); 
-            }, 200);
+            setTimeout(() => { main.classList.add('visible'); initScratchCard(); }, 200);
         }
 
         function initScratchCard() {
             const wrapper = document.getElementById('scratch-wrapper');
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
-            
             canvas.width = wrapper.offsetWidth;
             canvas.height = wrapper.offsetHeight;
-            
             let grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            grad.addColorStop(0, '#e6c27a');
-            grad.addColorStop(0.5, '#ffd700');
-            grad.addColorStop(1, '#daa520');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.fillStyle = "rgba(255,255,255,0.3)";
-            for(let i=0; i<canvas.width; i+=20) { ctx.fillRect(i, 0, 1, canvas.height); }
-            
-            ctx.font = "bold 22px Poppins";
-            ctx.fillStyle = "#fff";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.shadowColor = "rgba(0,0,0,0.4)";
-            ctx.shadowBlur = 5;
+            grad.addColorStop(0, '#e6c27a'); grad.addColorStop(0.5, '#ffd700'); grad.addColorStop(1, '#daa520');
+            ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = "bold 22px Poppins"; ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
             ctx.fillText("Raspa aqui! 🪙", canvas.width/2, canvas.height/2);
-            
-            ctx.shadowBlur = 0; 
-            
             let isDrawing = false;
-            
             function getPos(e) {
                 const rect = canvas.getBoundingClientRect();
                 let x, y;
-                if (e.touches && e.touches.length > 0) {
-                    x = e.touches[0].clientX - rect.left;
-                    y = e.touches[0].clientY - rect.top;
-                } else {
-                    x = e.clientX - rect.left;
-                    y = e.clientY - rect.top;
-                }
+                if (e.touches && e.touches.length > 0) { x = e.touches[0].clientX - rect.left; y = e.touches[0].clientY - rect.top; } 
+                else { x = e.clientX - rect.left; y = e.clientY - rect.top; }
                 return { x, y };
             }
-            
             function scratch(e) {
                 if (!isDrawing) return;
                 if(e.cancelable) e.preventDefault(); 
-                
                 const pos = getPos(e);
-                ctx.globalCompositeOperation = 'destination-out'; 
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); 
-                ctx.fill();
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(pos.x, pos.y, 40, 0, Math.PI * 2); ctx.fill();
                 checkReveal();
             }
-            
             canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
             canvas.addEventListener('mousemove', scratch);
             canvas.addEventListener('mouseup', () => { isDrawing = false; });
-            canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-            
             canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); }, {passive: false});
             canvas.addEventListener('touchmove', scratch, {passive: false});
             canvas.addEventListener('touchend', () => { isDrawing = false; });
         }
 
-        let checkTimeout;
-        let isRevealed = false;
-        
+        let checkTimeout; let isRevealed = false;
         function checkReveal() {
             if (checkTimeout || isRevealed) return;
-            
             checkTimeout = setTimeout(() => {
                 const canvas = document.getElementById('scratch-canvas');
                 const ctx = canvas.getContext('2d');
                 const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                
                 let clearCount = 0;
-                for (let i = 3; i < pixels.length; i += 4) {
-                    if (pixels[i] === 0) clearCount++;
-                }
+                for (let i = 3; i < pixels.length; i += 4) { if (pixels[i] === 0) clearCount++; }
                 const percent = (clearCount / (pixels.length / 4)) * 100;
-                
                 if (percent > 45) { 
-                    isRevealed = true;
-                    canvas.style.opacity = '0'; 
-                    canvas.style.pointerEvents = 'none';
+                    isRevealed = true; canvas.style.opacity = '0'; canvas.style.pointerEvents = 'none';
                     document.getElementById('button-container').classList.add('show'); 
                 }
                 checkTimeout = null;
             }, 150);
         }
-
-        function createHearts() {
-            const container = document.getElementById('heartsContainer');
-            for (let i = 0; i < 20; i++) {
-                const heart = document.createElement('div');
-                heart.classList.add('heart-bubble');
-                heart.innerHTML = '❤';
-                heart.style.left = Math.random() * 100 + '%';
-                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
-                heart.style.animationDuration = (Math.random() * 5 + 6) + 's';
-                heart.style.animationDelay = (Math.random() * 5) + 's';
-                container.appendChild(heart);
-            }
-        }
-        createHearts();
 
         const startDate = new Date(2024, 3, 20, 0, 0, 0); 
         function updateTimer() {
@@ -767,105 +682,68 @@
             document.getElementById("minutes").innerText = minutes;
             document.getElementById("seconds").innerText = seconds;
         }
-        setInterval(updateTimer, 1000);
-        updateTimer(); 
+        setInterval(updateTimer, 1000); updateTimer(); 
 
-        const phrases = ["Tens a certeza?", "Pensa bem...", "Estás a fazer-te difícil?", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "Último aviso!"];
         let count = 0; let scale = 1;
-
         function reject() {
             const btn = document.getElementById('noBtn'); const yes = document.getElementById('yesBtn');
             btn.innerHTML = phrases[count % phrases.length]; count++;
-            yes.classList.remove('pulsing'); 
-            scale += 0.3; 
+            yes.classList.remove('pulsing'); scale += 0.3;
             yes.style.transform = `scale(${scale})`;
         }
 
         function accepted() {
             document.getElementById('main-content').classList.remove('visible');
             setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
-            
             document.getElementById('success-message').style.display = 'flex';
             spawnRealPetals(); 
             startSlideshow(); 
-            spawnBalloons(); // --- ADICIONADO: INICIA OS BALÕES QUANDO DIZ SIM ---
         }
 
         function startSlideshow() {
-            const slides = document.querySelectorAll('.slide');
-            let currentSlide = 0;
+            // --- ADICIONADO: LÓGICA DO EFEITO POLAROID ---
+            const polaroids = document.querySelectorAll('.polaroid');
+            let currentPol = 0;
+            
+            // Dá um ângulo aleatório a cada foto para parecerem caídas na mesa
+            polaroids.forEach((pol, index) => {
+                let randomRot = (Math.random() * 30 - 15) + 'deg'; // entre -15 e 15 graus
+                pol.style.setProperty('--rot', randomRot);
+                pol.style.zIndex = index + 10; 
+            });
+
+            // Larga a primeira foto
+            if(polaroids.length > 0) {
+                setTimeout(() => polaroids[0].classList.add('drop'), 500);
+            }
+
+            // Vai largando as outras a cada 4 segundos
             setInterval(() => {
-                slides[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % slides.length;
-                slides[currentSlide].classList.add('active');
-            }, 6000);
+                currentPol++;
+                if (currentPol < polaroids.length) {
+                    polaroids[currentPol].classList.add('drop');
+                } else {
+                    // Quando chegam ao fim, limpa e recomeça
+                    polaroids.forEach(p => p.classList.remove('drop'));
+                    currentPol = 0;
+                    setTimeout(() => { if(polaroids[0]) polaroids[0].classList.add('drop'); }, 1000);
+                }
+            }, 4000);
+            // --- FIM DA LÓGICA POLAROID ---
         }
 
-        function spawnRealPetals() {
-            for (let i = 0; i < 30; i++) { setTimeout(() => { createOnePetal(); }, i * 200); }
-        }
+        function spawnRealPetals() { for (let i = 0; i < 30; i++) { setTimeout(() => { createOnePetal(); }, i * 200); } }
 
         function createOnePetal() {
             const petal = document.createElement('div'); petal.classList.add('rose-petal');
             petal.style.left = Math.random() * 100 + 'vw';
-            const size = Math.random() * 15 + 20; 
-            petal.style.width = size + 'px'; petal.style.height = size + 'px';
+            const size = Math.random() * 15 + 20; petal.style.width = size + 'px'; petal.style.height = size + 'px';
             const colors = ['#800000', '#b71c1c', '#d32f2f', '#c62828'];
             petal.style.background = colors[Math.floor(Math.random() * colors.length)];
             petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
             document.body.appendChild(petal);
             setTimeout(() => { petal.remove(); }, 7000);
         }
-
-        // --- ADICIONADO: LÓGICA DOS BALÕES INTERATIVOS E PALAVRAS ---
-        const complimentWords = ["Linda! 💖", "Perfeita! ✨", "Incrível! 😍", "Única! 🌹", "Maravilhosa! 💘", "Preciosa! 💎"];
-        let balloonInterval;
-
-        function spawnBalloons() {
-            // Cria um balão a cada 1.5 segundos no ecrã final
-            balloonInterval = setInterval(createOneBalloon, 1500);
-        }
-
-        function createOneBalloon() {
-            const balloon = document.createElement('div');
-            balloon.classList.add('interactive-balloon');
-            balloon.innerHTML = '❤️'; // Pode ser ❤️ ou 🎈
-            balloon.style.left = Math.random() * 80 + 10 + '%';
-            balloon.style.animationDuration = (Math.random() * 4 + 5) + 's'; 
-            
-            const popEvent = (e) => {
-                if(e.cancelable && e.type === 'touchstart') e.preventDefault();
-                
-                const rect = balloon.getBoundingClientRect();
-                const x = rect.left + rect.width / 2;
-                const y = rect.top + rect.height / 2;
-                
-                balloon.remove(); 
-                showComplimentWord(x, y); 
-            };
-            
-            balloon.addEventListener('mousedown', popEvent);
-            balloon.addEventListener('touchstart', popEvent, {passive: false});
-            
-            document.body.appendChild(balloon);
-            
-            // Remove o balão se ele sair do ecrã sem ser rebentado
-            setTimeout(() => { if (document.body.contains(balloon)) balloon.remove(); }, 10000);
-        }
-
-        function showComplimentWord(x, y) {
-            const wordDiv = document.createElement('div');
-            wordDiv.classList.add('pop-word');
-            wordDiv.innerHTML = complimentWords[Math.floor(Math.random() * complimentWords.length)];
-            wordDiv.style.left = x + 'px';
-            wordDiv.style.top = y + 'px';
-            
-            document.body.appendChild(wordDiv);
-            
-            // Remove a palavra após a animação terminar
-            setTimeout(() => { if (document.body.contains(wordDiv)) wordDiv.remove(); }, 2000);
-        }
-        // --- FIM DA ADIÇÃO JAVASCRIPT ---
     </script>
 </body>
 </html>
