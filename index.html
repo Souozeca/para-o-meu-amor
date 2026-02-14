@@ -14,11 +14,23 @@
         body {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            background: linear-gradient(135deg, #ffc0cb 0%, #c8e6c9 100%);
+            
+            /* --- FUNDO ANIMADO (NOVO) --- */
+            background: linear-gradient(135deg, #ffc0cb, #c8e6c9, #ffb6c1, #a8e6cf);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
             text-align: center;
             padding-top: 20px;
+        }
+
+        /* Animação que faz o fundo respirar */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* --- BOTÃO DE MÚSICA NO CANTO --- */
@@ -202,7 +214,6 @@
         }
         h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 10px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 0; }
         
-        /* O estilo para a vossa foto dentro da raspadinha */
         img:not(.slide):not(.letter img) { 
             border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
             max-width: 200px; height: auto; object-fit: cover; 
@@ -224,12 +235,17 @@
         .pulsing { animation: heartbeat 1.5s infinite; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
-        /* --- ESTILOS DO SLIDESHOW --- */
+        /* --- ESTILOS DO SLIDESHOW COM FUNDO ANIMADO --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, rgba(255,192,203,0.95) 0%, rgba(200,230,201,0.95) 100%); 
-            z-index: 200; animation: popIn 0.5s; 
+            
+            /* O mesmo fundo animado para ser consistente */
+            background: linear-gradient(135deg, rgba(255,192,203,0.95), rgba(200,230,201,0.95), rgba(255,182,193,0.95), rgba(168,230,207,0.95));
+            background-size: 400% 400%;
+            animation: popIn 0.5s, gradientBG 15s ease infinite; 
+            
+            z-index: 200; 
         }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
         
@@ -316,9 +332,7 @@
 
         <div id="scratch-wrapper">
             <h1 id="question">Queres ser a minha Valentine? ❤️</h1>
-            
             <img id="gif" src="nossa_foto.jpg" alt="A nossa foto">
-            
             <canvas id="scratch-canvas"></canvas>
         </div>
 
@@ -545,7 +559,6 @@
             const main = document.getElementById('main-content');
             main.style.display = 'flex';
             
-            // Pausa ligeira para desenhar a raspadinha quando a foto já carregou
             setTimeout(() => { 
                 main.classList.add('visible'); 
                 initScratchCard(); 
