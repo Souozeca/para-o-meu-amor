@@ -21,34 +21,33 @@
             padding-top: 20px;
         }
 
-        /* --- CONTROLO DE MÚSICA --- */
+        /* --- CONTROLO DE MÚSICA (MELHORADO E DESTACADO) --- */
         #music-btn {
             position: fixed;
-            top: 20px;
+            top: 30px; /* Mais para baixo para fugir da notch do telemóvel */
             right: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.4);
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.8); /* Mais visível */
             backdrop-filter: blur(5px);
-            border: 2px solid rgba(255, 255, 255, 0.8);
+            border: 2px solid #ff4757; /* Borda vermelha para destacar */
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            z-index: 99999; /* Sempre à frente de tudo */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 999999; /* Máxima prioridade, sempre à frente */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, background 0.3s;
         }
         #music-btn:hover {
             transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 1);
         }
         #music-icon {
-            font-size: 20px;
+            font-size: 24px;
             display: inline-block;
         }
-        /* Animação de rodar a nota musical */
         .spin {
             animation: spinMusic 3s linear infinite;
         }
@@ -194,7 +193,7 @@
 <body>
 
     <div id="player"></div>
-    
+
     <div id="music-btn" onclick="toggleMusic()">
         <span id="music-icon">🎵</span>
     </div>
@@ -249,38 +248,30 @@
 
     <script>
         var player;
+        let isMusicPlaying = false;
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 height: '0',
                 width: '0',
                 videoId: 'TKB7pZO3okM',
                 playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'TKB7pZO3okM' },
-                events: { 
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange // AVISA QUANDO TOCA OU PAUSA
-                }
+                events: { 'onReady': onPlayerReady }
             });
         }
         function onPlayerReady(event) { event.target.setVolume(100); }
 
-        // SINCRONIZA A ROTAÇÃO DA NOTA COM O VÍDEO
-        function onPlayerStateChange(event) {
-            const icon = document.getElementById('music-icon');
-            if (event.data == YT.PlayerState.PLAYING) {
-                icon.classList.add('spin');
-            } else {
-                icon.classList.remove('spin');
-            }
-        }
-
-        // LIGA OU DESLIGA A MÚSICA AO CLICAR
+        // NOVA FUNÇÃO DO BOTÃO: Força a animação sem depender da API do YouTube
         function toggleMusic() {
-            if (player && typeof player.getPlayerState === 'function') {
-                if (player.getPlayerState() == YT.PlayerState.PLAYING) {
-                    player.pauseVideo();
-                } else {
-                    player.playVideo();
-                }
+            const icon = document.getElementById('music-icon');
+            if (isMusicPlaying) {
+                if(player && typeof player.pauseVideo === 'function') player.pauseVideo();
+                icon.classList.remove('spin');
+                isMusicPlaying = false;
+            } else {
+                if(player && typeof player.playVideo === 'function') player.playVideo();
+                icon.classList.add('spin');
+                isMusicPlaying = true;
             }
         }
 
@@ -290,8 +281,12 @@
             const letter = document.querySelector('.letter');
             const screen = document.getElementById('intro-screen');
 
-            // Dá PLAY à música quando o envelope abre
-            if (player && typeof player.playVideo === 'function') { player.playVideo(); }
+            // Começa a tocar música e a rodar a nota mal ela toca no envelope
+            if (player && typeof player.playVideo === 'function') { 
+                player.playVideo(); 
+                document.getElementById('music-icon').classList.add('spin');
+                isMusicPlaying = true;
+            }
 
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
