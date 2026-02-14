@@ -14,7 +14,7 @@
         body {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            /* --- MUDANÇA DE COR AQUI: Mistura suave de Rosa pastel e Verde pastel --- */
+            /* Fundo Rosa e Verde Água (Pastel) */
             background: linear-gradient(135deg, #ffc0cb 0%, #c8e6c9 100%);
             font-family: 'Poppins', sans-serif;
             overflow: hidden; 
@@ -24,38 +24,18 @@
 
         /* --- BOTÃO DE MÚSICA NO CANTO --- */
         #music-btn {
-            position: fixed;
-            top: 30px; 
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            border: 2px solid #ff4757;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 999999; /* Sempre à frente */
+            position: fixed; top: 30px; right: 20px; width: 50px; height: 50px;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px);
+            border: 2px solid #ff4757; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 999999; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.3s ease, background 0.3s;
         }
-        #music-btn:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 1);
-        }
-        #music-icon {
-            font-size: 24px;
-            display: inline-block;
-        }
-        /* Faz a nota musical rodar */
-        .spin {
-            animation: spinMusic 3s linear infinite;
-        }
-        @keyframes spinMusic {
-            100% { transform: rotate(360deg); }
-        }
+        #music-btn:hover { transform: scale(1.1); background: rgba(255, 255, 255, 1); }
+        #music-icon { font-size: 24px; display: inline-block; }
+        .spin { animation: spinMusic 3s linear infinite; }
+        @keyframes spinMusic { 100% { transform: rotate(360deg); } }
 
         /* --- PÉTALAS REAIS (CSS PURO) --- */
         .rose-petal {
@@ -75,20 +55,13 @@
         /* --- 1. ECRÃ DO ENVELOPE --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.2); 
+            background: rgba(0, 0, 0, 0.2); /* Fundo perfeito sem cinzento */
             z-index: 9990; display: flex; flex-direction: column;
             justify-content: center; align-items: center; transition: opacity 1.5s ease;
         }
-        .envelope-wrapper {
-            position: relative; cursor: pointer; transition: transform 0.3s ease;
-            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
-        }
+        .envelope-wrapper { position: relative; cursor: pointer; transition: transform 0.3s ease; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6)); }
         .envelope-wrapper:hover { transform: scale(1.02); }
-        .envelope {
-            position: relative; width: 320px; height: 220px;
-            background: #750000; border-radius: 4px;
-            display: flex; justify-content: center; z-index: 10;
-        }
+        .envelope { position: relative; width: 320px; height: 220px; background: #750000; border-radius: 4px; display: flex; justify-content: center; z-index: 10; }
         .letter {
             position: absolute; bottom: 0; width: 290px; height: 200px;
             background: #fff; border-radius: 2px; z-index: 5;
@@ -96,19 +69,16 @@
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1); overflow: hidden; padding: 8px; 
         }
-        
         .letter img { 
             width: 100% !important; height: 100% !important; max-width: none !important;
             margin: 0 !important; border-radius: 4px !important; box-shadow: none !important;
             object-fit: cover; display: block; 
         }
-
         .flap {
             position: absolute; top: 0; left: 0; width: 0; height: 0;
             border-left: 160px solid transparent; border-right: 160px solid transparent;
             border-top: 130px solid #8a0b0b; transform-origin: top;
-            transition: transform 2s ease-in-out, z-index 2s;
-            z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
+            transition: transform 2s ease-in-out, z-index 2s; z-index: 20; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); 
         }
         .pocket {
             position: absolute; bottom: 0; left: 0; width: 0; height: 0;
@@ -120,31 +90,71 @@
             background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
             border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.4);
             display: flex; align-items: center; justify-content: center;
-            font-size: 24px; color: #5c4010; border: 2px solid #daa520;
-            animation: pulse 2s infinite;
+            font-size: 24px; color: #5c4010; border: 2px solid #daa520; animation: pulse 2s infinite;
         }
         .label-sticker {
-            position: absolute; bottom: 30px; z-index: 30; background: #fff;
-            width: 110%; left: -5%; padding: 10px 0; text-align: center;
-            transform: rotate(-3deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-family: 'Dancing Script', cursive; font-size: 1.5rem;
-            color: #333; border: 1px solid #ddd; 
+            position: absolute; bottom: 30px; z-index: 30; background: #fff; width: 110%; left: -5%; padding: 10px 0; text-align: center;
+            transform: rotate(-3deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: #333; border: 1px solid #ddd; 
         }
-        .click-text {
-            margin-top: 70px; font-family: 'Poppins', sans-serif;
-            color: white; font-size: 1.1rem; text-transform: uppercase;
-            letter-spacing: 3px; animation: bounce 2s infinite; opacity: 0.9;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.4); 
-        }
+        .click-text { margin-top: 70px; font-family: 'Poppins', sans-serif; color: white; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; animation: bounce 2s infinite; opacity: 0.9; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
         .open-flap { transform: rotateX(180deg); z-index: 1 !important; }
         .slide-letter { transform: translateY(-160px); z-index: 30 !important; } 
         .fade-out { opacity: 0; pointer-events: none; }
 
+        /* --- JOGO: CAÇA AOS CORAÇÕES (NOVO) --- */
+        #game-screen {
+            display: none; /* Escondido inicialmente */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            flex-direction: column; align-items: center; justify-content: center;
+            z-index: 50; opacity: 0; transform: scale(0.9); transition: all 1s ease;
+        }
+        #game-screen h2 {
+            font-family: 'Poppins', sans-serif; font-size: 1.6rem; color: #750000;
+            font-weight: 900; z-index: 60; text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+            padding: 0 20px; line-height: 1.3; text-align: center;
+        }
+        #game-screen h3 {
+            font-family: 'Poppins', sans-serif; font-size: 1.2rem; color: #fff;
+            background: #ff4757; padding: 8px 25px; border-radius: 30px; z-index: 60;
+            margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            font-weight: 700;
+        }
+        #game-hearts-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 55; overflow: hidden;
+        }
+        .game-heart {
+            position: absolute; bottom: -100px; cursor: pointer; user-select: none;
+            -webkit-tap-highlight-color: transparent; animation: floatGameUp linear infinite;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); transition: transform 0.1s ease-out;
+            /* Toca suave no telemóvel para alta performance */
+            touch-action: manipulation; 
+        }
+        .game-heart:active { transform: scale(0.8); }
+        .game-heart.popped { 
+            animation: popHeart 0.3s forwards !important; /* Efeito balão rebentar */
+            pointer-events: none; 
+        }
+        @keyframes floatGameUp {
+            0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1) rotate(20deg); opacity: 1; }
+        }
+        @keyframes popHeart {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; filter: drop-shadow(0 0 15px #ff4757); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
         /* --- RESTO DO CSS --- */
         .bg-hearts { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; pointer-events: none; }
         .heart-bubble { position: absolute; bottom: -10%; color: #d63384; opacity: 0.4; animation: floatUp linear infinite; }
-        #main-content { opacity: 0; transform: scale(0.9); transition: all 1s ease; width: 100%; height: 100%; z-index: 10; position: relative; }
+        
+        #main-content { 
+            display: none; /* Corrigido: fica bem escondido até ser chamado */
+            opacity: 0; transform: scale(0.9); transition: all 1s ease; 
+            width: 100%; height: 100%; z-index: 10; position: relative; 
+        }
         .visible { opacity: 1 !important; transform: scale(1) !important; }
+        
         h1 { color: #d63384; font-family: 'Pacifico', cursive; font-size: 2rem; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(255,255,255,0.5); z-index: 10; margin-top: 10px; }
         #timer-container { margin-bottom: 15px; }
         #timer-title { font-size: 0.9rem; color: #d63384; margin-bottom: 5px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; }
@@ -153,43 +163,39 @@
         .time-box span { font-weight: 900; font-size: 1.3rem; color: #ff4757; line-height: 1; }
         .time-box .label { font-size: 0.6rem; color: #d63384; text-transform: uppercase; margin-top: 2px; font-weight: 800; }
         
-        img:not(.slide):not(.letter img) { 
-            border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); 
-            max-width: 180px; height: auto; 
-        }
-
+        img:not(.slide):not(.letter img) { border-radius: 20px; margin-bottom: 10px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 180px; height: auto; }
+        
         button { padding: 15px 40px; font-size: 20px; font-weight: 800; cursor: pointer; border: none; border-radius: 50px; outline: none; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; transition: background-color 0.3s; }
         #yesBtn { background-color: #ff4757; color: white; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.5); position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%) scale(1); z-index: 50; }
         #noBtn { background-color: white; color: #ff4757; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); z-index: 40; }
         
         @keyframes heartbeat { 0% { transform: translate(-50%, -50%) scale(1); } 15% { transform: translate(-50%, -50%) scale(1.05); } 30% { transform: translate(-50%, -50%) scale(1); } 45% { transform: translate(-50%, -50%) scale(1.05); } 60% { transform: translate(-50%, -50%) scale(1); } }
         .pulsing { animation: heartbeat 1.5s infinite; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: 0.3; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
         
         /* --- ESTILOS DO SLIDESHOW --- */
         #success-message { 
             display: none; flex-direction: column; align-items: center; justify-content: center; 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            /* Para o ecrã final combinar, também adicionei um pouco da mistura rosa/verde bem clara */
             background: linear-gradient(135deg, rgba(255,192,203,0.95) 0%, rgba(200,230,201,0.95) 100%); 
             z-index: 200; animation: popIn 0.5s; 
         }
         #success-message p { font-size: 2rem; color: #ff4757; font-weight: 900; margin-bottom: 20px; text-align: center; padding: 0 20px; text-shadow: 0 2px 4px rgba(255,255,255,0.8); }
         
         #slideshow-container {
-            position: relative;
-            width: 85%; max-width: 340px; height: 450px; 
+            position: relative; width: 85%; max-width: 340px; height: 450px; 
             border: 8px solid white; border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
             overflow: hidden; background: #fff; transform: rotate(-2deg); 
         }
-        
         .slide {
             position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; 
             object-fit: cover; opacity: 0; transition: opacity 2.5s ease-in-out; 
             max-width: none !important; border-radius: 0 !important; margin: 0 !important; box-shadow: none !important;
         }
         .slide.active { opacity: 1; }
-
         .hidden { display: none !important; }
         #player { position: absolute; top: -9999px; left: -9999px; visibility: hidden; }
     </style>
@@ -219,6 +225,12 @@
         <div class="click-text">Toca para abrir</div>
     </div>
 
+    <div id="game-screen">
+        <h2>Clica em <span style="color: #ff4757; font-size: 2rem;">3</span> corações<br>para descobrires a surpresa!</h2>
+        <h3>Faltam: <span id="hearts-left">3</span></h3>
+        <div id="game-hearts-container"></div>
+    </div>
+
     <div id="main-content">
         <div id="timer-container">
             <div id="timer-title">AMO-TE HÁ:</div>
@@ -240,7 +252,6 @@
 
     <div id="success-message">
         <p>Yeeey! Sábia decisão! ❤️<br>És o amor da minha vida!</p>
-        
         <div id="slideshow-container">
             <img src="foto1.jpg" class="slide active">
             <img src="foto2.jpg" class="slide">
@@ -256,36 +267,24 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                height: '0',
-                width: '0',
-                videoId: 'TKB7pZO3okM',
+                height: '0', width: '0', videoId: 'TKB7pZO3okM',
                 playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'TKB7pZO3okM' },
-                events: { 
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange 
-                }
+                events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
             });
         }
         function onPlayerReady(event) { event.target.setVolume(100); }
-
         function onPlayerStateChange(event) {
             const icon = document.getElementById('music-icon');
             if (event.data == YT.PlayerState.PLAYING) {
-                icon.classList.add('spin');
-                isMusicPlaying = true;
+                icon.classList.add('spin'); isMusicPlaying = true;
             } else {
-                icon.classList.remove('spin');
-                isMusicPlaying = false;
+                icon.classList.remove('spin'); isMusicPlaying = false;
             }
         }
-
         function toggleMusic() {
             if (player && typeof player.getPlayerState === 'function') {
-                if (isMusicPlaying) {
-                    player.pauseVideo();
-                } else {
-                    player.playVideo();
-                }
+                if (isMusicPlaying) player.pauseVideo();
+                else player.playVideo();
             }
         }
 
@@ -295,20 +294,92 @@
             const letter = document.querySelector('.letter');
             const screen = document.getElementById('intro-screen');
 
-            if (player && typeof player.playVideo === 'function') { 
-                player.playVideo(); 
-            }
+            if (player && typeof player.playVideo === 'function') player.playVideo();
 
             flap.classList.add('open-flap');
             seal.style.opacity = '0';
             
             setTimeout(() => { letter.classList.add('slide-letter'); }, 1200);
 
+            // MUDANÇA: Quando o envelope some, INICIA O JOGO em vez do main-content
             setTimeout(() => {
                 screen.classList.add('fade-out');
-                setTimeout(() => screen.style.display = 'none', 1000);
-                document.getElementById('main-content').classList.add('visible');
+                setTimeout(() => {
+                    screen.style.display = 'none';
+                    startGame(); // CHAMA O JOGO AQUI
+                }, 1000);
             }, 6000);
+        }
+
+        // --- LÓGICA DO JOGO DOS CORAÇÕES ---
+        let poppedCount = 0;
+        const totalToPop = 3;
+
+        function startGame() {
+            const gameScreen = document.getElementById('game-screen');
+            gameScreen.style.display = 'flex';
+            setTimeout(() => { gameScreen.classList.add('visible'); }, 50);
+            
+            const container = document.getElementById('game-hearts-container');
+            container.innerHTML = ''; 
+            poppedCount = 0;
+            document.getElementById('hearts-left').innerText = totalToPop;
+
+            // Gera corações grandes e interativos
+            const heartEmojis = ['❤️', '💖', '💘', '💝', '💗'];
+            for (let i = 0; i < 25; i++) { // Muitos corações para ser fácil
+                let heart = document.createElement('div');
+                heart.classList.add('game-heart');
+                heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                
+                heart.style.left = (Math.random() * 80 + 10) + '%'; 
+                heart.style.fontSize = (Math.random() * 35 + 45) + 'px'; // Tamanho grande
+                heart.style.animationDuration = (Math.random() * 4 + 3) + 's'; // Velocidade
+                heart.style.animationDelay = (Math.random() * 3) + 's';
+                
+                // Alta performance de toque no telemóvel
+                heart.addEventListener('touchstart', popHeartEvent, {passive: false});
+                heart.addEventListener('mousedown', popHeartEvent);
+
+                container.appendChild(heart);
+            }
+        }
+
+        function popHeartEvent(e) {
+            if(e.type === 'touchstart') e.preventDefault(); // Previne zoom ou scroll no clique
+            if(this.classList.contains('popped')) return;
+            
+            this.classList.add('popped');
+            poppedCount++;
+            
+            let left = totalToPop - poppedCount;
+            document.getElementById('hearts-left').innerText = Math.max(left, 0);
+
+            if(poppedCount >= totalToPop) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            const gameScreen = document.getElementById('game-screen');
+            gameScreen.style.pointerEvents = 'none'; // Impede mais cliques
+            
+            setTimeout(() => {
+                gameScreen.classList.remove('visible'); // Faz fade out
+                setTimeout(() => {
+                    gameScreen.style.display = 'none';
+                    showMainContent(); // CHAMA A PERGUNTA FINAL
+                }, 1000);
+            }, 500); // Pausa para ela ver o contador a chegar ao 0
+        }
+
+        // --- LÓGICA DO RESTO DO SITE ---
+        function showMainContent() {
+            const main = document.getElementById('main-content');
+            main.style.display = 'flex';
+            main.style.flexDirection = 'column';
+            main.style.alignItems = 'center';
+            setTimeout(() => { main.classList.add('visible'); }, 50);
         }
 
         function createHearts() {
@@ -348,33 +419,22 @@
         setInterval(updateTimer, 1000);
         updateTimer(); 
 
-        const phrases = [
-            "Tens a certeza?",
-            "Pensa bem...",
-            "Estás a fazer-te difícil?",
-            "Vais arrepender-te!",
-            "Diz que simmm!",
-            "Vou chorar...",
-            "Último aviso!"
-        ];
-        let count = 0;
-        let scale = 1;
+        const phrases = ["Tens a certeza?", "Pensa bem...", "Estás a fazer-te difícil?", "Vais arrepender-te!", "Diz que simmm!", "Vou chorar...", "Último aviso!"];
+        let count = 0; let scale = 1;
 
         function reject() {
-            const btn = document.getElementById('noBtn');
-            const yes = document.getElementById('yesBtn');
-            btn.innerHTML = phrases[count % phrases.length];
-            count++;
-            yes.classList.remove('pulsing');
-            scale += 0.5;
+            const btn = document.getElementById('noBtn'); const yes = document.getElementById('yesBtn');
+            btn.innerHTML = phrases[count % phrases.length]; count++;
+            yes.classList.remove('pulsing'); scale += 0.5;
             yes.style.transform = `translate(-50%, -50%) scale(${scale})`;
             yes.style.transition = "transform 0.2s ease";
         }
 
         function accepted() {
-            document.getElementById('main-content').classList.add('hidden');
-            document.getElementById('success-message').style.display = 'flex';
+            document.getElementById('main-content').classList.remove('visible');
+            setTimeout(() => { document.getElementById('main-content').style.display = 'none'; }, 1000);
             
+            document.getElementById('success-message').style.display = 'flex';
             spawnRealPetals(); 
             startSlideshow(); 
         }
@@ -390,18 +450,14 @@
         }
 
         function spawnRealPetals() {
-            for (let i = 0; i < 30; i++) {
-                setTimeout(() => { createOnePetal(); }, i * 200);
-            }
+            for (let i = 0; i < 30; i++) { setTimeout(() => { createOnePetal(); }, i * 200); }
         }
 
         function createOnePetal() {
-            const petal = document.createElement('div');
-            petal.classList.add('rose-petal');
+            const petal = document.createElement('div'); petal.classList.add('rose-petal');
             petal.style.left = Math.random() * 100 + 'vw';
             const size = Math.random() * 15 + 20; 
-            petal.style.width = size + 'px';
-            petal.style.height = size + 'px';
+            petal.style.width = size + 'px'; petal.style.height = size + 'px';
             const colors = ['#800000', '#b71c1c', '#d32f2f', '#c62828'];
             petal.style.background = colors[Math.floor(Math.random() * colors.length)];
             petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
