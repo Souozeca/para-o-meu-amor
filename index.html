@@ -100,7 +100,7 @@
         .slide-letter { transform: translateY(-160px); z-index: 30 !important; } 
         .fade-out { opacity: 0; pointer-events: none; }
 
-        /* --- 2. O CAMINHO DAS MEMÓRIAS (ATUALIZADO PARA 14S) --- */
+        /* --- 2. O CAMINHO DAS MEMÓRIAS (ATUALIZADO PARA 22S) --- */
         #memories-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 0, 5, 0.95); 
@@ -118,7 +118,7 @@
         #memories-text-container span { color: white; }
         
         .start-scroll {
-            animation: scrollUp 14s linear forwards; /* Tempo atualizado para 14s */
+            animation: scrollUp 22s linear forwards; /* Tempo atualizado para 22s */
         }
         @keyframes scrollUp {
             0% { transform: translateY(100vh); opacity: 0; }
@@ -232,12 +232,12 @@
     <div id="memories-screen" onclick="skipMemories()">
         <div id="memories-text-container">
             <p>Amo o teu sorriso... <span>💖</span></p>
-            <p>Amo a forma como me aturas... <span></span></p>
+            <p>Amo a forma como me aturas... <span>😂</span></p>
             <p>Amo cada momento nosso... <span>✨</span></p>
-            <p>És a minha pessoa favorita... <span></span></p>
+            <p>És a minha pessoa favorita... <span>👫</span></p>
             <p>A nossa história está só a começar... <span>📖</span></p>
-            <p>Mal posso esperar pelo nosso futuro... <span></span></p>
-            <p>Que venham muitas mais aventuras juntos... <span></span></p>
+            <p>Mal posso esperar pelo nosso futuro... <span>🥂</span></p>
+            <p>Que venham muitas mais aventuras juntos... <span>🌍</span></p>
             <p>Ao teu lado, a vida é mais bonita... <span>🌺</span></p>
         </div>
         <div style="position: absolute; bottom: 20px; color: rgba(255,255,255,0.4); font-size: 0.8rem; font-family: 'Poppins', sans-serif;">(Toca no ecrã para saltar)</div>
@@ -346,7 +346,7 @@
                 memoriesText.classList.add('start-scroll'); 
             }, 50);
 
-            // Tempo alterado para 14000ms (14 segundos)
+            // Tempo alterado para 22000ms (22 segundos)
             memoriesTimeout1 = setTimeout(() => {
                 if (memoriesSkipped) return; 
                 memoriesScreen.style.opacity = '0';
@@ -356,7 +356,7 @@
                     memoriesScreen.style.display = 'none';
                     startGame(); 
                 }, 1000);
-            }, 14000); 
+            }, 22000); 
         }
 
         function skipMemories() {
