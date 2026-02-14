@@ -51,7 +51,7 @@
             100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
         }
 
-        /* --- 1. ECRÃ DO ENVELOPE --- */
+        /* --- 1. ECRÃ DO ENVELOPE E CADEADO --- */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.2); 
@@ -100,6 +100,26 @@
         .slide-letter { transform: translateY(-160px); z-index: 30 !important; } 
         .fade-out { opacity: 0; pointer-events: none; }
 
+        /* --- O CADEADO DIGITAL (NOVO) --- */
+        #lock-modal {
+            display: none; flex-direction: column; align-items: center;
+            background: rgba(255, 255, 255, 0.95); padding: 25px; border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+            z-index: 10000; opacity: 0; transition: all 0.3s ease;
+            width: 85%; max-width: 320px;
+        }
+        #lock-modal.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        #lock-modal h2 { color: #d63384; font-size: 1.3rem; margin-bottom: 5px; font-weight: 900; }
+        #lock-modal p.hint { color: #555; font-size: 0.9rem; margin-bottom: 15px; }
+        #lock-modal input {
+            padding: 12px; font-size: 1.2rem; border: 2px solid #ffc0cb; border-radius: 8px; 
+            text-align: center; width: 100%; margin-bottom: 15px; 
+            font-family: 'Poppins', sans-serif; font-weight: 700; outline: none; letter-spacing: 2px;
+        }
+        #lock-modal input:focus { border-color: #ff4757; }
+        #lock-modal button { padding: 12px 0; width: 100%; font-size: 1.1rem; }
+
         /* --- 2. O CAMINHO DAS MEMÓRIAS --- */
         #memories-screen {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -117,9 +137,7 @@
         #memories-text-container p { margin-bottom: 40px; color: #ffc0cb; font-weight: 700; }
         #memories-text-container span { color: white; }
         
-        .start-scroll {
-            animation: scrollUp 22s linear forwards; 
-        }
+        .start-scroll { animation: scrollUp 22s linear forwards; }
         @keyframes scrollUp {
             0% { transform: translateY(100vh); opacity: 0; }
             10% { opacity: 1; }
@@ -214,8 +232,8 @@
 
     <div class="bg-hearts" id="heartsContainer"></div>
 
-    <div id="intro-screen" onclick="openEnvelope()">
-        <div class="envelope-wrapper">
+    <div id="intro-screen">
+        <div class="envelope-wrapper" onclick="promptPassword(event)">
             <div class="envelope">
                 <div class="letter">
                     <img src="foto.jpg" alt="Nós" onerror="this.src='https://placehold.co/600x400?text=Foto+Aqui'">
@@ -227,6 +245,14 @@
             </div>
         </div>
         <div class="click-text">Toca para abrir</div>
+
+        <div id="lock-modal">
+            <h2>Melhor data de sempre 🔒</h2>
+            <p class="hint">Desbloqueia o envelope com a nossa data.</p>
+            <input type="text" id="password-input" placeholder="DD/MM/AAAA" maxlength="10">
+            <button id="unlock-btn" onclick="checkPassword()">Desbloquear ❤️</button>
+            <p id="error-msg" style="color: red; font-size: 0.85rem; margin-top: 10px; display: none; font-weight: 700;">Data incorreta. Tenta outra vez! 💔</p>
+        </div>
     </div>
 
     <div id="memories-screen" onclick="skipMemories()">
@@ -307,7 +333,62 @@
             }
         }
 
-        // --- SEQUÊNCIA INICIAL ---
+        // --- SISTEMA DE CADEADO ---
+        function promptPassword(event) {
+            event.stopPropagation(); // Impede duplo clique no fundo
+            if (envelopeOpened) return; 
+            
+            const modal = document.getElementById('lock-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.classList.add('show'); }, 10);
+            
+            document.querySelector('.click-text').style.display = 'none';
+            document.getElementById('password-input').focus();
+        }
+
+        // Formatação Automática da Data (Coloca as barras sozinho)
+        document.getElementById('password-input').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, ''); 
+            if (value.length > 8) value = value.slice(0, 8);
+            if (value.length >= 5) {
+                value = value.slice(0, 2) + '/' + value.slice(2, 4) + '/' + value.slice(4);
+            } else if (value.length >= 3) {
+                value = value.slice(0, 2) + '/' + value.slice(2);
+            }
+            e.target.value = value;
+            document.getElementById('error-msg').style.display = 'none'; // Limpa o erro ao escrever
+        });
+
+        // Permite dar "Enter" no teclado para submeter
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            // Se a data for exatamente 20/04/2024
+            if (input === '20/04/2024') {
+                document.getElementById('lock-modal').classList.remove('show');
+                setTimeout(() => { 
+                    document.getElementById('lock-modal').style.display = 'none'; 
+                    openEnvelope(); // Se acertar, abre a carta!
+                }, 300);
+            } else {
+                // Se falhar
+                const errorMsg = document.getElementById('error-msg');
+                errorMsg.style.display = 'block';
+                
+                // Efeito Tremer (Shake)
+                const modal = document.getElementById('lock-modal');
+                modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(-10px)';
+                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(10px)', 50);
+                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(-10px)', 100);
+                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(10px)', 150);
+                setTimeout(() => modal.style.transform = 'translate(-50%, -50%) scale(1) translateX(0)', 200);
+            }
+        }
+
+        // --- SEQUÊNCIA INICIAL DO ENVELOPE ---
         function openEnvelope() {
             if (envelopeOpened) return; 
             envelopeOpened = true;
